@@ -2,959 +2,1370 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ScoreBoss — Hit Hard. Dispute Fast. Win.</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makisha's Life HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--surface:#1e2d40;--surface2:#243347;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f4ff;--text2:#8b9dc3;--text3:#5a7099;--accent:#4f8ef7;--accent2:#7bb3ff;--green:#22c97a;--green2:#1a9960;--amber:#f5a623;--red:#f25757;--purple:#a78bfa;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Instrument Sans',sans-serif;--font-mono:'DM Mono',monospace;--r:10px;--r-lg:16px}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(79,142,247,0.08) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(34,201,122,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
-.shell{display:flex;min-height:100vh;position:relative;z-index:1}
-nav{width:220px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;transition:transform 0.3s ease}
-main{margin-left:220px;flex:1;padding:2rem;min-width:0;overflow-x:hidden}
-#hamburger{position:fixed;top:10px;left:228px;z-index:999;background:var(--surface);border:1px solid var(--border2);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);font-size:18px;user-select:none;-webkit-user-select:none;transition:left 0.3s ease}
-#nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:98}
-#nav-overlay.active{display:block}
-.nav-logo{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid var(--border)}
-.nav-logo-mark{font-family:var(--font-display);font-size:1.4rem;color:var(--text);letter-spacing:-0.02em}
-.nav-logo-sub{font-size:11px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px}
-.nav-links{padding:1rem 0.75rem;flex:1;display:flex;flex-direction:column;gap:2px}
-.nav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all 0.15s;border:none;background:none;width:100%;text-align:left}
-.nav-link:hover,.nav-link:active{background:var(--surface);color:var(--text)}
-.nav-link.active{background:rgba(79,142,247,0.15);color:var(--accent2);border:1px solid rgba(79,142,247,0.2)}
-.nav-link .icon{width:16px;height:16px;opacity:0.7;flex-shrink:0}
-.nav-link.active .icon{opacity:1}
-.nav-score-card{margin:0.75rem;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:1rem}
-.nav-score-num{font-family:var(--font-display);font-size:2rem;color:var(--text);line-height:1}
-.nav-score-lbl{font-size:11px;color:var(--text3);margin-top:4px}
-.score-pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(245,166,35,0.15);color:var(--amber);margin-top:6px;font-weight:500}
-.section{display:none}.section.active{display:block}
-.page-header{margin-bottom:2rem}
-.page-title{font-family:var(--font-display);font-size:2rem;letter-spacing:-0.02em;color:var(--text);line-height:1.2}
-.page-sub{font-size:14px;color:var(--text2);margin-top:6px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem}
-.card-title{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
-.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;position:relative;overflow:hidden}
-.metric-num{font-family:var(--font-display);font-size:2rem;line-height:1;margin-bottom:4px}
-.metric-lbl{font-size:12px;color:var(--text3)}
-.metric-card.green .metric-num{color:var(--green)}.metric-card.amber .metric-num{color:var(--amber)}.metric-card.red .metric-num{color:var(--red)}.metric-card.blue .metric-num{color:var(--accent2)}
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.badge-red{background:rgba(242,87,87,0.15);color:var(--red);border:1px solid rgba(242,87,87,0.25)}
-.badge-amber{background:rgba(245,166,35,0.15);color:var(--amber);border:1px solid rgba(245,166,35,0.25)}
-.badge-green{background:rgba(34,201,122,0.15);color:var(--green);border:1px solid rgba(34,201,122,0.25)}
-.badge-blue{background:rgba(79,142,247,0.15);color:var(--accent2);border:1px solid rgba(79,142,247,0.25)}
-.badge-purple{background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.25)}
-.badge-gray{background:rgba(255,255,255,0.06);color:var(--text2);border:1px solid var(--border)}
-label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500;letter-spacing:0.03em}
-input[type=text],input[type=number],input[type=date],select,textarea{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 12px;color:var(--text);font-size:16px;font-family:var(--font-body);outline:none;transition:border-color 0.15s;margin-bottom:12px;-webkit-appearance:none;appearance:none}
-input:focus,select:focus,textarea:focus{border-color:rgba(79,142,247,0.5);box-shadow:0 0 0 3px rgba(79,142,247,0.08)}
-textarea{min-height:100px;resize:vertical;line-height:1.6}
-select option{background:var(--bg3)}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text);font-size:13px;font-family:var(--font-body);cursor:pointer;transition:all 0.15s;font-weight:500;touch-action:manipulation;-webkit-appearance:none}
-.btn:hover,.btn:active{background:var(--surface)}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn-primary:hover,.btn-primary:active{background:#3a7de8}
-.btn-green{background:var(--green2);border-color:var(--green);color:#fff}
-.btn-sm{padding:7px 12px;font-size:12px}
-.btn:disabled{opacity:0.4;cursor:not-allowed}
-.account-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.account-row:last-child{border-bottom:none}
-.account-num{font-size:12px;color:var(--text3);font-family:var(--font-mono);min-width:24px}
-.account-info{flex:1;min-width:180px}
-.account-name{font-size:14px;font-weight:500;color:var(--text)}
-.account-sub{font-size:12px;color:var(--text2);margin-top:2px}
-.priority-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.dot-red{background:var(--red)}.dot-amber{background:var(--amber)}.dot-green{background:var(--green)}
-.letter-output{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:1.5rem;font-family:var(--font-mono);font-size:12px;line-height:1.8;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto}
-.score-track{background:var(--bg3);border-radius:20px;height:8px;overflow:hidden;margin:8px 0}
-.score-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));transition:width 0.8s ease}
-.log-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.log-row:last-child{border-bottom:none}
-.log-info{flex:1;min-width:140px}
-.log-name{font-size:13px;font-weight:500}
-.log-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.due-chip{font-size:11px;color:var(--amber);background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);padding:2px 8px;border-radius:20px;white-space:nowrap}
-.check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
-.check-item:last-child{border-bottom:none}
-.check-item input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex-shrink:0;margin-bottom:0}
-.check-text{font-size:13px;color:var(--text);line-height:1.5}
-.check-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.tip-box{background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--accent2);line-height:1.6;margin-bottom:1rem}
-.warn-box{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--amber);line-height:1.6;margin-bottom:1rem}
-.wave-header{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin:1.25rem 0 0.5rem;display:flex;align-items:center;gap:8px}
-.wave-line{flex:1;height:1px;background:var(--border)}
-.factor-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
-.factor-row:last-child{border-bottom:none}
-.factor-info{flex:1}
-.factor-name{font-size:13px;font-weight:500}
-.factor-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.factor-bar-wrap{width:80px;background:var(--bg3);border-radius:20px;height:4px}
-.factor-bar{height:4px;border-radius:20px;background:var(--accent)}
-.ai-loading{display:flex;align-items:center;gap:10px;padding:1.5rem;color:var(--text2);font-size:13px}
-.dot-flashing{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:dotFlash 1.4s infinite linear;position:relative}
-.dot-flashing::before,.dot-flashing::after{content:'';position:absolute;top:0;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:dotFlash 1.4s infinite linear}
-.dot-flashing::before{left:-14px;animation-delay:-0.32s}
-.dot-flashing::after{left:14px;animation-delay:0.32s}
-@keyframes dotFlash{0%,80%,100%{opacity:0.2}40%{opacity:1}}
-.api-banner{background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:var(--r);padding:12px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.api-banner input{flex:1;min-width:140px;margin-bottom:0;background:var(--bg);font-family:var(--font-mono);font-size:12px}
-.api-status{font-size:11px;font-weight:500;white-space:nowrap}
-.api-status.ok{color:var(--green)}.api-status.no{color:var(--text3)}
-#upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:12px;color:var(--text2)}
-#upload-zone:hover,#upload-zone.drag-over{border-color:var(--accent);background:rgba(79,142,247,0.05);color:var(--text)}
-.upload-success{background:rgba(34,201,122,0.08);border:1px solid rgba(34,201,122,0.2);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--green);display:flex;align-items:center;gap:8px}
-.upload-error{background:rgba(242,87,87,0.08);border:1px solid rgba(242,87,87,0.2);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--red)}
-.upload-loading{background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--accent2);display:flex;align-items:center;gap:10px}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:4px}
-.fade-up{animation:fadeUp 0.4s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.metrics-grid{grid-template-columns:1fr 1fr;gap:0.5rem}.g2,.g3{grid-template-columns:1fr}.page-title{font-size:1.5rem}main{padding:1rem}}
-@media(max-width:540px){main{margin-left:0;padding:3.5rem 0.75rem 0.75rem}#hamburger{left:10px}.metrics-grid{grid-template-columns:1fr 1fr;gap:0.5rem}.g2,.g3{grid-template-columns:1fr}.page-title{font-size:1.2rem}.card{padding:0.875rem}.factor-bar-wrap{display:none}}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0f;--bg2:#18181c;--bg3:#1e1e22;--bg4:#222226;
+  --border:#2a2a2f;--border2:#38383f;
+  --text:#ffffff;--text2:#d0d0e4;--text3:#9898b0;
+  --green:#00d17a;--green-dim:#00a85f;--green-bg:rgba(0,209,122,0.08);--green-border:rgba(0,209,122,0.25);
+  --blue:#4d9eff;--blue-bg:rgba(77,158,255,0.09);--blue-border:rgba(77,158,255,0.25);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.09);--amber-border:rgba(245,166,35,0.25);
+  --coral:#ff6b6b;--coral-bg:rgba(255,107,107,0.09);--coral-border:rgba(255,107,107,0.25);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.09);--purple-border:rgba(167,139,250,0.25);
+  --pink:#f472b6;--pink-bg:rgba(244,114,182,0.09);--pink-border:rgba(244,114,182,0.25);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.09);--teal-border:rgba(45,212,191,0.25);
+  --font:'DM Sans',sans-serif;
+  --r:10px;--rl:14px;--rxl:20px;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.main{padding:30px 36px;overflow-y:auto;max-width:1100px}
+
+/* SIDEBAR */
+.logo{padding:4px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.logo h1{font-size:14px;font-weight:600;letter-spacing:-0.02em}
+.logo .sub{font-size:11px;color:var(--text3);margin-top:3px}
+.nav-section{font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;padding:14px 8px 5px;font-weight:500}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:13px;color:#c0c0d0;transition:all 0.15s;border:none;background:transparent;width:100%;text-align:left}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.nav-item .ni{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.streak-pill{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
+.streak-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--r);padding:12px;text-align:center}
+.streak-num{font-size:28px;font-weight:600;color:var(--amber);display:block}
+.streak-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* PAGE */
+.view{display:none}.view.active{display:block}
+.ph{margin-bottom:24px}
+.ph h2{font-size:22px;font-weight:600;letter-spacing:-0.03em}
+.ph p{font-size:13px;color:#b8b8cc;margin-top:5px;line-height:1.6}
+.date-badge{font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:3px 10px;display:inline-block;margin-top:8px}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px}
+.ct{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:20px}
+.pcard{background:#1c1c20;border:1px solid var(--border);border-radius:var(--rl);padding:12px;cursor:pointer;transition:all 0.15s;text-align:left;width:100%}
+.pcard:hover{border-color:var(--border2);background:var(--bg3)}
+.pcard.active{border-color:var(--green);background:var(--green-bg)}
+.pcard .icon{font-size:18px;display:block;margin-bottom:6px}
+.pcard .pname{font-size:12px;font-weight:500;display:block;color:#ffffff}
+.pcard .pdone{font-size:10px;color:#aaaacc;display:block;margin-top:2px}
+.mbar{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden}
+.mfill{height:3px;border-radius:2px;transition:width 0.4s}
+
+/* TASKS */
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
+.task-row:first-child{border-top:none;padding-top:0}
+.chk{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--border2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;margin-top:1px}
+.chk.on{background:var(--green);border-color:var(--green)}
+.chk.on::after{content:'✓';font-size:10px;color:#000;font-weight:700}
+.tl{font-size:13px;flex:1;line-height:1.5;cursor:pointer}
+.tl.done{text-decoration:line-through;color:var(--text3)}
+.tpts{font-size:11px;color:var(--text3);white-space:nowrap}
+
+/* SCORE */
+.score-big{font-size:44px;font-weight:600;color:var(--green);text-align:center;line-height:1}
+.score-sub{font-size:11px;color:#9999b0;text-align:center;margin-bottom:14px}
+.brow{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--border)}
+.blbl{font-size:11px;color:var(--text2);width:64px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btrack{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.bfill{height:4px;border-radius:2px;transition:width 0.4s}
+.bpct{font-size:10px;color:var(--text3);min-width:26px;text-align:right}
+
+/* COACH */
+.cout{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:13px;font-size:13px;line-height:1.7;min-height:80px;margin-bottom:10px;white-space:pre-wrap}
+.cin{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;color:var(--text);font-family:var(--font);resize:none;height:56px;margin-bottom:7px;transition:border-color 0.15s}
+.cin:focus{outline:none;border-color:var(--green)}
+.brow2{display:flex;gap:7px}
+.btn{font-size:12px;padding:7px 14px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.btn:hover{background:var(--bg4);color:var(--text)}
+.btn.go{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
+.btn.go:hover{background:var(--green-dim)}
+
+/* WINS */
+.wrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border);font-size:13px}
+.wrow:first-child{border-top:none}
+
+/* GOAL ROADMAP */
+.roadmap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.phase-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.phase-num{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px}
+.phase-title{font-size:14px;font-weight:500;margin-bottom:10px}
+.step-list{list-style:none}
+.step-list li{font-size:12px;color:var(--text2);padding:5px 0;border-top:1px solid var(--border);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.step-list li:first-child{border-top:none;padding-top:0}
+.step-num{width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.resource-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;text-decoration:none;transition:border-color 0.15s}
+.resource-card:hover{border-color:var(--border2)}
+.resource-icon{font-size:22px;flex-shrink:0}
+.resource-title{font-size:13px;font-weight:500;color:var(--text)}
+.resource-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.resource-arrow{font-size:16px;color:var(--text3);margin-left:auto}
+.launch-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font);transition:all 0.15s;border:none}
+.launch-btn.primary{background:var(--green);color:#000}
+.launch-btn.primary:hover{background:var(--green-dim)}
+.launch-btn.outline{background:transparent;border:1px solid var(--border2);color:var(--text)}
+.launch-btn.outline:hover{background:var(--bg3)}
+.milestone-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-top:1px solid var(--border)}
+.milestone-row:first-child{border-top:none;padding-top:0}
+.ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.ms-done{background:var(--green)}
+.ms-cur{background:var(--amber);box-shadow:0 0 6px var(--amber)}
+.ms-fut{background:var(--border2)}
+.ms-label{font-size:13px;flex:1;line-height:1.5}
+.ms-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.tab-bar{display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap}
+.tab{font-size:12px;padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
+.tab:hover{color:var(--text);border-color:var(--border2)}
+.tab.on{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
+.goal-tab-content{display:none}.goal-tab-content.vis{display:block}
+
+/* SPANISH */
+.sp-prog-bar{height:8px;background:var(--border);border-radius:4px;margin-bottom:6px;overflow:hidden}
+.sp-prog-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.6s}
+.sp-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.sp-tab{font-size:12px;padding:7px 16px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.sp-tab:hover{border-color:var(--border2);color:var(--text)}
+.sp-tab.active{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
+.sp-sec{display:none}.sp-sec.vis{display:block}
+.flashcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rxl);padding:40px 24px;text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:14px}
+.flashcard:hover{border-color:var(--green-border)}
+.flashcard.flipped{border-color:var(--green-border);background:var(--green-bg)}
+.fc-cat{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:10px}
+.fc-es{font-size:32px;font-weight:500;letter-spacing:-0.02em;margin-bottom:8px}
+.fc-en{font-size:15px;color:var(--text2);display:none;margin-top:4px}
+.fc-tap{font-size:12px;color:var(--text3);margin-top:14px}
+.aud-btn{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--teal);cursor:pointer;font-family:var(--font);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;margin:10px auto 0}
+.aud-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
+.fc-btns{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.fc-btn{font-size:13px;padding:9px 22px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
+.fc-btn.good{border-color:var(--green);color:var(--green)}.fc-btn.good:hover{background:var(--green-bg)}
+.fc-btn.again{border-color:var(--coral);color:var(--coral)}.fc-btn.again:hover{background:var(--coral-bg)}
+.phrase-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--bg3);border-radius:var(--r);margin-bottom:6px;border:1px solid var(--border)}
+.p-es{font-size:14px;font-weight:500}.p-en{font-size:11px;color:var(--text2);margin-top:2px}
+.play-btn{background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--teal);cursor:pointer;white-space:nowrap;font-family:var(--font);transition:all 0.15s}
+.play-btn:hover{background:var(--teal);color:#000}
+.pcat-btn{font-size:11px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s;margin-bottom:10px}
+.pcat-btn.on{background:var(--purple-bg);border-color:var(--purple);color:var(--purple)}
+.quiz-q{font-size:24px;font-weight:500;text-align:center;margin:16px 0 22px;letter-spacing:-0.02em;line-height:1.3}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qopt{font-size:13px;padding:13px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-family:var(--font);text-align:center;transition:all 0.15s}
+.qopt:hover:not(.locked){border-color:var(--border2);background:var(--bg4)}
+.qopt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.qopt.wrong{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
+.qz-stats{display:flex;gap:20px;justify-content:center;margin-bottom:16px}
+.qs{text-align:center}.qs-n{font-size:26px;font-weight:600;color:var(--green)}.qs-l{font-size:10px;color:var(--text3)}
+.tutor-hist{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:16px;min-height:200px;max-height:360px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:86%;padding:10px 13px;border-radius:var(--r);font-size:13px;line-height:1.6}
+.msg.user{background:var(--green-bg);border:1px solid var(--green-border);color:var(--text);align-self:flex-end}
+.msg.ai{background:var(--bg4);border:1px solid var(--border);color:var(--text);align-self:flex-start;white-space:pre-wrap}
+.qbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.qbtn{font-size:11px;padding:5px 11px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
+.qbtn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-bg)}
+.listen-main{text-align:center;padding:32px 20px;background:var(--bg3);border-radius:var(--rl);border:1px solid var(--border);margin-bottom:14px}
+.listen-cat{font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:10px}
+.listen-es{font-size:30px;font-weight:500;letter-spacing:-0.02em;margin-bottom:6px}
+.listen-en{font-size:14px;color:var(--text2);margin-bottom:20px}
+.listen-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sp-stat-row{display:flex;gap:20px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border);margin-top:14px}
+.sp-stat{text-align:center}.sp-stat-n{font-size:24px;font-weight:600;color:var(--green)}.sp-stat-l{font-size:10px;color:var(--text3)}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info-box{padding:12px 16px;border-radius:var(--r);font-size:13px;line-height:1.6;margin-bottom:12px}
+.info-box.green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--text)}
+.info-box.amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--text)}
+.info-box.blue{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--text)}
+
+@media(max-width:768px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;bottom:0;top:auto;height:auto;width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:none;border-top:1px solid var(--border);z-index:100;gap:3px}
+  .logo,.nav-section,.streak-pill{display:none}
+  .nav-item{flex-direction:column;gap:2px;padding:6px 8px;font-size:9px;min-width:52px}
+  .nav-item .ni{font-size:16px}
+  .main{padding:14px;padding-bottom:85px}
+  .pillars{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .phase-grid,.g2{grid-template-columns:1fr}
+  .quiz-opts{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div id="nav-overlay" onclick="closeNav()"></div>
-<div id="hamburger" onclick="toggleNav()">&#9776;</div>
-<div class="shell">
-<nav id="main-nav">
-  <div class="nav-logo">
-    <div class="nav-logo-mark">ScoreBoss</div>
-    <div class="nav-logo-sub">Hit Hard. Dispute Fast. Win.</div>
-  </div>
-  <div class="nav-links">
-    <button class="nav-link active" onclick="showSection('analyze')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1"/></svg>Analyze Report</button>
-    <button class="nav-link" onclick="showSection('disputes')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>Dispute Queue</button>
-    <button class="nav-link" onclick="showSection('letters')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4l6 5 6-5"/><rect x="2" y="3" width="12" height="10" rx="1"/></svg>AI Dispute Letters</button>
-    <button class="nav-link" onclick="showSection('closed')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6"/></svg>Closed Accounts</button>
-    <button class="nav-link" onclick="showSection('rebuild')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 6,7 9,10 14,4"/></svg>Rebuild Plan</button>
-    <button class="nav-link" onclick="showSection('tracker')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1.5"/><path d="M5 8h6M8 5v6"/></svg>Progress Tracker</button>
-    <button class="nav-link" onclick="showSection('clients')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2.5"/><path d="M1 13c0-2.8 2.2-5 5-5"/><circle cx="11" cy="8" r="2"/><path d="M9 13c0-1.7 1.3-3 3-3h.5"/></svg>Clients</button>
-    <button class="nav-link" onclick="showSection('simulator')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 5,7 8,9 11,5 14,3"/><path d="M14 3v4M14 3h-4"/></svg>Score Simulator</button>
-    <button class="nav-link" onclick="showSection('resources')"><svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 7v4M8 5.5v.5"/></svg>Resources & Laws</button>
-  </div>
-  <div class="nav-score-card">
-    <div class="nav-score-num" id="nav-score-display">561</div>
-    <div class="nav-score-lbl">Current credit score</div>
-    <div class="score-pill" id="nav-score-tier">Poor</div>
-  </div>
-</nav>
-<main id="main-content">
+<div class="app">
 
-<div class="api-banner">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v.5"/></svg>
-  <div style="font-size:12px;color:var(--purple);font-weight:500">AI Letters</div>
-  <input type="text" id="api-key-input" placeholder="Anthropic API key..." oninput="checkApiKey()" style="max-width:180px"/>
-  <span class="api-status no" id="api-status">Not connected</span>
-  <a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:11px;color:var(--text3);text-decoration:none">Get key</a>
-  <div style="width:1px;height:20px;background:var(--border);margin:0 2px"></div>
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#22c97a" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>
-  <div style="font-size:12px;color:var(--green);font-weight:500">Mail</div>
-  <input type="text" id="lob-key-input" placeholder="Lob API key..." oninput="checkLobKey()" style="max-width:150px"/>
-  <span class="api-status no" id="lob-status">Not connected</span>
-  <a href="https://dashboard.lob.com/settings/api-keys" target="_blank" style="font-size:11px;color:var(--text3);text-decoration:none">Get key</a>
-</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <h1>Makisha's Life HQ</h1>
+    <div class="sub" id="sidebar-date"></div>
+  </div>
+  <div class="nav-section">Main</div>
+  <button class="nav-item active" onclick="showView('dashboard')"><span class="ni">📊</span>Dashboard</button>
+  <div class="nav-section">Goal Roadmaps</div>
+  <button class="nav-item" onclick="showView('realestate')"><span class="ni">🏠</span>Real Estate</button>
+  <button class="nav-item" onclick="showView('trading')"><span class="ni">📈</span>Trading</button>
+  <button class="nav-item" onclick="showView('fitness')"><span class="ni">💪</span>Fitness & Gym</button>
+  <button class="nav-item" onclick="showView('credit')"><span class="ni">💳</span>Credit & Finance</button>
+  <button class="nav-item" onclick="showView('spanish')"><span class="ni">🇲🇽</span>Spanish Studio</button>
+  <button class="nav-item" onclick="showView('art')"><span class="ni">🖼️</span>Art Sales</button>
+  <button class="nav-item" onclick="showView('investing')"><span class="ni">💰</span>Investing</button>
+  <div class="streak-pill">
+    <div class="streak-box">
+      <span class="streak-num" id="streak-num">0</span>
+      <div class="streak-lbl">🔥 day streak</div>
+    </div>
+  </div>
+</aside>
 
-<!-- ANALYZE -->
-<div id="sec-analyze" class="section active fade-up">
-  <div class="page-header"><div class="page-title">Analyze Your Report</div><div class="page-sub">Enter negative accounts to build your attack plan</div></div>
-  <div class="g2" style="margin-bottom:1.5rem">
-    <div class="card">
-      <div class="card-title">Your Info</div>
-      <label>Current credit score</label><input type="number" id="score-input" placeholder="e.g. 580" min="300" max="850" oninput="updateScoreDisplay()"/>
-      <label>Full name</label><input type="text" id="your-name" placeholder="Jane Smith"/>
-      <label>Address</label><input type="text" id="your-addr" placeholder="123 Main St, Atlanta, GA 30301"/>
-      <label>SSN last 4</label><input type="text" id="your-ssn" placeholder="XXXX" maxlength="4"/>
-      <label>Date of birth</label><input type="text" id="your-dob" placeholder="MM/DD/YYYY"/>
-    </div>
-    <div class="card">
-      <div class="card-title">Upload or Paste Your Credit Report</div>
-      <div id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px;opacity:0.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <div style="font-size:14px;font-weight:500">Drop your credit report here</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:4px">PDF or image &middot; or click to browse</div>
-        <input type="file" id="file-input" accept=".pdf,image/*" style="display:none" onchange="handleFileSelect(event)"/>
-      </div>
-      <div id="upload-status" style="display:none;margin-bottom:10px"></div>
-      <div style="display:flex;align-items:center;gap:10px;margin:4px 0 12px">
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-        <span style="font-size:11px;color:var(--text3)">OR PASTE MANUALLY</span>
-        <div style="flex:1;height:1px;background:var(--border)"></div>
-      </div>
-      <div class="tip-box" style="font-size:12px">Format: <strong>Creditor, Account#, Balance, Status</strong></div>
-      <textarea id="report-input" placeholder="LVNV Funding, #8834, $450, Collections" style="min-height:100px"></textarea>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="analyzeReport()" id="analyze-btn">&#9889; Analyze My Report</button>
-        <button class="btn btn-sm" onclick="loadSample()">Load sample</button>
-      </div>
-    </div>
-  </div>
-  <div id="analysis-out" style="display:none" class="fade-up">
-    <div class="metrics-grid">
-      <div class="metric-card red"><div class="metric-num" id="m-total">0</div><div class="metric-lbl">Negative accounts</div></div>
-      <div class="metric-card green"><div class="metric-num" id="m-easy">0</div><div class="metric-lbl">Easy wins</div></div>
-      <div class="metric-card amber"><div class="metric-num" id="m-medium">0</div><div class="metric-lbl">Medium disputes</div></div>
-      <div class="metric-card blue"><div class="metric-num" id="m-potential">+0</div><div class="metric-lbl">Est. score potential</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Accounts ranked easiest to remove first</div>
-      <div id="accounts-list"></div>
-      <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showSection('disputes');buildQueue()">Build Dispute Queue</button>
-        <button class="btn btn-green" onclick="showSection('letters')">Generate Letters</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- MAIN -->
+<main class="main">
 
-<!-- DISPUTES -->
-<div id="sec-disputes" class="section fade-up">
-  <div class="page-header"><div class="page-title">Dispute Queue</div><div class="page-sub">Your 3-wave dispute strategy</div></div>
-  <div class="tip-box"><strong>Strategy:</strong> Send Wave 1 now. Wait 35 days. Then Wave 2. Wave 3 last.</div>
-  <div id="dispute-queue"><div class="card" style="text-align:center;padding:3rem;color:var(--text3)">Complete Step 1 first.</div></div>
-</div>
-
-<!-- LETTERS -->
-<div id="sec-letters" class="section fade-up">
-  <div class="page-header"><div class="page-title">AI Dispute Letters</div><div class="page-sub">Generated with current FCRA rules and 2025 CFPB updates</div></div>
-  <div class="g2" style="margin-bottom:1rem">
-    <div class="card">
-      <div class="card-title">Letter Details</div>
-      <label>Creditor / Collection Agency</label><input type="text" id="l-creditor" placeholder="LVNV Funding LLC"/>
-      <label>Account number</label><input type="text" id="l-acct" placeholder="****8834"/>
-      <label>Reported balance</label><input type="text" id="l-balance" placeholder="$450"/>
-      <label>Dispute type</label>
-      <select id="l-type">
-        <option value="not-mine">Not my account / identity theft</option>
-        <option value="paid">Account already paid in full</option>
-        <option value="settled">Account settled — wrong status</option>
-        <option value="inaccurate">Inaccurate information / wrong amount</option>
-        <option value="statute">Past statute of limitations</option>
-        <option value="medical">Medical debt (CFPB 2025 protections)</option>
-        <option value="duplicate">Duplicate account listing</option>
-        <option value="unverifiable">Cannot be verified</option>
-        <option value="goodwill">Goodwill removal request</option>
-        <option value="validation">Debt validation demand</option>
-      </select>
-      <label>Send to bureau(s)</label>
-      <select id="l-bureau">
-        <option>All three bureaus (separate letters)</option>
-        <option>Equifax</option>
-        <option>Experian</option>
-        <option>TransUnion</option>
-      </select>
-      <label>Additional context (optional)</label><input type="text" id="l-context" placeholder="e.g. Account is 8 years old..."/>
-    </div>
-    <div class="card">
-      <div class="card-title">Your Info</div>
-      <label>Full name</label><input type="text" id="l-name" placeholder="Jane Smith"/>
-      <label>Mailing address</label><input type="text" id="l-addr" placeholder="123 Main St, Atlanta, GA 30301"/>
-      <label>SSN last 4</label><input type="text" id="l-ssn" placeholder="XXXX" maxlength="4"/>
-      <label>Date of birth</label><input type="text" id="l-dob" placeholder="MM/DD/YYYY"/>
-      <div class="warn-box" style="margin-top:0.5rem">Always send via <strong>Certified Mail with Return Receipt</strong>.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="generateAILetter()" id="gen-btn">Generate AI Letter</button>
-        <button class="btn btn-sm" onclick="clearLetter()">Clear</button>
-      </div>
-    </div>
+<!-- ==================== DASHBOARD ==================== -->
+<div class="view active" id="view-dashboard">
+  <div class="ph">
+    <h2>Daily Command Center</h2>
+    <p>Track every goal. Stack wins. Stay unstoppable.</p>
+    <div class="date-badge" id="dash-date"></div>
   </div>
-  <div class="card" id="letter-card" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
-      <div class="card-title" style="margin-bottom:0">Generated Letter</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-sm" onclick="copyLetter()">Copy</button>
-        <button class="btn btn-sm btn-green" onclick="printLetter()">Print / PDF</button>
-        <button class="btn btn-sm" onclick="mailLetter()" id="mail-btn" style="background:rgba(34,201,122,0.15);border-color:var(--green);color:var(--green)">&#9993; Mail ($1.20)</button>
-        <button class="btn btn-sm" onclick="addToLog()">Log dispute</button>
-      </div>
-    </div>
-    <div id="letter-body" class="letter-output"></div>
-    <div style="margin-top:12px;font-size:12px;color:var(--text3)">Include: photo ID &middot; proof of address &middot; supporting documentation</div>
-  </div>
-</div>
-
-<!-- CLOSED ACCOUNTS -->
-<div id="sec-closed" class="section fade-up">
-  <div class="page-header"><div class="page-title">Closed Account Removal</div><div class="page-sub">Negative closed accounts can still be disputed</div></div>
-  <div class="tip-box"><strong>Key fact:</strong> Closed accounts with negative history stay on your report for 7 years from the date of first delinquency. You can dispute them at any time if the information is inaccurate.</div>
-  <div class="g2" style="margin-bottom:1rem">
-    <div class="card">
-      <div class="card-title">Types you can dispute</div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Paid/Closed — Still showing balance</div><div class="factor-sub">Paid and closed but still reports a balance. Demand correction to $0 or deletion.</div></div><span class="badge badge-green">Easy win</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Settled — Still showing charged off</div><div class="factor-sub">Settled but still shows as charged off. Demand status update.</div></div><span class="badge badge-green">Easy win</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Wrong date of first delinquency</div><div class="factor-sub">If the date is wrong, the 7-year clock is wrong. Dispute the date.</div></div><span class="badge badge-amber">Medium</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Past 7 years — Must be removed</div><div class="factor-sub">Any negative item older than 7 years must be removed immediately by law.</div></div><span class="badge badge-green">Must remove</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Re-aging — Collector reset the date</div><div class="factor-sub">Illegal practice to keep old debt on your report longer.</div></div><span class="badge badge-red">FCRA violation</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Duplicate closed accounts</div><div class="factor-sub">Same closed account reported by original creditor AND a collector.</div></div><span class="badge badge-amber">Medium</span></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Generate closed account dispute letter</div>
-      <label>Creditor / Account name</label><input type="text" id="ca-creditor" placeholder="Citibank, LVNV Funding, etc."/>
-      <label>Account number</label><input type="text" id="ca-acct" placeholder="****1234"/>
-      <label>Issue type</label>
-      <select id="ca-type">
-        <option value="balance">Paid/closed but still showing balance</option>
-        <option value="settled">Settled but still showing charged off</option>
-        <option value="wrong-date">Wrong date of first delinquency</option>
-        <option value="too-old">Past 7 years — must be removed</option>
-        <option value="reaging">Re-aging — date was illegally reset</option>
-        <option value="duplicate">Duplicate listing</option>
-        <option value="inaccurate">General inaccurate information</option>
-      </select>
-      <label>Date account closed (if known)</label><input type="text" id="ca-date" placeholder="MM/YYYY"/>
-      <label>Additional details</label><input type="text" id="ca-details" placeholder="e.g. Paid in full 2022..."/>
-      <button class="btn btn-primary" onclick="generateClosedLetter()">Generate Closed Account Letter</button>
-    </div>
-  </div>
-  <div class="card" id="closed-letter-card" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
-      <div class="card-title" style="margin-bottom:0">Closed Account Dispute Letter</div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-sm" onclick="copyClosedLetter()">Copy</button>
-        <button class="btn btn-sm btn-green" onclick="printClosedLetter()">Print / PDF</button>
-      </div>
-    </div>
-    <div id="closed-letter-body" class="letter-output"></div>
-  </div>
-  <div class="card" style="margin-top:1rem">
-    <div class="card-title">7-year removal date calculator</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:12px">Enter the date of first delinquency to find out when this account must be removed.</div>
-    <div class="g2">
-      <div>
-        <label>Date of first delinquency</label>
-        <input type="text" id="calc-date" placeholder="MM/YYYY"/>
-        <button class="btn btn-primary btn-sm" onclick="calcRemoval()">Calculate removal date</button>
-      </div>
-      <div id="calc-result" style="display:none;padding:1rem;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border2)">
-        <div id="calc-output" style="font-size:13px;line-height:1.8"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- REBUILD -->
-<div id="sec-rebuild" class="section fade-up">
-  <div class="page-header"><div class="page-title">Rebuild Plan</div><div class="page-sub">Build positive history while disputes are pending</div></div>
-  <div class="g2" style="margin-bottom:1rem">
-    <div class="card">
-      <div class="card-title">Score factors</div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Payment history</div><div class="factor-sub">Never miss a due date</div></div><div><div class="factor-bar-wrap"><div class="factor-bar" style="width:100%;background:var(--red)"></div></div><span class="badge badge-red" style="margin-top:4px;display:inline-block">35%</span></div></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Credit utilization</div><div class="factor-sub">Keep balances below 10% of each limit</div></div><div><div class="factor-bar-wrap"><div class="factor-bar" style="width:86%;background:var(--red)"></div></div><span class="badge badge-red" style="margin-top:4px;display:inline-block">30%</span></div></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Length of history</div><div class="factor-sub">Never close your oldest cards</div></div><div><div class="factor-bar-wrap"><div class="factor-bar" style="width:43%;background:var(--amber)"></div></div><span class="badge badge-amber" style="margin-top:4px;display:inline-block">15%</span></div></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">Credit mix</div><div class="factor-sub">Installment + revolving both help</div></div><div><div class="factor-bar-wrap"><div class="factor-bar" style="width:28%;background:var(--amber)"></div></div><span class="badge badge-amber" style="margin-top:4px;display:inline-block">10%</span></div></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">New inquiries</div><div class="factor-sub">Space hard pulls 6+ months apart</div></div><div><div class="factor-bar-wrap"><div class="factor-bar" style="width:28%;background:var(--green)"></div></div><span class="badge badge-green" style="margin-top:4px;display:inline-block">10%</span></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">30-day quick wins</div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Pull all 3 free credit reports</div><div class="check-sub">AnnualCreditReport.com</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Pay down highest-utilization cards</div><div class="check-sub">Below 30% = big gains. Below 10% = maximum gains</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Become an authorized user</div><div class="check-sub">Ask a family member with good credit</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Open a secured credit card</div><div class="check-sub">Discover It Secured, OpenSky, or Capital One Secured</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Enroll in Experian Boost (free)</div><div class="check-sub">Adds utility and streaming payments to your report</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Set up autopay on all accounts</div><div class="check-sub">Prevents new late payments</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Request goodwill deletions</div><div class="check-sub">Call creditors and ask for late payment removal</div></div></div>
-      <div class="check-item"><input type="checkbox"><div><div class="check-text">Request a credit limit increase</div><div class="check-sub">Lowers utilization without paying anything</div></div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Secured card options</div>
-    <div class="g3">
-      <div style="padding:12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:4px">Discover It Secured</div><div style="font-size:12px;color:var(--text2)">No annual fee &middot; Cash back &middot; Graduates to unsecured</div><span class="badge badge-green" style="margin-top:8px">Best overall</span></div>
-      <div style="padding:12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:4px">OpenSky Secured Visa</div><div style="font-size:12px;color:var(--text2)">No credit check &middot; Easy approval</div><span class="badge badge-blue" style="margin-top:8px">No hard pull</span></div>
-      <div style="padding:12px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:4px">Self Credit Builder</div><div style="font-size:12px;color:var(--text2)">Installment loan &middot; No upfront cash</div><span class="badge badge-purple" style="margin-top:8px">Credit mix boost</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- TRACKER -->
-<div id="sec-tracker" class="section fade-up">
-  <div class="page-header"><div class="page-title">Progress Tracker</div><div class="page-sub">Track disputes and watch your score climb</div></div>
-  <div class="g2" style="margin-bottom:1rem">
-    <div class="card">
-      <div class="card-title">Score progress</div>
-      <div class="g3" style="margin-bottom:12px">
-        <div><label>Starting score</label><input type="number" id="t-start" placeholder="520"/></div>
-        <div><label>Current score</label><input type="number" id="t-current" placeholder="580"/></div>
-        <div><label>Target score</label><input type="number" id="t-target" placeholder="700"/></div>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="showProgress()">Update Progress</button>
-      <div id="prog-out" style="display:none;margin-top:1rem">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px">
-          <span id="prog-start-lbl">300</span><span id="prog-current-lbl" style="color:var(--accent2)">current</span><span id="prog-target-lbl">850</span>
+  <div class="pillars" id="pillars"></div>
+  <div class="g2" style="margin-bottom:14px">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="ct" id="goal-panel-label">Select a goal above</div>
+        <div id="goal-header" style="padding:11px;background:var(--bg3);border-radius:var(--r);margin-bottom:11px;border:1px solid var(--border)">
+          <div style="font-size:13px;color:var(--text2)">Click a goal pillar to see today's tasks</div>
         </div>
-        <div class="score-track"><div class="score-fill" id="prog-bar" style="width:0%"></div></div>
-        <div id="prog-msg" style="font-size:13px;color:var(--text2);margin-top:10px;line-height:1.6"></div>
+        <div id="task-list"></div>
+        <div id="goal-roadmap-link" style="margin-top:12px"></div>
+      </div>
+      <div class="card">
+        <div class="ct">Quick Launch</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="btn">📚 RE Exam Prep ↗</a>
+          <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
+          <button class="btn" onclick="showView('spanish')">🇲🇽 Spanish Studio</button>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Log a dispute</div>
-      <div class="g2">
-        <div><label>Creditor</label><input type="text" id="log-creditor" placeholder="LVNV Funding"/></div>
-        <div><label>Date sent</label><input type="date" id="log-date"/></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="ct">Today's Score</div>
+        <div class="score-big" id="score-num">0</div>
+        <div class="score-sub">points earned</div>
+        <div id="score-bars"></div>
       </div>
-      <div class="g2">
-        <div><label>Bureau</label><select id="log-bureau"><option>Equifax</option><option>Experian</option><option>TransUnion</option><option>All 3</option></select></div>
-        <div><label>Status</label><select id="log-status"><option>Sent</option><option>Pending</option><option>Removed</option><option>Verified - escalate</option><option>Needs follow-up</option></select></div>
+      <div class="card">
+        <div class="ct">AI Life Coach</div>
+        <div class="cout" id="coach-out">Hit "Daily Brief" for your personalized focus, or ask me anything.</div>
+        <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
+        <div class="brow2">
+          <button class="btn" onclick="coachMe()">Daily brief ↗</button>
+          <button class="btn go" onclick="askCoach()">Ask ↗</button>
+        </div>
       </div>
-      <label>Your email (for reminders)</label><input type="text" id="log-email" placeholder="you@email.com"/>
-      <button class="btn btn-primary btn-sm" onclick="addLog()">Add to log</button>
+      <div class="card">
+        <div class="ct">Today's Wins</div>
+        <div id="wins-list"><div style="font-size:13px;color:var(--text3)">Complete tasks to log your wins.</div></div>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Dispute log</div>
-    <div id="log-list"><div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No disputes logged yet.</div></div>
   </div>
 </div>
 
-<!-- CLIENTS -->
-<div id="sec-clients" class="section fade-up">
-  <div class="page-header"><div class="page-title">Client Management</div><div class="page-sub">Track multiple clients</div></div>
-  <div class="g2" style="margin-bottom:1rem">
+<!-- ==================== REAL ESTATE ==================== -->
+<div class="view" id="view-realestate">
+  <div class="ph">
+    <h2>🏠 Real Estate Roadmap</h2>
+    <p>GA Salesperson License → Property Manager → CAM Certified. Full step-by-step plan.</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('re','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('re','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('re','tools')">Tools & Links</button>
+  </div>
+
+  <div class="goal-tab-content vis" id="re-daily">
+    <div class="info-box green">Your exam prep tracker lives at <strong>your custom site</strong>. Use that daily alongside these tasks. The 14-day Kaplan plan is your primary study engine.</div>
     <div class="card">
-      <div class="card-title">Add new client</div>
-      <label>Full name</label><input type="text" id="c-name" placeholder="John Smith"/>
-      <label>Current score</label><input type="number" id="c-score" placeholder="580"/>
-      <label>Target score</label><input type="number" id="c-target" placeholder="700"/>
-      <label>Notes</label><input type="text" id="c-notes" placeholder="3 collections, 2 charge-offs..."/>
-      <button class="btn btn-primary btn-sm" onclick="addClient()">Add Client</button>
-    </div>
-    <div class="card">
-      <div class="card-title">Reminders and follow-ups</div>
-      <div id="reminders-list"><div style="color:var(--text3);font-size:13px;text-align:center;padding:2rem">No upcoming reminders.</div></div>
+      <div class="ct">Daily Checklist — Real Estate</div>
+      <div id="re-daily-tasks"></div>
     </div>
   </div>
-  <div class="card"><div class="card-title">Client roster</div><div id="client-list"><div style="color:var(--text3);font-size:13px;text-align:center;padding:2rem">No clients added yet.</div></div></div>
-</div>
 
-<!-- SIMULATOR -->
-<div id="sec-simulator" class="section fade-up">
-  <div class="page-header"><div class="page-title">Score Simulator</div><div class="page-sub">See how much each removal could add to your score</div></div>
-  <div class="card" style="margin-bottom:1rem">
-    <div class="card-title">Your current profile</div>
-    <div class="g3" style="margin-bottom:1rem">
-      <div><label>Current score</label><input type="number" id="sim-score" value="561" oninput="runSimulator()"/></div>
-      <div><label>Total accounts</label><input type="number" id="sim-accounts" value="8" oninput="runSimulator()"/></div>
-      <div><label>Utilization %</label><input type="number" id="sim-util" value="78" oninput="runSimulator()"/></div>
-    </div>
-    <div class="card-title">Select accounts to remove</div>
-    <div id="sim-accounts-list"></div>
-    <button class="btn btn-primary" style="margin-top:1rem" onclick="runSimulator()">Simulate Score Impact</button>
-  </div>
-  <div class="card" id="sim-results" style="display:none"><div class="card-title">Simulation results</div><div id="sim-output"></div></div>
-</div>
-
-<!-- RESOURCES -->
-<div id="sec-resources" class="section fade-up">
-  <div class="page-header"><div class="page-title">Laws and Resources</div><div class="page-sub">Know your rights</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="card-title">Key federal laws</div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">FCRA</div><div class="factor-sub">Right to dispute &middot; 30-day investigation &middot; Items removed after 7 years</div></div><span class="badge badge-blue">15 U.S.C. 1681</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">FDCPA</div><div class="factor-sub">Collectors cannot harass you &middot; Must send debt validation</div></div><span class="badge badge-blue">15 U.S.C. 1692</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">CFPB Medical Debt Rule 2025</div><div class="factor-sub">Medical debt under $500 removed from credit reports</div></div><span class="badge badge-green">New 2025</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">ECOA</div><div class="factor-sub">No discrimination based on race, sex, age, or religion</div></div><span class="badge badge-blue">15 U.S.C. 1691</span></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Key deadlines</div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">30 days</div><div class="factor-sub">Bureaus must complete investigation</div></div><span class="badge badge-amber">Hard deadline</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">7 years</div><div class="factor-sub">Most negative items automatically removed</div></div><span class="badge badge-amber">Auto removal</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">10 years</div><div class="factor-sub">Chapter 7 bankruptcy stays on report</div></div><span class="badge badge-red">Longest item</span></div>
-      <div class="factor-row"><div class="factor-info"><div class="factor-name">45 days</div><div class="factor-sub">Extended window if you submit new evidence</div></div><span class="badge badge-blue">With new info</span></div>
-      <div class="card-title" style="margin-top:1rem">Bureau addresses</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text2);line-height:2">
-        <strong style="color:var(--text)">Equifax:</strong> P.O. Box 740256, Atlanta, GA 30374<br>
-        <strong style="color:var(--text)">Experian:</strong> P.O. Box 4500, Allen, TX 75013<br>
-        <strong style="color:var(--text)">TransUnion:</strong> P.O. Box 2000, Chester, PA 19016<br>
-        <strong style="color:var(--text)">CFPB:</strong> consumerfinance.gov/complaint
+  <div class="goal-tab-content" id="re-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Phase 1 — Now</div>
+        <div class="phase-title">Pass the GA Salesperson Exam</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Complete your 75-hr pre-license course (Kaplan)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Follow the 14-day PSI exam plan daily</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Score 75%+ on practice tests consistently</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Book your PSI exam (Georgia Real Estate Commission)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Pass both portions: National (80 q) + State (72 q)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">6</span>Apply for license via GREC online portal</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--blue)">Phase 2 — After License</div>
+        <div class="phase-title">Become a Licensed Agent & Build Track Record</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Join a brokerage (consider eXp, Keller Williams, or boutique)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Complete 25 post-license hours within 1 year</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Close 3–5 residential or commercial transactions</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Build relationships with landlords and investors (your wholesale network)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Start managing 1–3 properties for investors you know</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--amber)">Phase 3 — 6-18 Months</div>
+        <div class="phase-title">Property Manager Role</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Manage 10+ units for investors in your network</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Set up property management systems in GHL</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Build tenant screening and lease automation</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Collect management fees (8–12% of monthly rent)</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Document processes for scale</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--purple)">Phase 4 — 18-36 Months</div>
+        <div class="phase-title">CAM Certification</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Meet CAM eligibility: 12 months in property mgmt</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Complete 40-hr CAM coursework (NAAEI approved)</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Pass the CAM exam through NAAEI</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Maintain certification with 8 CEU hours/year</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Scale to 50+ units under management</li>
+        </ul>
       </div>
     </div>
+    <div class="card">
+      <div class="ct">Milestones</div>
+      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Pass GA Real Estate Salesperson Exam</div><div class="ms-sub">Currently in progress — 14-day plan active</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Get licensed & join a brokerage</div><div class="ms-sub">Target: within 30 days of passing</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">First property under management</div><div class="ms-sub">Target: 3 months post-license</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">10+ units under management</div><div class="ms-sub">Target: 6–12 months</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">CAM Certification earned</div><div class="ms-sub">Target: 18–36 months</div></div></div>
+    </div>
+  </div>
+
+  <div class="goal-tab-content" id="re-tools">
+    <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="resource-card">
+      <span class="resource-icon">📚</span>
+      <div><div class="resource-title">GA Real Estate Exam — 14-Day Plan</div><div class="resource-sub">Your custom PSI exam tracker. Study daily here.</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://grec.state.ga.us/" target="_blank" class="resource-card">
+      <span class="resource-icon">🏛️</span>
+      <div><div class="resource-title">GREC — Georgia Real Estate Commission</div><div class="resource-sub">Official licensing portal. Apply here after passing.</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://home.kaplan.com/real-estate" target="_blank" class="resource-card">
+      <span class="resource-icon">📖</span>
+      <div><div class="resource-title">Kaplan Real Estate Education</div><div class="resource-sub">Your pre-license course provider.</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.naahq.org/education/cam" target="_blank" class="resource-card">
+      <span class="resource-icon">🎓</span>
+      <div><div class="resource-title">NAAEI — CAM Certification</div><div class="resource-sub">Official CAM certification body. Plan ahead for Phase 4.</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== TRADING ==================== -->
+<div class="view" id="view-trading">
+  <div class="ph">
+    <h2>📈 Trading Roadmap</h2>
+    <p>7 consecutive profitable days → consistent weekly withdrawals. GBP/JPY & XAU/USD.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('tr','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('tr','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('tr','tools')">Dashboard & Tools</button>
+  </div>
+  <div class="goal-tab-content vis" id="tr-daily">
+    <div class="info-box blue">Your Forex Dashboard has live signals, auto S/R, and your trade journal. Open it before every session. 4/4 confluence = trade. Anything less = wait.</div>
+    <div class="card"><div class="ct">Daily Checklist — Trading</div><div id="tr-daily-tasks"></div></div>
+  </div>
+  <div class="goal-tab-content" id="tr-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Pre-Session (6–8 AM)</div>
+        <div class="phase-title">Morning Setup</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Check economic calendar — news events today</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Open Forex Dashboard — check S/R levels</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Note current GBP/JPY and XAU/USD bias</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Set your max loss for the day (rule: stop at 2 losses)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Confirm you are in the right mindset to trade</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--blue)">During Session</div>
+        <div class="phase-title">Trade Execution Rules</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Wait for 4/4 confluence — never force a trade</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Confirm on TradingView before entering</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Risk only 4% per trade ($16 on $400 account)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Set SL beyond S/R + 5 pip buffer immediately</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Max 2 trades/day. Stop after 2 losses — no exceptions</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--amber)">Post-Session</div>
+        <div class="phase-title">Review & Journal</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Log every trade in your journal (dashboard auto-syncs)</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Note: did you follow all 4 rules?</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Screenshot any setups (winning or losing)</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Rate your discipline 1–10</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Identify 1 thing to improve tomorrow</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--purple)">7-Day Goal → Withdrawals</div>
+        <div class="phase-title">The Path to Weekly Income</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Track profitable days in a row — reset resets count</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Focus on CONSISTENCY not big wins — 1.5R every day</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Hit 7 profitable days → request first withdrawal</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Reinvest portion to grow account size</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Build to weekly withdrawal rhythm</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="goal-tab-content" id="tr-tools">
+    <div class="info-box blue">Your Forex Dashboard uses live Twelve Data API signals. It cannot be embedded here due to browser security rules (X-Frame-Options) — but it works perfectly in its own tab.</div>
+    <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="resource-card">
+      <span class="resource-icon">📈</span>
+      <div><div class="resource-title">Makisha's Forex Dashboard</div><div class="resource-sub">Live GBP/JPY & XAU/USD signals, confluence tracker, trade journal</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.tradingview.com" target="_blank" class="resource-card">
+      <span class="resource-icon">📊</span>
+      <div><div class="resource-title">TradingView</div><div class="resource-sub">Confirm setups visually before entering any trade</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.forexfactory.com/calendar" target="_blank" class="resource-card">
+      <span class="resource-icon">📅</span>
+      <div><div class="resource-title">Forex Factory Calendar</div><div class="resource-sub">Check high-impact news events before every session</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== FITNESS ==================== -->
+<div class="view" id="view-fitness">
+  <div class="ph"><h2>💪 Fitness & Gym Franchise Roadmap</h2><p>Daily discipline → Burn Bootcamp franchise ownership.</p></div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('fi','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('fi','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('fi','tools')">Resources</button>
+  </div>
+  <div class="goal-tab-content vis" id="fi-daily">
+    <div class="card"><div class="ct">Daily Checklist — Fitness</div><div id="fi-daily-tasks"></div></div>
+  </div>
+  <div class="goal-tab-content" id="fi-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Right Now — Daily</div>
+        <div class="phase-title">Build the Non-Negotiable Habit</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Train every single day — non-negotiable</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Log your workouts (time, exercises, reps)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Track macros — protein drives results</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Prioritize 7–8 hours sleep for recovery</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Visit a Burn Bootcamp location to experience it</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--blue)">Research Phase — 3-6 Months</div>
+        <div class="phase-title">Franchise Due Diligence</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Request the Burn Bootcamp FDD (Franchise Disclosure Document)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Study Item 19 of FDD — average unit revenue</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Understand startup costs ($150k–$350k range typically)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Talk to 3+ existing Burn Bootcamp franchisees</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Identify ideal Atlanta location / territory</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--amber)">Financing Phase</div>
+        <div class="phase-title">Secure the Capital</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Get credit to 680+ (lenders want 680 min for SBA)</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Apply for SBA 7(a) loan — most common franchise path</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Explore ROBS (Rollover Business Startups) if you have 401k</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Save or raise 20–30% cash injection required</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Get a franchise attorney to review agreements</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--coral)">Launch Phase</div>
+        <div class="phase-title">Open Your Gym</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">1</span>Sign franchise agreement & territory contract</li>
+          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">2</span>Complete Burn Bootcamp training program</li>
+          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">3</span>Lease and build out your location</li>
+          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">4</span>Hire and train staff</li>
+          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">5</span>Pre-launch marketing — sell founding memberships</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="goal-tab-content" id="fi-tools">
+    <a href="https://burnbootcamp.com/franchise" target="_blank" class="resource-card">
+      <span class="resource-icon">🔥</span>
+      <div><div class="resource-title">Burn Bootcamp Franchise Info</div><div class="resource-sub">Request FDD and territory info here</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.sba.gov/funding-programs/loans" target="_blank" class="resource-card">
+      <span class="resource-icon">🏦</span>
+      <div><div class="resource-title">SBA Loan Programs</div><div class="resource-sub">Primary funding path for franchise financing</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.franchisetimes.com" target="_blank" class="resource-card">
+      <span class="resource-icon">📰</span>
+      <div><div class="resource-title">Franchise Times</div><div class="resource-sub">Industry news, rankings, and franchise performance data</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== CREDIT ==================== -->
+<div class="view" id="view-credit">
+  <div class="ph"><h2>💳 Credit & Finance Roadmap</h2><p>620+ score → pull home equity → Tesla + home improvements + clear $19k.</p></div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('cr','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('cr','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('cr','tools')">Resources</button>
+  </div>
+  <div class="goal-tab-content vis" id="cr-daily">
+    <div class="card"><div class="ct">Daily Checklist — Credit</div><div id="cr-daily-tasks"></div></div>
+  </div>
+  <div class="goal-tab-content" id="cr-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Step 1 — Immediately</div>
+        <div class="phase-title">Know Your Exact Position</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Pull free report: AnnualCreditReport.com (all 3 bureaus)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>List every negative item with date and amount</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Calculate your current utilization ratio (balance ÷ limit)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Note your current score on each bureau</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Target: get all 3 bureaus to 620+</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--blue)">Step 2 — Fastest Wins</div>
+        <div class="phase-title">Boost Score Quickly</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Pay down credit cards to under 30% utilization (fastest boost)</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Under 10% utilization = maximum scoring benefit</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Dispute any errors or inaccurate items in writing</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Never miss a payment — set all minimums to autopay</li>
+          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Ask for goodwill removal of any late payments</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--amber)">Step 3 — Hit 620</div>
+        <div class="phase-title">Home Equity Loan Approval</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Get home appraised (your free & clear home is your asset)</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Calculate 80% LTV — that's your max pull amount</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Shop at least 3 lenders: banks, credit unions, online lenders</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Compare rates — fixed HELOC vs lump-sum home equity loan</li>
+          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Apply and close — funds arrive within 30–45 days</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--purple)">Step 4 — The Payout Plan</div>
+        <div class="phase-title">Use Equity Wisely</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Clear $19k credit card debt first (eliminate high-interest)</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Fund key home improvements (adds value to the property)</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Purchase Tesla (factor monthly payment into budget)</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Keep emergency fund untouched — 3 months expenses</li>
+          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Make every HELOC payment on time to protect the home</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Credit Score Milestones</div>
+      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Get to 580 — subprime threshold</div><div class="ms-sub">Focus: utilization under 30%, no new missed payments</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Hit 620 — equity loan eligible</div><div class="ms-sub">Most home equity lenders accept 620+</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Reach 650 — better rates unlocked</div><div class="ms-sub">Significantly lower interest rates on any loan</div></div></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">700+ — prime borrower</div><div class="ms-sub">Best rates on everything, SBA loan eligibility</div></div></div>
+    </div>
+  </div>
+  <div class="goal-tab-content" id="cr-tools">
+    <a href="https://www.annualcreditreport.com" target="_blank" class="resource-card">
+      <span class="resource-icon">📋</span>
+      <div><div class="resource-title">AnnualCreditReport.com</div><div class="resource-sub">Free official reports from all 3 bureaus — pull monthly</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.creditkarma.com" target="_blank" class="resource-card">
+      <span class="resource-icon">💚</span>
+      <div><div class="resource-title">Credit Karma</div><div class="resource-sub">Free score monitoring and improvement recommendations</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.consumerfinance.gov/consumer-tools/debt-collection/" target="_blank" class="resource-card">
+      <span class="resource-icon">🛡️</span>
+      <div><div class="resource-title">CFPB Dispute Guide</div><div class="resource-sub">Official guide to disputing credit report errors</div></div>
+      <span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== ART ==================== -->
+<div class="view" id="view-art">
+  <div class="ph"><h2>🖼️ Diamond Art Sales Roadmap</h2><p>List, market, and sell your paintings consistently.</p></div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('ar','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('ar','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('ar','tools')">Platforms</button>
+  </div>
+  <div class="goal-tab-content vis" id="ar-daily">
+    <div class="card"><div class="ct">Daily Checklist — Art Sales</div><div id="ar-daily-tasks"></div></div>
+  </div>
+  <div class="goal-tab-content" id="ar-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Phase 1 — Set Up Shop</div>
+        <div class="phase-title">Get Your Listings Live</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Open Etsy shop — use keyword-rich name and bio</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Photograph every painting with good natural light</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Research comparable prices on Etsy for diamond art</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Write SEO descriptions: "handmade diamond art painting"</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>List all existing paintings — done inventory first</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--pink)">Phase 2 — Market It</div>
+        <div class="phase-title">Get Eyes on Your Work</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">1</span>Post process videos on TikTok — "satisfying" content performs</li>
+          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">2</span>Post finished pieces on Instagram and Facebook</li>
+          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">3</span>Join Facebook diamond art groups and post there</li>
+          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">4</span>Offer custom commissions — big price premium</li>
+          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">5</span>Use Pinterest — it drives long-term Etsy traffic</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="goal-tab-content" id="ar-tools">
+    <a href="https://www.etsy.com/sell" target="_blank" class="resource-card">
+      <span class="resource-icon">🛍️</span><div><div class="resource-title">Etsy Seller Hub</div><div class="resource-sub">Primary platform for handmade art sales</div></div><span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.ebay.com/sl/sell" target="_blank" class="resource-card">
+      <span class="resource-icon">📦</span><div><div class="resource-title">eBay Selling</div><div class="resource-sub">Secondary market — great for auction format on unique pieces</div></div><span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== INVESTING ==================== -->
+<div class="view" id="view-investing">
+  <div class="ph"><h2>💰 Investing Roadmap</h2><p>Build a dividend portfolio + crypto positions that grow consistently.</p></div>
+  <div class="tab-bar">
+    <button class="tab on" onclick="gTab('iv','daily')">Daily Tasks</button>
+    <button class="tab" onclick="gTab('iv','roadmap')">Step-by-Step Plan</button>
+    <button class="tab" onclick="gTab('iv','tools')">Platforms</button>
+  </div>
+  <div class="goal-tab-content vis" id="iv-daily">
+    <div class="card"><div class="ct">Daily Checklist — Investing</div><div id="iv-daily-tasks"></div></div>
+  </div>
+  <div class="goal-tab-content" id="iv-roadmap">
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--green)">Foundation</div>
+        <div class="phase-title">Dividend Stock Strategy</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Open brokerage: Fidelity or Schwab (no fees, dividend reinvestment)</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Start with 3 core dividend ETFs: SCHD, VYM, JEPI</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Set up automatic monthly investment — even $50/month compounds</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Turn on DRIP — Dividend Reinvestment Plan</li>
+          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Target $500/month in dividends as first milestone</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num" style="color:var(--teal)">Crypto Strategy</div>
+        <div class="phase-title">Build Positions Over Time</div>
+        <ul class="step-list">
+          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">1</span>Use Coinbase or Kraken — reputable, insured</li>
+          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">2</span>Core positions: 60% BTC, 30% ETH, 10% altcoins</li>
+          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">3</span>Dollar-cost average weekly — removes emotion</li>
+          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">4</span>Never invest more than you can hold for 3+ years</li>
+          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">5</span>Move long-term holdings to hardware wallet (Ledger)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="goal-tab-content" id="iv-tools">
+    <a href="https://www.fidelity.com" target="_blank" class="resource-card">
+      <span class="resource-icon">📈</span><div><div class="resource-title">Fidelity</div><div class="resource-sub">Best for dividend investing and automatic reinvestment</div></div><span class="resource-arrow">↗</span>
+    </a>
+    <a href="https://www.coinbase.com" target="_blank" class="resource-card">
+      <span class="resource-icon">🪙</span><div><div class="resource-title">Coinbase</div><div class="resource-sub">Reputable crypto exchange with recurring buy feature</div></div><span class="resource-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== SPANISH ==================== -->
+<div class="view" id="view-spanish">
+  <div class="ph">
+    <h2>🇲🇽 Spanish Studio</h2>
+    <p>Goal: Fluent in 6 months. Daily practice = fluency. Let's go.</p>
+  </div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="ct">6-Month Fluency Roadmap</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="font-size:12px;color:var(--text2)" id="sp-week-label">Week 1 of 26</span>
+      <span style="font-size:12px;color:var(--green)" id="sp-pct">0%</span>
+    </div>
+    <div class="sp-prog-bar"><div class="sp-prog-fill" id="sp-prog-fill" style="width:0%"></div></div>
+    <div style="margin-top:14px">
+      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Phase 1 — Survival Spanish (Weeks 1–4)</div><div class="ms-sub">Greetings, numbers, directions, basic questions. Aim: 200 words</div></div><span id="ms1d" style="font-size:11px;color:var(--text3)"></span></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms2d"></div><div><div class="ms-label">Phase 2 — Conversational (Weeks 5–12)</div><div class="ms-sub">Real estate, business, daily life vocab. Aim: 1,000 words</div></div><span id="ms2dt" style="font-size:11px;color:var(--text3)"></span></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms3d"></div><div><div class="ms-label">Phase 3 — Intermediate (Weeks 13–20)</div><div class="ms-sub">Past & future tense, complex sentences. Aim: 2,500 words</div></div><span id="ms3dt" style="font-size:11px;color:var(--text3)"></span></div>
+      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms4d"></div><div><div class="ms-label">Phase 4 — Fluency Push (Weeks 21–26)</div><div class="ms-sub">Native content, business conversations, think in Spanish</div></div><span id="ms4dt" style="font-size:11px;color:var(--text3)"></span></div>
+    </div>
+    <div class="sp-stat-row">
+      <div class="sp-stat"><div class="sp-stat-n" id="sp-learned">0</div><div class="sp-stat-l">words learned</div></div>
+      <div class="sp-stat"><div class="sp-stat-n" id="sp-sessions">0</div><div class="sp-stat-l">sessions</div></div>
+      <div class="sp-stat"><div class="sp-stat-n" id="sp-acc">—</div><div class="sp-stat-l">quiz accuracy</div></div>
+      <div class="sp-stat"><div class="sp-stat-n" id="sp-str">0</div><div class="sp-stat-l">day streak</div></div>
+    </div>
+  </div>
+  <div class="sp-tabs">
+    <button class="sp-tab active" onclick="spTab('flashcards')">🃏 Flashcards</button>
+    <button class="sp-tab" onclick="spTab('phrases')">💬 Phrases</button>
+    <button class="sp-tab" onclick="spTab('quiz')">⚡ Quiz</button>
+    <button class="sp-tab" onclick="spTab('listen')">🎧 Listen & Repeat</button>
+    <button class="sp-tab" onclick="spTab('tutor')">🤖 AI Tutor</button>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div class="sp-sec vis" id="sp-flashcards">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <span style="font-size:12px;color:var(--text2)" id="fc-counter">Card 1 of 60</span>
+      <span style="font-size:12px;color:var(--green)" id="fc-learned-count">0 learned</span>
+    </div>
+    <div class="flashcard" id="fc-card" onclick="flipCard()">
+      <div class="fc-cat" id="fc-cat">Greetings</div>
+      <div class="fc-es" id="fc-es">Hola</div>
+      <div class="fc-en" id="fc-en">Hello</div>
+      <div class="fc-tap" id="fc-tap">tap to reveal · audio plays automatically</div>
+    </div>
+    <div style="text-align:center;margin-bottom:12px">
+      <button class="aud-btn" onclick="speakCurrent()">🔊 Hear pronunciation again</button>
+    </div>
+    <div class="fc-btns" id="fc-btns" style="display:none">
+      <button class="fc-btn again" onclick="nextCard(false)">🔄 Again</button>
+      <button class="fc-btn good" onclick="nextCard(true)">✓ Got it!</button>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="ct">Pronunciation Guide</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7" id="fc-tip">Spanish vowels are always the same: A=ah, E=eh, I=ee, O=oh, U=oo. Audio plays when you reveal the card.</div>
+    </div>
+  </div>
+
+  <!-- PHRASES -->
+  <div class="sp-sec" id="sp-phrases">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Press 🔊 to hear any phrase spoken aloud in Spanish. Repeat it 3 times.</div>
+    <div id="phrase-cats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div id="phrase-list"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="sp-sec" id="sp-quiz">
+    <div class="qz-stats">
+      <div class="qs"><div class="qs-n" id="qz-c">0</div><div class="qs-l">correct</div></div>
+      <div class="qs"><div class="qs-n" id="qz-t">0</div><div class="qs-l">attempted</div></div>
+      <div class="qs"><div class="qs-n" id="qz-s">0</div><div class="qs-l">streak</div></div>
+      <div class="qs"><div class="qs-n" id="qz-a">—</div><div class="qs-l">accuracy</div></div>
+    </div>
+    <div class="card">
+      <div style="text-align:center;margin-bottom:10px">
+        <button class="aud-btn" id="quiz-speak-btn" onclick="speakQuizWord()" style="display:none">🔊 Hear the word</button>
+      </div>
+      <div class="quiz-q" id="qz-q">Loading...</div>
+      <div class="quiz-opts" id="qz-opts"></div>
+      <div id="qz-result" style="text-align:center;font-size:13px;font-weight:500;min-height:26px;margin-top:12px"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn go" onclick="nextQuiz()">Next question →</button>
+    </div>
+  </div>
+
+  <!-- LISTEN -->
+  <div class="sp-sec" id="sp-listen">
+    <div class="listen-main">
+      <div class="listen-cat" id="lp-cat">Daily Life</div>
+      <div class="listen-es" id="lp-es">Buenos días</div>
+      <div class="listen-en" id="lp-en">Good morning</div>
+      <div class="listen-btns">
+        <button class="btn go" onclick="listenPlay(0.65)">🔊 Play Slow</button>
+        <button class="btn" onclick="listenPlay(0.95)">⚡ Normal Speed</button>
+        <button class="btn" onclick="nextListen()">Next →</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">How to Practice</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8">
+        1. Press <strong>Play Slow</strong> and listen carefully<br>
+        2. Pause — repeat the phrase exactly 3 times aloud<br>
+        3. Focus on matching the rhythm and vowel sounds<br>
+        4. Press <strong>Normal Speed</strong> and repeat again<br>
+        5. Move to the next phrase when it feels natural
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="ct">All Phrases — Click to Play</div>
+      <div id="all-listen"></div>
+    </div>
+  </div>
+
+  <!-- AI TUTOR -->
+  <div class="sp-sec" id="sp-tutor">
+    <div class="qbtns" id="quick-btns">
+      <button class="qbtn" onclick="spQuick('Give me a sentence to translate from English to Spanish at beginner level')">Translate challenge ↗</button>
+      <button class="qbtn" onclick="spQuick('Explain ser vs estar with simple real-life examples')">Ser vs Estar ↗</button>
+      <button class="qbtn" onclick="spQuick('Quiz me conversationally in Spanish — keep it simple')">Conversation quiz ↗</button>
+      <button class="qbtn" onclick="spQuick('What are 10 must-know phrases for my real estate business in Spanish?')">RE phrases ↗</button>
+      <button class="qbtn" onclick="spQuick('Give me today\'s Spanish homework for a 6-month fluency goal — Week 1')">Today\'s homework ↗</button>
+      <button class="qbtn" onclick="spQuick('How do I conjugate AR verbs? Give examples I would actually use')">AR verbs ↗</button>
+    </div>
+    <div class="tutor-hist" id="tutor-hist">
+      <div class="msg ai">¡Hola! I'm your Spanish tutor — and I know your goal is fluency in 6 months. That's achievable with 20–30 minutes of daily practice.<br><br>Try one of the quick buttons above, or ask me anything. I'll keep it practical and relevant to your life — real estate, business, fitness. ¡Vamos!</div>
+    </div>
+    <textarea class="cin" id="tutor-in" placeholder="Ask in English or try in Spanish... e.g. ¿Cómo se dice 'contract' en español?"></textarea>
+    <button class="btn go" onclick="askTutor()">Send ↗</button>
   </div>
 </div>
 
 </main>
 </div>
+
 <script>
-var navOpen=true;
-var accounts=[];
-var logEntries=JSON.parse(localStorage.getItem('cl_log')||'[]');
-var clients=JSON.parse(localStorage.getItem('ds_clients')||'[]');
-var simAccountData=[
-  {name:'Spring Oaks Capital LLC',balance:623,type:'collection',impact:18},
-  {name:'Midland Credit Management',balance:753,type:'collection',impact:20},
-  {name:'Kikoff Lending LLC',balance:420,type:'late',impact:12},
-  {name:'Merrick Bank Corp',balance:1645,type:'chargeoff',impact:22},
-  {name:'Mission Lane TAB Bank',balance:1624,type:'chargeoff',impact:22},
-  {name:'Affirm Inc',balance:0,type:'chargeoff',impact:10},
-  {name:'NCB Management Service',balance:12456,type:'collection',impact:35},
-  {name:'Exeter Finance LLC',balance:0,type:'repossession',impact:25},
-  {name:'OneMain',balance:0,type:'chargeoff',impact:15}
+// ── DATA ──────────────────────────────────────────────────────
+const GOALS=[
+  {id:"re",icon:"🏠",name:"Real Estate",color:"#00d17a",desc:"Agent → Property Manager → CAM",tasks:[
+    {id:"re1",l:"Study 1 hr for RE exam (use exam tracker)",pts:20},
+    {id:"re2",l:"Log wholesale deal activity in GHL",pts:10},
+    {id:"re3",l:"Review 1 listing or property deal",pts:10},
+    {id:"re4",l:"Network with 1 investor or agent today",pts:15}]},
+  {id:"tr",icon:"📈",name:"Trading",color:"#4d9eff",desc:"7 profitable days → withdrawals",tasks:[
+    {id:"tr1",l:"Pre-market: news + open Forex Dashboard",pts:15},
+    {id:"tr2",l:"Execute plan — wait for 4/4 confluence",pts:25},
+    {id:"tr3",l:"Log trade journal entry",pts:15},
+    {id:"tr4",l:"Review P&L vs rules, rate discipline 1-10",pts:10}]},
+  {id:"fi",icon:"💪",name:"Fitness",color:"#ff6b6b",desc:"Daily training → Burn Bootcamp franchise",tasks:[
+    {id:"fi1",l:"Complete daily workout",pts:20},
+    {id:"fi2",l:"Log nutrition / macros",pts:10},
+    {id:"fi3",l:"Research Burn Bootcamp (FDD, costs, locations)",pts:15}]},
+  {id:"cr",icon:"💳",name:"Credit",color:"#f5a623",desc:"620+ score → home equity → Tesla + clear $19k",tasks:[
+    {id:"cr1",l:"Check credit score / monitor report",pts:10},
+    {id:"cr2",l:"Confirm on-time payment is scheduled",pts:20},
+    {id:"cr3",l:"Verify utilization under 30% on all cards",pts:15},
+    {id:"cr4",l:"Research home equity loan lenders",pts:10}]},
+  {id:"sp",icon:"🇲🇽",name:"Spanish",color:"#a78bfa",desc:"Fluent in 6 months",tasks:[
+    {id:"sp1",l:"Complete Spanish session (15 min min)",pts:15},
+    {id:"sp2",l:"Practice speaking 10 sentences aloud",pts:15},
+    {id:"sp3",l:"Watch/listen to Spanish content",pts:10}]},
+  {id:"ar",icon:"🖼️",name:"Art Sales",color:"#f472b6",desc:"List & sell diamond paintings",tasks:[
+    {id:"ar1",l:"Post painting on social media",pts:10},
+    {id:"ar2",l:"List or update Etsy/eBay listing",pts:20},
+    {id:"ar3",l:"Work on current painting",pts:15}]},
+  {id:"iv",icon:"💰",name:"Investing",color:"#2dd4bf",desc:"Dividends + crypto growth",tasks:[
+    {id:"iv1",l:"Review portfolio positions",pts:10},
+    {id:"iv2",l:"Research 1 dividend stock or ETF",pts:15},
+    {id:"iv3",l:"Read 1 market / crypto update",pts:10}]}
 ];
 
-document.getElementById('log-date').valueAsDate=new Date();
-syncPersonalInfo();
-renderLog();
-autoLoadReport();
-renderClients();
-renderReminders();
-initSimulator();
-restoreKeys();
-if(window.innerWidth<=540){closeNav();}else{document.getElementById('main-nav').style.transform='translateX(0)';document.getElementById('main-content').style.marginLeft='220px';document.getElementById('hamburger').style.left='228px';}
+const CARDS=[
+  {es:"Hola",en:"Hello",cat:"Greetings",tip:"The H is always silent. Say: Oh-lah. Used any time of day."},
+  {es:"Buenos días",en:"Good morning",cat:"Greetings",tip:"Boo-EH-nos DEE-ahs. Use until noon."},
+  {es:"Buenas tardes",en:"Good afternoon",cat:"Greetings",tip:"Boo-EH-nas TAR-des. Use noon to sunset."},
+  {es:"Buenas noches",en:"Good night",cat:"Greetings",tip:"Boo-EH-nas NOH-ches. Also used as goodbye at night."},
+  {es:"¿Cómo estás?",en:"How are you?",cat:"Greetings",tip:"KOH-moh ehs-TAHS. The ó accent changes the meaning — Cómo = how."},
+  {es:"Muy bien, gracias",en:"Very well, thank you",cat:"Greetings",tip:"Mwee BYEHN, GRAH-syahs. Memorize this automatic reply."},
+  {es:"Encantada",en:"Nice to meet you (female speaker)",cat:"Greetings",tip:"En-can-TAH-dah. Women say encantada, men say encantado."},
+  {es:"Por favor",en:"Please",cat:"Basics",tip:"Por fah-BOR. You'll say this constantly — own it."},
+  {es:"Gracias",en:"Thank you",cat:"Basics",tip:"GRAH-syahs. Two syllables. G is always hard in Spanish."},
+  {es:"De nada",en:"You're welcome",cat:"Basics",tip:"Deh NAH-dah. Literally 'of nothing'."},
+  {es:"Lo siento",en:"I'm sorry",cat:"Basics",tip:"Loh SYEHN-toh. Literally 'I feel it'."},
+  {es:"No entiendo",en:"I don't understand",cat:"Basics",tip:"Noh en-TYEHN-doh. Say this freely — native speakers will slow down."},
+  {es:"¿Puede repetir?",en:"Can you repeat?",cat:"Basics",tip:"PWEH-deh reh-peh-TEER. Essential for real conversations."},
+  {es:"Más despacio",en:"More slowly",cat:"Basics",tip:"Mahs des-PAH-syoh. Ask anyone to slow down."},
+  {es:"Quiero comprar",en:"I want to buy",cat:"Real Estate",tip:"KYEH-roh kom-PRAHR. Quiero = I want. Memorize this verb."},
+  {es:"¿Cuánto cuesta?",en:"How much does it cost?",cat:"Real Estate",tip:"KWAHN-toh KWEHS-tah. Use this for any negotiation."},
+  {es:"La propiedad",en:"The property",cat:"Real Estate",tip:"Lah proh-pyeh-DAHD. Your most-used real estate word."},
+  {es:"El contrato",en:"The contract",cat:"Real Estate",tip:"El kon-TRAH-toh. Same root as English 'contract'."},
+  {es:"El propietario",en:"The owner",cat:"Real Estate",tip:"El proh-pyeh-TAH-ryoh. Key word for property management."},
+  {es:"El alquiler",en:"The rent",cat:"Real Estate",tip:"El ahl-kee-LEHR. From verb alquilar = to rent."},
+  {es:"Firme aquí",en:"Sign here",cat:"Real Estate",tip:"FEER-meh ah-KEE. Essential for closings."},
+  {es:"La renta mensual",en:"The monthly rent",cat:"Real Estate",tip:"Lah REN-tah men-SWAHL. Mensual = monthly."},
+  {es:"Necesito dinero",en:"I need money",cat:"Finance",tip:"Neh-seh-SEE-toh dee-NEH-roh. Necesito = I need."},
+  {es:"El banco",en:"The bank",cat:"Finance",tip:"El BAHN-koh. Nearly identical to English."},
+  {es:"El préstamo",en:"The loan",cat:"Finance",tip:"El PREHS-tah-moh. Accent on the first syllable."},
+  {es:"El crédito",en:"Credit",cat:"Finance",tip:"El KREH-dee-toh. You'll hear this in every finance conversation."},
+  {es:"Invertir",en:"To invest",cat:"Finance",tip:"Een-behr-TEER. V and B sound identical in Spanish."},
+  {es:"Voy al gimnasio",en:"I'm going to the gym",cat:"Fitness",tip:"Boy ahl heem-NAH-syoh. G before i sounds like English H."},
+  {es:"Hago ejercicio",en:"I exercise",cat:"Fitness",tip:"AH-goh eh-hehr-SEE-syoh. Hago = I do."},
+  {es:"Estoy cansada",en:"I'm tired",cat:"Fitness",tip:"Ehs-TOY kan-SAH-dah. -a ending for female speaker."},
+  {es:"¡Vamos!",en:"Let's go!",cat:"Fitness",tip:"BAH-mohs! Explosive energy. Use this daily."},
+  {es:"El entrenamiento",en:"The workout/training",cat:"Fitness",tip:"El en-treh-nah-MYEHN-toh. Long but worth knowing."},
+  {es:"¿Dónde está?",en:"Where is it?",cat:"Navigation",tip:"DOHN-deh ehs-TAH. Está = is (for location)."},
+  {es:"A la derecha",en:"To the right",cat:"Navigation",tip:"Ah lah deh-REH-chah. Right hand = right direction."},
+  {es:"A la izquierda",en:"To the left",cat:"Navigation",tip:"Ah lah ees-KYEHR-dah. Trickiest direction word — practice it."},
+  {es:"Todo recto",en:"Straight ahead",cat:"Navigation",tip:"TOH-doh REHK-toh. Recto = straight/correct."},
+  {es:"Me llamo Makisha",en:"My name is Makisha",cat:"Identity",tip:"Meh YAH-moh. Double-L in Spanish sounds like English Y."},
+  {es:"Soy de Atlanta",en:"I'm from Atlanta",cat:"Identity",tip:"Soy deh Atlanta. Soy = I am (for permanent facts)."},
+  {es:"Soy empresaria",en:"I'm a businesswoman",cat:"Identity",tip:"Soy em-preh-SAH-ryah. Own this word — it's you."},
+  {es:"Trabajo mucho",en:"I work a lot",cat:"Work",tip:"Trah-BAH-hoh MOO-choh. Trabajo = I work."},
+  {es:"Tengo una reunión",en:"I have a meeting",cat:"Work",tip:"TEHN-goh oo-nah reh-oo-NYOHN. Tengo = I have."},
+  {es:"El negocio",en:"The business",cat:"Work",tip:"El neh-GOH-syoh. Related to English 'negotiate'."},
+  {es:"¿Qué hora es?",en:"What time is it?",cat:"Time",tip:"Keh OH-rah ehs. Hora = hour/time."},
+  {es:"Hoy",en:"Today",cat:"Time",tip:"OY. One syllable. H is always silent."},
+  {es:"Mañana",en:"Tomorrow / Morning",cat:"Time",tip:"Mah-NYAH-nah. The ñ sounds like 'ny' in canyon."},
+  {es:"La semana que viene",en:"Next week",cat:"Time",tip:"Lah seh-MAH-nah keh BYEH-neh. Viene = comes."},
+  {es:"Me gusta",en:"I like it",cat:"Opinions",tip:"Meh GOOS-tah. Literally 'it pleases me'. Use everywhere."},
+  {es:"No me gusta",en:"I don't like it",cat:"Opinions",tip:"Noh meh GOOS-tah. Just add No."},
+  {es:"¿Cómo se dice?",en:"How do you say?",cat:"Learning",tip:"KOH-moh seh DEE-seh. Your most powerful learning phrase."},
+  {es:"Quiero aprender español",en:"I want to learn Spanish",cat:"Learning",tip:"KYEH-roh ah-pren-DEHR. Say this every day — it's true."},
+  {es:"Practico cada día",en:"I practice every day",cat:"Learning",tip:"Prak-TEE-koh KAH-dah DEE-ah. Make this sentence true!"},
+  {es:"Hablo un poco",en:"I speak a little",cat:"Learning",tip:"AH-bloh oon POH-koh. Start every Spanish conversation with this."},
+  {es:"Estoy aprendiendo",en:"I am learning",cat:"Learning",tip:"Ehs-TOY ah-pren-DYEHN-doh. Present progressive — right now."},
+  {es:"Ser",en:"To be (permanent)",cat:"Grammar",tip:"Sehr. Soy (I am), eres (you are), es (he/she is). For identity and origin."},
+  {es:"Estar",en:"To be (temporary)",cat:"Grammar",tip:"Ehs-TAHR. Estoy (I am), estás (you are). For feelings and location."},
+  {es:"Tener",en:"To have",cat:"Grammar",tip:"Teh-NEHR. Tengo (I have), tienes (you have). Extremely common."},
+  {es:"Querer",en:"To want",cat:"Grammar",tip:"Keh-REHR. Quiero (I want). Followed by infinitive: Quiero comprar."},
+  {es:"Ir",en:"To go",cat:"Grammar",tip:"Eer. Irregular: Voy (I go), vas (you go), va (he/she goes)."},
+  {es:"Hacer",en:"To do / make",cat:"Grammar",tip:"Ah-SEHR. Hago (I do/make). H always silent. Very common."},
+  {es:"Poder",en:"Can / To be able to",cat:"Grammar",tip:"Poh-DEHR. Puedo (I can), puedes (you can). Key for requests."},
+  {es:"Necesitar",en:"To need",cat:"Grammar",tip:"Neh-seh-see-TAHR. Necesito (I need). Essential in business."}
+];
 
-function toggleNav(){
-  var nav=document.getElementById('main-nav');
-  var isHidden=nav.style.transform==='translateX(-100%)';
-  if(isHidden){
-    nav.style.transform='translateX(0)';
-    document.getElementById('hamburger').style.left='228px';
-    if(window.innerWidth<=540){document.getElementById('nav-overlay').classList.add('active');}
-    else{document.getElementById('main-content').style.marginLeft='220px';}
-  }else{
-    nav.style.transform='translateX(-100%)';
-    document.getElementById('hamburger').style.left='10px';
-    document.getElementById('nav-overlay').classList.remove('active');
-    document.getElementById('main-content').style.marginLeft='0';
+const PHRASES=[
+  {cat:"Daily Life",items:[
+    {es:"Buenos días, ¿cómo amaneció?",en:"Good morning, how did you wake up?"},
+    {es:"Voy a trabajar ahora mismo",en:"I'm going to work right now"},
+    {es:"Tengo mucho que hacer hoy",en:"I have a lot to do today"},
+    {es:"Estoy muy ocupada",en:"I'm very busy"},
+    {es:"¿Qué vas a hacer hoy?",en:"What are you going to do today?"},
+    {es:"Hasta luego, cuídate",en:"See you later, take care"},
+  ]},
+  {cat:"Real Estate",items:[
+    {es:"¿Está disponible esta propiedad?",en:"Is this property available?"},
+    {es:"¿Cuál es el precio de venta?",en:"What is the selling price?"},
+    {es:"Necesito ver el contrato primero",en:"I need to see the contract first"},
+    {es:"¿Cuándo puedo entrar?",en:"When can I move in?"},
+    {es:"¿Incluye todos los servicios?",en:"Does it include all utilities?"},
+    {es:"Firme aquí, por favor",en:"Sign here, please"},
+  ]},
+  {cat:"Business",items:[
+    {es:"Hablemos de negocios",en:"Let's talk business"},
+    {es:"¿Podemos reunirnos mañana?",en:"Can we meet tomorrow?"},
+    {es:"Le enviaré un correo electrónico",en:"I will send you an email"},
+    {es:"¿Cuál es su presupuesto?",en:"What is your budget?"},
+    {es:"Necesito su firma aquí",en:"I need your signature here"},
+    {es:"Le llamaré mañana por la mañana",en:"I will call you tomorrow morning"},
+  ]},
+  {cat:"Fitness",items:[
+    {es:"¡Vamos al gimnasio ahora!",en:"Let's go to the gym now!"},
+    {es:"¿Cuántas repeticiones hago?",en:"How many reps do I do?"},
+    {es:"Estoy entrenando muy duro",en:"I'm training very hard"},
+    {es:"Me duelen los músculos hoy",en:"My muscles are sore today"},
+    {es:"Quiero mejorar mi condición física",en:"I want to improve my fitness"},
+    {es:"¡Tú puedes lograrlo!",en:"You can achieve it!"},
+  ]},
+  {cat:"Conversation",items:[
+    {es:"¿De dónde eres tú?",en:"Where are you from?"},
+    {es:"Soy empresaria en Atlanta, Georgia",en:"I'm a businesswoman in Atlanta, Georgia"},
+    {es:"Me encanta aprender español",en:"I love learning Spanish"},
+    {es:"¿Cuánto tiempo llevas aquí?",en:"How long have you been here?"},
+    {es:"Tu acento es muy bonito",en:"Your accent is very nice"},
+    {es:"Estoy aprendiendo poco a poco",en:"I'm learning little by little"},
+  ]}
+];
+
+const allPhrases = PHRASES.flatMap(p=>p.items.map(i=>({...i,cat:p.cat})));
+
+// ── STATE ─────────────────────────────────────────────────────
+const LS='makisha_hq_v2';
+let state={tasks:{},activeGoal:'re',streak:0,lastDate:null,streakCounted:false,
+  spStartDate:null,spSessions:0,qzCorrect:0,qzTotal:0,qzStreak:0};
+let fcIdx=0,fcFlipped=false,fcLearned=new Set();
+let qzCurrent=null,qzAnswered=false,qzToSpanish=true;
+let listenIdx=0,activePcat='Daily Life';
+
+function save(){
+  try{localStorage.setItem(LS,JSON.stringify({...state,fcLearned:[...fcLearned]}));}catch(e){}
+}
+function load(){
+  try{
+    const r=localStorage.getItem(LS);
+    if(!r){state.lastDate=today();state.spStartDate=today();return;}
+    const s=JSON.parse(r);
+    if(s.lastDate!==today()){s.tasks={};s.lastDate=today();s.streakCounted=false;}
+    if(s.fcLearned)fcLearned=new Set(s.fcLearned);
+    state={...state,...s};delete state.fcLearned;
+    if(!state.spStartDate)state.spStartDate=today();
+  }catch(e){state.lastDate=today();state.spStartDate=today();}
+}
+function today(){return new Date().toLocaleDateString('en-CA');}
+
+// ── NAVIGATION ────────────────────────────────────────────────
+const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,spanish:5,art:6,investing:7};
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item')[VIEW_MAP[v]].classList.add('active');
+}
+
+// ── GOAL TABS ─────────────────────────────────────────────────
+function gTab(goal,section){
+  const prefix=goal+'-';
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(el=>{
+    if(el.classList.contains('goal-tab-content'))el.classList.remove('vis');
+  });
+  document.getElementById(prefix+section).classList.add('vis');
+  // update tab buttons in current view
+  const view=document.getElementById('view-'+
+    {re:'realestate',tr:'trading',fi:'fitness',cr:'credit',ar:'art',iv:'investing'}[goal]);
+  if(view){
+    view.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    const tabs=view.querySelectorAll('.tab');
+    const idx={'daily':0,'roadmap':1,'tools':2}[section];
+    if(tabs[idx])tabs[idx].classList.add('on');
   }
 }
-function openNav(){document.getElementById('main-nav').style.transform='translateX(0)';document.getElementById('hamburger').style.left='228px';if(window.innerWidth>540)document.getElementById('main-content').style.marginLeft='220px';}
-function closeNav(){document.getElementById('main-nav').style.transform='translateX(-100%)';document.getElementById('hamburger').style.left='10px';document.getElementById('nav-overlay').classList.remove('active');document.getElementById('main-content').style.marginLeft='0';}
-function updateScoreDisplay(){
-  var s=parseInt(document.getElementById('score-input').value);
-  if(!s)return;
-  document.getElementById('nav-score-display').textContent=s;
-  var tier='Poor';
-  if(s>=800)tier='Exceptional';else if(s>=740)tier='Very Good';else if(s>=670)tier='Good';else if(s>=580)tier='Fair';
-  document.getElementById('nav-score-tier').textContent=tier;
-  localStorage.setItem('cl_score',s);
+
+// ── RENDER DASHBOARD ──────────────────────────────────────────
+function render(){
+  const ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  ['sidebar-date','dash-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ds;});
+  document.getElementById('streak-num').textContent=state.streak||0;
+  renderPillars();renderTasks();renderScore();renderWins();renderSpProgress();
+  renderGoalDailies();
 }
 
-function syncPersonalInfo(){
-  [['your-name','l-name'],['your-addr','l-addr'],['your-ssn','l-ssn'],['your-dob','l-dob']].forEach(function(p){
-    var s=document.getElementById(p[0]),d=document.getElementById(p[1]);
-    if(s&&d)s.addEventListener('input',function(){d.value=s.value;});
+function renderPillars(){
+  document.getElementById('pillars').innerHTML=GOALS.map(g=>{
+    const done=g.tasks.filter(t=>state.tasks[t.id]).length;
+    const pct=Math.round(done/g.tasks.length*100);
+    return `<button class="pcard${state.activeGoal===g.id?' active':''}" onclick="setGoal('${g.id}')">
+      <span class="icon">${g.icon}</span><span class="pname">${g.name}</span>
+      <span class="pdone">${done}/${g.tasks.length}</span>
+      <div class="mbar"><div class="mfill" style="width:${pct}%;background:${g.color}"></div></div>
+    </button>`;
+  }).join('');
+}
+
+function setGoal(id){state.activeGoal=id;renderPillars();renderTasks();}
+
+function renderTasks(){
+  const g=GOALS.find(x=>x.id===state.activeGoal);if(!g)return;
+  document.getElementById('goal-panel-label').textContent=`${g.icon} ${g.name} — Today's Tasks`;
+  document.getElementById('goal-header').innerHTML=`<div style="font-size:14px;font-weight:500">${g.icon} ${g.name}</div><div style="font-size:12px;color:var(--text2);margin-top:3px">${g.desc}</div>`;
+  document.getElementById('task-list').innerHTML=g.tasks.map(t=>`
+    <div class="task-row">
+      <div class="chk${state.tasks[t.id]?' on':''}" onclick="toggleTask('${t.id}',${t.pts})"></div>
+      <span class="tl${state.tasks[t.id]?' done':''}" onclick="toggleTask('${t.id}',${t.pts})">${t.l}</span>
+      <span class="tpts">+${t.pts}pts</span>
+    </div>`).join('');
+  const linkView={re:'realestate',tr:'trading',fi:'fitness',cr:'credit',sp:'spanish',ar:'art',iv:'investing'}[g.id];
+  document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;
+}
+
+function renderGoalDailies(){
+  const goalMap={re:'re',tr:'tr',fi:'fi',cr:'cr',sp:'sp',ar:'ar',iv:'iv'};
+  GOALS.forEach(g=>{
+    const el=document.getElementById(g.id+'-daily-tasks');
+    if(!el)return;
+    el.innerHTML=g.tasks.map(t=>`
+      <div class="task-row">
+        <div class="chk${state.tasks[t.id]?' on':''}" onclick="toggleTask('${t.id}',${t.pts})"></div>
+        <span class="tl${state.tasks[t.id]?' done':''}" onclick="toggleTask('${t.id}',${t.pts})">${t.l}</span>
+        <span class="tpts">+${t.pts}pts</span>
+      </div>`).join('');
   });
 }
 
-function autoLoadReport(){
-  var accts='Spring Oaks Capital LLC,#110712XXX,$623,Collections\nMidland Credit Management,#328590XXX,$753,Collections\nKikoff Lending LLC,#CLXXXX,$420,Late Payment 60 days\nMerrick Bank Corp,#546316XXXXXX,$1645,Charged Off\nMission Lane TAB Bank,#431503XXXXXX,$1624,Charged Off\nAffirm Inc,#MPDUTJXX,$0,Charged Off - Paid in Settlement\nNCB Management Service,#101073XXXX,$12456,Collections\nExeter Finance LLC,#680681XXXXXX,$0,Charged Off - Repossession\nOneMain,#719322XXXXXX,$0,Charged Off - Paid in Settlement';
-  document.getElementById('report-input').value=accts;
-  document.getElementById('score-input').value=561;
-  document.getElementById('your-name').value='Makisha Stiles';
-  document.getElementById('your-addr').value='5000 Macland Rd, Powder Springs, GA 30127';
-  document.getElementById('your-dob').value='01/01/1983';
-  document.getElementById('l-name').value='Makisha Stiles';
-  document.getElementById('l-addr').value='5000 Macland Rd, Powder Springs, GA 30127';
-  updateScoreDisplay();
-  document.getElementById('upload-status').style.display='block';
-  document.getElementById('upload-status').innerHTML='<div class="upload-success"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,8 6,11 13,4"/></svg>Experian report (May 4, 2026) pre-loaded! Click Analyze My Report.</div>';
+function toggleTask(id,pts){
+  state.tasks[id]=!state.tasks[id];
+  checkStreak();save();render();
 }
 
-function loadSample(){
-  document.getElementById('report-input').value='LVNV Funding,#8834,$450,Collections\nCapital One,#4521,$1200,Collections\nMidland Credit,#0012,$800,Collections\nChase,#5511,$0,Late Payment (2x)\nCitibank,#2210,$2100,Charged Off\nMedical Bill,#M-901,$340,Collections';
-  document.getElementById('score-input').value=540;
-  updateScoreDisplay();
+function checkStreak(){
+  let pts=0;GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])pts+=t.pts;}));
+  if(pts>=60&&!state.streakCounted){state.streak=(state.streak||0)+1;state.streakCounted=true;}
 }
 
-function categorize(line){
-  var l=line.toLowerCase();
-  var amt=parseInt((line.match(/\$(\d+)/)||['','0'])[1]);
-  if(l.includes('medical'))return{p:1,reason:'Medical debt - CFPB 2025 rules require removal',badge:'Easy win',color:'green',disputeType:'medical'};
-  if(l.includes('duplicate'))return{p:1,reason:'Duplicate listing - must be removed under FCRA',badge:'Easy win',color:'green',disputeType:'duplicate'};
-  if(l.includes('paid in full')||l.includes('paid, closed'))return{p:1,reason:'Paid account - demand accurate status or deletion',badge:'Easy win',color:'green',disputeType:'paid'};
-  if(l.includes('settlement')||l.includes('paid in settlement'))return{p:1,reason:'Settled account - dispute remaining negative reporting',badge:'Easy win',color:'green',disputeType:'settled'};
-  if(l.includes('collection')&&amt<500)return{p:1,reason:'Small collection - unverifiable or negotiate pay-for-delete',badge:'Easy win',color:'green',disputeType:'unverifiable'};
-  if(l.includes('not mine')||l.includes('fraud')||l.includes('identity'))return{p:1,reason:'Not your account - dispute as identity theft',badge:'Easy win',color:'green',disputeType:'not-mine'};
-  if(l.includes('late')&&!l.includes('120')&&!l.includes('90')&&!l.includes('60'))return{p:2,reason:'Late payment - send goodwill letter first',badge:'Medium',color:'amber',disputeType:'goodwill'};
-  if(l.includes('late')&&(l.includes('30')||l.includes('60')))return{p:2,reason:'Recent late payment - dispute accuracy of dates',badge:'Medium',color:'amber',disputeType:'inaccurate'};
-  if(l.includes('collection')&&amt>=500&&amt<2000)return{p:2,reason:'Collection - debt buyer cannot verify original docs',badge:'Medium',color:'amber',disputeType:'unverifiable'};
-  if(l.includes('charged off')||l.includes('charge off'))return{p:2,reason:'Charge-off - dispute balance accuracy and verification',badge:'Medium',color:'amber',disputeType:'unverifiable'};
-  if(l.includes('repossess')||l.includes('repo'))return{p:2,reason:'Repossession - dispute deficiency balance accuracy',badge:'Medium',color:'amber',disputeType:'inaccurate'};
-  if(l.includes('collection')&&amt>=2000)return{p:3,reason:'Large collection - dispute methodology and negotiate settlement',badge:'Complex',color:'red',disputeType:'unverifiable'};
-  return{p:3,reason:'Complex item - requires documentation and escalation',badge:'Complex',color:'red',disputeType:'inaccurate'};
+function getTotalPts(){
+  let p=0;GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])p+=t.pts;}));return p;
 }
 
-function analyzeReport(){
-  var lines=document.getElementById('report-input').value.split('\n').filter(function(l){return l.trim();});
-  if(!lines.length)return;
-  accounts=lines.map(function(line,i){
-    var parts=line.split(',').map(function(s){return s.trim();});
-    var cat=categorize(line);
-    return Object.assign({id:i,raw:line,creditor:parts[0]||'Unknown',acct:parts[1]||'',amount:parts[2]||'',status:parts[3]||'Unknown'},cat);
-  }).sort(function(a,b){return a.p-b.p;});
-  var easy=accounts.filter(function(a){return a.p===1;}).length;
-  var med=accounts.filter(function(a){return a.p===2;}).length;
-  document.getElementById('m-total').textContent=accounts.length;
-  document.getElementById('m-easy').textContent=easy;
-  document.getElementById('m-medium').textContent=med;
-  document.getElementById('m-potential').textContent='+'+(easy*18+med*10+accounts.filter(function(a){return a.p===3;}).length*6);
-  document.getElementById('accounts-list').innerHTML=accounts.map(function(a,i){
-    var c=a.color==='green'?'green':a.color==='amber'?'amber':'red';
-    return '<div class="account-row"><div class="account-num">'+(i+1)+'</div><div class="priority-dot dot-'+c+'"></div><div class="account-info"><div class="account-name">'+a.creditor+' <span style="color:var(--text3);font-size:12px">'+a.acct+'</span></div><div class="account-sub">'+a.status+' - '+a.amount+' - '+a.reason+'</div></div><span class="badge badge-'+c+'">'+a.badge+'</span><button class="btn btn-sm" onclick="prefill(this,''+esc(a.creditor)+'',''+esc(a.acct)+'',''+esc(a.status)+'',''+esc(a.amount)+'',''+a.disputeType+'')">Draft letter</button></div>';
+function renderScore(){
+  document.getElementById('score-num').textContent=getTotalPts();
+  document.getElementById('score-bars').innerHTML=GOALS.map(g=>{
+    const d=g.tasks.filter(t=>state.tasks[t.id]).length;
+    const p=Math.round(d/g.tasks.length*100);
+    return `<div class="brow"><span class="blbl">${g.icon} ${g.name}</span>
+      <div class="btrack"><div class="bfill" style="width:${p}%;background:${g.color}"></div></div>
+      <span class="bpct">${p}%</span></div>`;
   }).join('');
-  document.getElementById('analysis-out').style.display='block';
 }
 
-function esc(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function renderWins(){
+  const wins=[];
+  GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])wins.push({l:t.l,pts:t.pts,c:g.color});}));
+  document.getElementById('wins-list').innerHTML=wins.length
+    ?wins.map(w=>`<div class="wrow"><span style="color:${w.c}">✓</span><span style="flex:1">${w.l}</span><span style="font-size:11px;color:var(--text3)">+${w.pts}</span></div>`).join('')
+    :'<div style="font-size:13px;color:var(--text3)">Complete tasks to log your wins.</div>';
+}
 
-function buildQueue(){
-  if(!accounts.length)return;
-  var waves={1:[],2:[],3:[]};
-  accounts.forEach(function(a){waves[a.p].push(a);});
-  var titles={1:'Wave 1 - Send immediately',2:'Wave 2 - Send 35 days after wave 1',3:'Wave 3 - Complex accounts'};
-  var colors={1:'green',2:'amber',3:'red'};
-  var html='';
-  [1,2,3].forEach(function(p){
-    if(!waves[p].length)return;
-    html+='<div class="wave-header"><span class="badge badge-'+colors[p]+'">'+titles[p]+'</span><div class="wave-line"></div></div><div class="card" style="padding:0.5rem 1rem;margin-bottom:0.5rem">';
-    waves[p].forEach(function(a){
-      html+='<div class="account-row"><div class="account-info"><div class="account-name">'+a.creditor+' <span style="color:var(--text3);font-size:12px">'+a.acct+'</span></div><div class="account-sub">'+a.status+' - '+a.amount+'</div></div><button class="btn btn-sm" onclick="prefill(this,''+esc(a.creditor)+'',''+esc(a.acct)+'',''+esc(a.status)+'',''+esc(a.amount)+'',''+a.disputeType+'');showSection('letters')">Draft letter</button></div>';
-    });
-    html+='</div>';
+// ── AI COACH ──────────────────────────────────────────────────
+async function coachMe(){
+  document.getElementById('coach-in').value="Give me my daily priority focus right now. What should I attack first based on my progress, and give me one strong motivational push.";
+  await askCoach();
+}
+async function askCoach(){
+  const inp=document.getElementById('coach-in');
+  const q=inp.value.trim();if(!q)return;
+  inp.value='';
+  const out=document.getElementById('coach-out');
+  out.innerHTML='<span class="spin"></span>Thinking...';
+  const pts=getTotalPts();
+  const done=[],pending=[];
+  GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(`${g.name}: ${t.l}`);}));
+  const sys=`You are Makisha's elite life coach and accountability partner. She is a driven Black entrepreneur in Atlanta, GA with these active goals: (1) GA Real Estate License → Property Manager → CAM Certified, currently wholesaling land+houses 90% automated via GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals, trading GBP/JPY and XAU/USD with a signal dashboard, (3) Daily fitness, researching Burn Bootcamp franchise ownership, (4) Raise credit score to 620+ to pull equity from her free-and-clear home — to buy a Tesla, do home improvements, and clear $19k in credit debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy and social media, (7) Build dividend stock + crypto portfolio. Today: ${pts} points earned. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}. Be direct, warm, no-nonsense, and energizing. Speak like a trusted advisor who fully believes in her. Under 140 words.`;
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:q}]})});
+    const d=await r.json();
+    out.textContent=d.content?.find(c=>c.type==='text')?.text||"Try again in a moment.";
+  }catch(e){out.textContent="Connection issue — try again.";}
+}
+
+// ── SPANISH PROGRESS ──────────────────────────────────────────
+function renderSpProgress(){
+  if(!state.spStartDate)state.spStartDate=today();
+  const start=new Date(state.spStartDate),now=new Date();
+  const days=Math.floor((now-start)/864e5),weeks=Math.floor(days/7),totalW=26;
+  const pct=Math.min(Math.round(weeks/totalW*100),100);
+  const pf=document.getElementById('sp-prog-fill');if(pf)pf.style.width=pct+'%';
+  const wl=document.getElementById('sp-week-label');if(wl)wl.textContent=`Week ${Math.min(weeks+1,totalW)} of ${totalW}`;
+  const pc=document.getElementById('sp-pct');if(pc)pc.textContent=pct+'%';
+  function addW(d,w){const r=new Date(d);r.setDate(r.getDate()+w*7);return r.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+  [['ms1d',4],['ms2dt',12],['ms3dt',20],['ms4dt',26]].forEach(([id,w])=>{const el=document.getElementById(id);if(el)el.textContent=addW(state.spStartDate,w);});
+  [['ms2d',5],['ms3d',13],['ms4d',21]].forEach(([id,thr],i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.className='ms-dot '+(weeks>=thr?'ms-done':weeks>=thr-4?'ms-cur':'ms-fut');
   });
-  document.getElementById('dispute-queue').innerHTML=html;
+  const sl=document.getElementById('sp-learned');if(sl)sl.textContent=fcLearned.size;
+  const ss=document.getElementById('sp-sessions');if(ss)ss.textContent=state.spSessions||0;
+  const sa=document.getElementById('sp-acc');if(sa)sa.textContent=(state.qzTotal||0)>0?Math.round((state.qzCorrect||0)/(state.qzTotal||1)*100)+'%':'—';
+  const str=document.getElementById('sp-str');if(str)str.textContent=state.streak||0;
 }
 
-function prefill(btn,creditor,acct,status,amount,disputeType){
-  document.getElementById('l-creditor').value=creditor;
-  document.getElementById('l-acct').value=acct;
-  document.getElementById('l-balance').value=amount;
-  document.getElementById('l-type').value=disputeType||'inaccurate';
+// ── SPANISH TABS ──────────────────────────────────────────────
+function spTab(t){
+  document.querySelectorAll('.sp-tab').forEach((el,i)=>el.classList.toggle('active',['flashcards','phrases','quiz','listen','tutor'][i]===t));
+  document.querySelectorAll('.sp-sec').forEach(el=>el.classList.remove('vis'));
+  document.getElementById('sp-'+t).classList.add('vis');
+  if(t==='phrases')renderPhrases();
+  if(t==='quiz')nextQuiz();
+  if(t==='listen')renderListen();
+  state.spSessions=(state.spSessions||0)+1;
+  save();renderSpProgress();
 }
 
-function checkApiKey(){
-  var key=document.getElementById('api-key-input').value.trim();
-  var el=document.getElementById('api-status');
-  if(key.startsWith('sk-ant-')){el.textContent='Connected';el.className='api-status ok';localStorage.setItem('cl_key',key);}
-  else{el.textContent='Not connected';el.className='api-status no';}
+// ── FLASHCARDS ────────────────────────────────────────────────
+function renderCard(){
+  const c=CARDS[fcIdx];
+  document.getElementById('fc-cat').textContent=c.cat;
+  document.getElementById('fc-es').textContent=c.es;
+  document.getElementById('fc-en').textContent=c.en;
+  document.getElementById('fc-en').style.display='none';
+  document.getElementById('fc-tap').style.display='block';
+  document.getElementById('fc-btns').style.display='none';
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-tip').textContent=c.tip||'Click 🔊 to hear the pronunciation.';
+  document.getElementById('fc-counter').textContent=`Card ${fcIdx+1} of ${CARDS.length}`;
+  document.getElementById('fc-learned-count').textContent=`${fcLearned.size} learned`;
+  fcFlipped=false;
 }
-function getKey(){return document.getElementById('api-key-input').value.trim()||localStorage.getItem('cl_key')||'';}
-function checkLobKey(){
-  var key=document.getElementById('lob-key-input').value.trim();
-  var el=document.getElementById('lob-status');
-  if(key.startsWith('live_')||key.startsWith('test_')){el.textContent='Connected';el.className='api-status ok';localStorage.setItem('lob_key',key);}
-  else{el.textContent='Not connected';el.className='api-status no';}
-}
-function getLobKey(){return document.getElementById('lob-key-input').value.trim()||localStorage.getItem('lob_key')||'';}
-function restoreKeys(){
-  var k=localStorage.getItem('cl_key');if(k){document.getElementById('api-key-input').value=k;checkApiKey();}
-  var lk=localStorage.getItem('lob_key');if(lk){document.getElementById('lob-key-input').value=lk;checkLobKey();}
-}
-
-async function generateAILetter(){
-  var key=getKey();
-  var creditor=document.getElementById('l-creditor').value||'[Creditor]';
-  var acct=document.getElementById('l-acct').value||'[Account]';
-  var balance=document.getElementById('l-balance').value||'';
-  var type=document.getElementById('l-type').value;
-  var bureau=document.getElementById('l-bureau').value;
-  var context=document.getElementById('l-context').value;
-  var name=document.getElementById('l-name').value||'[Your Name]';
-  var addr=document.getElementById('l-addr').value||'[Your Address]';
-  var ssn=document.getElementById('l-ssn').value||'XXXX';
-  var dob=document.getElementById('l-dob').value||'[DOB]';
-  var today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  var bureauAddr={'All three bureaus (separate letters)':'Equifax Information Services LLC, P.O. Box 740256, Atlanta, GA 30374 (Also send to: Experian P.O. Box 4500 Allen TX 75013 and TransUnion P.O. Box 2000 Chester PA 19016)','Equifax':'Equifax Information Services LLC, P.O. Box 740256, Atlanta, GA 30374','Experian':'Experian, P.O. Box 4500, Allen, TX 75013','TransUnion':'TransUnion LLC, P.O. Box 2000, Chester, PA 19016'};
-  var card=document.getElementById('letter-card');
-  var body=document.getElementById('letter-body');
-  card.style.display='block';
-  if(!key||!key.startsWith('sk-ant-')){
-    body.textContent=buildFallbackLetter(name,addr,ssn,dob,today,creditor,acct,balance,type,bureau,bureauAddr[bureau]||bureauAddr['Equifax'],context);
-    return;
+function flipCard(){
+  if(!fcFlipped){
+    document.getElementById('fc-en').style.display='block';
+    document.getElementById('fc-tap').style.display='none';
+    document.getElementById('fc-btns').style.display='flex';
+    document.getElementById('fc-card').classList.add('flipped');
+    speak(CARDS[fcIdx].es);
+    fcFlipped=true;
   }
-  body.innerHTML='<div class="ai-loading"><div class="dot-flashing"></div>Claude is drafting your letter with current 2025 FCRA rules...</div>';
-  document.getElementById('gen-btn').disabled=true;
-  var prompt='You are a consumer credit law expert. Generate a professional dispute letter dated '+today+'. Consumer: '+name+', '+addr+', SSN last 4: '+ssn+', DOB: '+dob+'. Creditor: '+creditor+', Account: '+acct+', Balance: '+balance+'. Dispute type: '+type+'. Bureau: '+bureau+'. Context: '+(context||'None')+'. Bureau address: '+(bureauAddr[bureau]||bureauAddr['Equifax'])+'. Requirements: cite current FCRA provisions, specific statutes (15 U.S.C. 1681 series), demand investigation and deletion if unverifiable, threaten CFPB complaint and legal action under 1681n and 1681o, reference 30-day deadline per 1681i(a)(1). Include CFPB 2025 medical debt rule if type is medical. Professional firm tone. Output ONLY the letter text.';
-  try{
-    var res=await fetch('https://muddy-frost-3757.trustcircleenterprise.workers.dev/',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
-    var data=await res.json();
-    if(data.content&&data.content[0]){body.textContent=data.content[0].text;}
-    else{body.textContent='Error: '+JSON.stringify(data);}
-  }catch(e){body.textContent=buildFallbackLetter(name,addr,ssn,dob,today,creditor,acct,balance,type,bureau,bureauAddr[bureau]||bureauAddr['Equifax'],context);}
-  document.getElementById('gen-btn').disabled=false;
+}
+function speakCurrent(){speak(CARDS[fcIdx].es);}
+function nextCard(learned){
+  if(learned){fcLearned.add(fcIdx);state.spWordsLearned=fcLearned.size;}
+  fcIdx=(fcIdx+1)%CARDS.length;
+  save();renderCard();renderSpProgress();
 }
 
-function buildFallbackLetter(name,addr,ssn,dob,today,creditor,acct,balance,type,bureau,bureauAddr,context){
-  var reasons={
-    'not-mine':'I have no knowledge of this account and have never entered into any contractual relationship with '+creditor+'. This account does not belong to me.',
-    'paid':'This account has been paid in full. The balance should reflect $0.00 and status should read Paid or the account should be deleted.',
-    'settled':'This account was settled via written agreement. The current reporting does not accurately reflect the settled status, constituting a willful inaccuracy under 15 U.S.C. 1681s-2.',
-    'inaccurate':'The information reported contains material inaccuracies. The balance, payment history, and account status do not match my records.',
-    'statute':'This debt is past the applicable statute of limitations. The 7-year reporting period under FCRA 605(a) may have expired.',
-    'medical':'Under the CFPB 2025 Final Rule on medical debt, medical collections must be removed from credit reports. This medical account must be deleted immediately.',
-    'duplicate':'This account is appearing as a duplicate entry, violating FCRA accuracy requirements under 1681e(b).',
-    'unverifiable':'I am challenging this creditors ability to verify this account. Under FCRA 611(a)(1), you must conduct a reasonable investigation. If you cannot independently verify this account, it must be deleted.',
-    'goodwill':'I am requesting a goodwill adjustment to remove this negative item. I have established strong payment history and am working diligently to improve my financial standing.',
-    'validation':'Pursuant to FDCPA 15 U.S.C. 1692g, I formally request complete validation of this alleged debt within 30 days. Until properly validated, all collection activity must cease.'
-  };
-  var lines=[name,addr,'SSN: ***-**-'+ssn+'     Date of Birth: '+dob,'Date: '+today,'',bureauAddr,'','RE: FORMAL CREDIT DISPUTE','Account: '+creditor+' | Account: '+acct+' | Balance: '+balance,'','To Whom It May Concern:','','I am writing pursuant to the Fair Credit Reporting Act FCRA, 15 U.S.C. 1681 et seq., to dispute the above-referenced account.','','GROUNDS FOR DISPUTE:',(reasons[type]||reasons['inaccurate']),(context?'Additional Information: '+context:''),'','LEGAL DEMANDS:','You are required to conduct a reasonable investigation within 30 days per 15 U.S.C. 1681i(a)(1).','Delete this item if it cannot be verified as accurate and belonging to me.','','Failure to comply may result in CFPB complaints and statutory damages of $100-$1,000 per violation per 15 U.S.C. 1681n.','','Sincerely,','','',name,'','Enclosures: Government-issued photo ID, Proof of address, Supporting documentation'];
-  return lines.join('\n');
+// ── PHRASES ───────────────────────────────────────────────────
+function renderPhrases(){
+  const cats=PHRASES.map(p=>p.cat);
+  document.getElementById('phrase-cats').innerHTML=cats.map(c=>
+    `<button class="pcat-btn${c===activePcat?' on':''}" onclick="setPcat('${c}')">${c}</button>`
+  ).join('');
+  const ph=PHRASES.find(p=>p.cat===activePcat);if(!ph)return;
+  document.getElementById('phrase-list').innerHTML=ph.items.map(it=>
+    `<div class="phrase-row">
+      <div><div class="p-es">${it.es}</div><div class="p-en">${it.en}</div></div>
+      <button class="play-btn" onclick="speak('${it.es.replace(/'/g,"\\'")}')">🔊 Play</button>
+    </div>`
+  ).join('');
 }
+function setPcat(c){activePcat=c;renderPhrases();}
 
-function clearLetter(){document.getElementById('letter-card').style.display='none';document.getElementById('letter-body').textContent='';}
-function copyLetter(){navigator.clipboard.writeText(document.getElementById('letter-body').textContent);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},2000);}
-function printLetter(){var c=document.getElementById('letter-body').textContent;var w=window.open('','_blank');w.document.write('<html><head><title>ScoreBoss Dispute Letter</title><style>body{font-family:Georgia,serif;max-width:700px;margin:60px auto;line-height:1.8;font-size:14px;white-space:pre-wrap}</style></head><body>'+c+'</body></html>');w.document.close();w.print();}
-function addToLog(){var creditor=document.getElementById('l-creditor').value;if(!creditor)return;document.getElementById('log-creditor').value=creditor;showSection('tracker');addLog();}
-
-async function mailLetter(){
-  var lobKey=getLobKey();
-  var letterText=document.getElementById('letter-body').textContent;
-  var name=document.getElementById('l-name').value||'Makisha Stiles';
-  var addr=document.getElementById('l-addr').value||'5000 Macland Rd, Powder Springs, GA 30127';
-  var bureau=document.getElementById('l-bureau').value;
-  var creditor=document.getElementById('l-creditor').value||'Credit Bureau';
-  if(!letterText||letterText.length<100){alert('Please generate a letter first.');return;}
-  if(!lobKey){alert('Please enter your Lob API key above.');return;}
-  var bureauAddrs={'Equifax':{name:'Equifax Information Services LLC',address:'PO Box 740256',city:'Atlanta',state:'GA',zip:'30374'},'Experian':{name:'Experian',address:'PO Box 4500',city:'Allen',state:'TX',zip:'75013'},'TransUnion':{name:'TransUnion LLC',address:'PO Box 2000',city:'Chester',state:'PA',zip:'19016'}};
-  var bk=Object.keys(bureauAddrs).find(function(b){return bureau.includes(b);})||'Equifax';
-  var toAddr=bureauAddrs[bk];
-  var parts=addr.split(',').map(function(s){return s.trim();});
-  var street=parts[0]||'5000 Macland Rd';
-  var cs=parts[1]||'Powder Springs GA 30127';
-  var m=cs.match(/^(.+?)\s+([A-Z]{2})\s+(\d{5})/);
-  var city=m?m[1]:'Powder Springs',state=m?m[2]:'GA',zip=m?m[3]:'30127';
-  var mailBtn=document.getElementById('mail-btn');
-  mailBtn.disabled=true;mailBtn.textContent='Sending...';
-  try{
-    var lh='<html><body style="font-family:Georgia,serif;font-size:12px;line-height:1.8;margin:60px 80px;white-space:pre-wrap">'+letterText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</body></html>';
-    var res=await fetch('https://api.lob.com/v1/letters',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Basic '+btoa(lobKey+':')},body:JSON.stringify({description:'Dispute - '+creditor+' - '+bk,to:{name:toAddr.name,address_line1:toAddr.address,address_city:toAddr.city,address_state:toAddr.state,address_zip:toAddr.zip,address_country:'US'},from:{name:name,address_line1:street,address_city:city,address_state:state,address_zip:zip,address_country:'US'},file:lh,color:false,double_sided:false,address_placement:'top_first_page'})});
-    var data=await res.json();
-    if(data.id){alert('Letter queued! ID: '+data.id);mailBtn.textContent='Mailed!';addToLog();}
-    else{alert('Lob error: '+(data.error&&data.error.message?data.error.message:JSON.stringify(data)));mailBtn.disabled=false;mailBtn.textContent='Mail ($1.20)';}
-  }catch(err){alert('Error: '+err.message);mailBtn.disabled=false;mailBtn.textContent='Mail ($1.20)';}
+// ── QUIZ ──────────────────────────────────────────────────────
+function nextQuiz(){
+  qzAnswered=false;
+  document.getElementById('qz-result').textContent='';
+  document.querySelectorAll('.qopt').forEach(el=>el.classList.remove('correct','wrong','locked'));
+  const idx=Math.floor(Math.random()*CARDS.length);
+  qzCurrent=CARDS[idx];
+  qzToSpanish=Math.random()>0.5;
+  const q=qzToSpanish?qzCurrent.en:qzCurrent.es;
+  const ans=qzToSpanish?qzCurrent.es:qzCurrent.en;
+  document.getElementById('qz-q').textContent=qzToSpanish?`How do you say: "${q}"`:`What does this mean?`;
+  if(!qzToSpanish){document.getElementById('qz-q').textContent=q;}
+  const spkBtn=document.getElementById('quiz-speak-btn');
+  spkBtn.style.display=!qzToSpanish?'inline-flex':'none';
+  const distractors=CARDS.filter((_,i)=>i!==idx).sort(()=>Math.random()-0.5).slice(0,3).map(c=>qzToSpanish?c.es:c.en);
+  const opts=[ans,...distractors].sort(()=>Math.random()-0.5);
+  document.getElementById('qz-opts').innerHTML=opts.map(o=>
+    `<button class="qopt" onclick="checkQuiz(this,'${o.replace(/'/g,"\\'")}','${ans.replace(/'/g,"\\'")}')">${o}</button>`
+  ).join('');
+  updateQzStats();
 }
-
-function generateClosedLetter(){
-  var name=document.getElementById('your-name').value||'[Your Name]';
-  var addr=document.getElementById('your-addr').value||'[Your Address]';
-  var ssn=document.getElementById('your-ssn').value||'XXXX';
-  var dob=document.getElementById('your-dob').value||'[DOB]';
-  var creditor=document.getElementById('ca-creditor').value||'[Creditor]';
-  var acct=document.getElementById('ca-acct').value||'[Account]';
-  var type=document.getElementById('ca-type').value;
-  var date=document.getElementById('ca-date').value||'';
-  var details=document.getElementById('ca-details').value||'';
-  var today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  var reasons={
-    'balance':'This account has been paid in full and closed'+(date?' as of '+date:'')+' yet your records continue to report an outstanding balance. Under the FCRA, all reported information must be accurate. I demand this account be updated to reflect a $0 balance and Paid/Closed status, or deleted entirely.',
-    'settled':'This account was settled via written agreement'+(date?' in '+date:'')+'. Your records inaccurately report this as Charged Off rather than Settled. This constitutes a willful inaccuracy under 15 U.S.C. 1681s-2.',
-    'wrong-date':'The date of first delinquency reported for this account is inaccurate. Under FCRA 605(c), the 7-year reporting period begins from the date of first delinquency. I demand the date be corrected or the account be deleted.',
-    'too-old':'This account has exceeded the 7-year reporting period mandated by FCRA 605(a). Continued reporting of this account is a violation of federal law. I demand immediate deletion.',
-    'reaging':'This account appears to have been re-aged. Re-aging is a violation of FCRA 605(c) and the FDCPA. I demand the original date of first delinquency be restored and the account reviewed for immediate deletion.',
-    'duplicate':'This account is being reported as a duplicate entry. The same debt appears under both the original creditor and a collection agency. Under FCRA 1681e(b), duplicate reporting constitutes an inaccuracy. One entry must be removed immediately.',
-    'inaccurate':'The information reported for this closed account contains material inaccuracies including incorrect balance, payment history, account status, and/or dates.'
-  };
-  var lines=[name,addr,'SSN: ***-**-'+ssn+'     Date of Birth: '+dob,'Date: '+today,'','Equifax Information Services LLC','P.O. Box 740256, Atlanta, GA 30374','(Also send identical letters to: Experian P.O. Box 4500 Allen TX 75013 and TransUnion P.O. Box 2000 Chester PA 19016)','','RE: DISPUTE OF CLOSED ACCOUNT - REQUEST FOR CORRECTION OR DELETION','Creditor: '+creditor+' | Account: '+acct,'','To Whom It May Concern:','','I am writing pursuant to the Fair Credit Reporting Act FCRA, 15 U.S.C. 1681 et seq., to dispute the above-referenced closed account.','','NATURE OF DISPUTE:',(reasons[type]||reasons['inaccurate']),(details?'Additional Details: '+details:''),'','LEGAL DEMANDS:','You must conduct a reasonable investigation within 30 days per 15 U.S.C. 1681i(a)(1) and:','1. Verify the accuracy of all reported information','2. Correct any inaccuracies immediately','3. Delete this account if the information cannot be verified','','Failure to comply may result in CFPB complaints and statutory damages per 15 U.S.C. 1681n.','','Sincerely,','','',name,'','Enclosures: Government-issued photo ID, Proof of address, Supporting documentation'];
-  document.getElementById('closed-letter-body').textContent=lines.join('\n');
-  document.getElementById('closed-letter-card').style.display='block';
-}
-
-function copyClosedLetter(){navigator.clipboard.writeText(document.getElementById('closed-letter-body').textContent);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},2000);}
-function printClosedLetter(){var c=document.getElementById('closed-letter-body').textContent;var w=window.open('','_blank');w.document.write('<html><head><title>ScoreBoss Closed Account Dispute</title><style>body{font-family:Georgia,serif;max-width:700px;margin:60px auto;line-height:1.8;font-size:14px;white-space:pre-wrap}</style></head><body>'+c+'</body></html>');w.document.close();w.print();}
-
-function calcRemoval(){
-  var input=document.getElementById('calc-date').value;
-  var parts=input.split('/');
-  if(parts.length!==2){alert('Please enter date as MM/YYYY');return;}
-  var removal=new Date(parseInt(parts[1])+7,parseInt(parts[0])-1,1);
-  var today=new Date();
-  var daysLeft=Math.ceil((removal-today)/(1000*60*60*24));
-  var output='';
-  if(daysLeft<=0){
-    output='<strong style="color:var(--green)">This account MUST be removed NOW!</strong><br>It passed the 7-year removal date on '+removal.toLocaleDateString('en-US',{month:'long',year:'numeric'})+'. File a dispute immediately.';
-  }else{
-    output='Mandatory removal date: <strong style="color:var(--amber)">'+removal.toLocaleDateString('en-US',{month:'long',year:'numeric'})+'</strong><br>Days until removal: <strong>'+daysLeft+' days</strong>'+(daysLeft<365?'<br><strong style="color:var(--amber)">Less than 1 year away - dispute now!</strong>':'');
-  }
-  document.getElementById('calc-output').innerHTML=output;
-  document.getElementById('calc-result').style.display='block';
-}
-
-function showProgress(){
-  var start=parseInt(document.getElementById('t-start').value)||300;
-  var cur=parseInt(document.getElementById('t-current').value)||start;
-  var target=parseInt(document.getElementById('t-target').value)||750;
-  var pct=Math.min(100,Math.max(2,Math.round(((cur-start)/(target-start))*100)));
-  document.getElementById('prog-bar').style.width=pct+'%';
-  document.getElementById('prog-start-lbl').textContent=start+' (start)';
-  document.getElementById('prog-current-lbl').textContent=cur+' (now)';
-  document.getElementById('prog-target-lbl').textContent=target+' (goal)';
-  var needed=target-cur;
-  var msg=needed>0?'You need <strong style="color:var(--accent2)">'+needed+' more points</strong> to reach '+target+'.':'<strong style="color:var(--green)">Goal reached!</strong>';
-  if(needed>120)msg+=' Priority: dispute collections + reduce utilization below 30%.';
-  else if(needed>60)msg+=' Focus: keep utilization below 10%.';
-  document.getElementById('prog-msg').innerHTML=msg;
-  document.getElementById('prog-out').style.display='block';
-}
-
-function addLog(){
-  var creditor=document.getElementById('log-creditor').value;
-  if(!creditor)return;
-  var date=document.getElementById('log-date').value;
-  var bureau=document.getElementById('log-bureau').value;
-  var status=document.getElementById('log-status').value;
-  var email=document.getElementById('log-email')?document.getElementById('log-email').value:'';
-  var due=getDue(date);
-  logEntries.unshift({creditor:creditor,date:date,bureau:bureau,status:status,due:due,email:email,id:Date.now()});
-  localStorage.setItem('cl_log',JSON.stringify(logEntries));
-  renderLog();
-  document.getElementById('log-creditor').value='';
-}
-
-function getDue(d){if(!d)return'';var dt=new Date(d);dt.setDate(dt.getDate()+30);return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-function statusBadge(s){if(s.includes('Removed'))return'badge-green';if(s.includes('Sent')||s.includes('Pending'))return'badge-amber';if(s.includes('escalate'))return'badge-red';return'badge-gray';}
-
-function renderLog(){
-  var el=document.getElementById('log-list');
-  if(!logEntries.length){el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No disputes logged yet.</div>';return;}
-  el.innerHTML=logEntries.map(function(e){
-    var remind=e.email?'<button class="btn btn-sm" onclick="sendReminderEmail(''+e.email+'',''+e.creditor+'',''+e.bureau+'',''+e.date+'',''+e.due+'')">Email Reminder</button>':'';
-    return '<div class="log-row"><div class="log-info"><div class="log-name">'+e.creditor+' - '+e.bureau+'</div><div class="log-sub">Sent '+(e.date||'unknown')+'</div></div>'+(e.due&&!e.status.includes('Removed')?'<span class="due-chip">Follow up '+e.due+'</span>':'')+remind+'<span class="badge '+statusBadge(e.status)+'">'+e.status+'</span><button class="btn btn-sm" onclick="removeLog('+e.id+')">X</button></div>';
-  }).join('');
-}
-
-function removeLog(id){logEntries=logEntries.filter(function(e){return e.id!==id;});localStorage.setItem('cl_log',JSON.stringify(logEntries));renderLog();}
-
-function handleDrop(e){e.preventDefault();document.getElementById('upload-zone').classList.remove('drag-over');var file=e.dataTransfer.files[0];if(file)processFile(file);}
-function handleFileSelect(e){var file=e.target.files[0];if(file)processFile(file);}
-
-async function processFile(file){
-  var key=getKey();
-  var statusEl=document.getElementById('upload-status');
-  statusEl.style.display='block';
-  if(!key||!key.startsWith('sk-ant-')){statusEl.innerHTML='<div class="upload-error">Connect your Anthropic API key above to use AI file reading.</div>';return;}
-  var isImage=file.type.startsWith('image/');
-  var isPDF=file.type==='application/pdf';
-  if(!isImage&&!isPDF){statusEl.innerHTML='<div class="upload-error">Please upload a PDF or image file.</div>';return;}
-  statusEl.innerHTML='<div class="upload-loading"><div class="dot-flashing"></div>Reading your credit report with AI...</div>';
-  document.getElementById('analyze-btn').disabled=true;
-  try{
-    var messageContent=[];
-    if(isPDF){
-      var base64pdf=await fileToBase64(file);
-      var pdfData=atob(base64pdf);
-      var pdfBytes=new Uint8Array(pdfData.length);
-      for(var i=0;i<pdfData.length;i++)pdfBytes[i]=pdfData.charCodeAt(i);
-      if(!window.pdfjsLib){
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-      }
-      var pdf=await window.pdfjsLib.getDocument({data:pdfBytes}).promise;
-      var numPages=Math.min(pdf.numPages,6);
-      statusEl.innerHTML='<div class="upload-loading"><div class="dot-flashing"></div>Converting '+numPages+' pages...</div>';
-      for(var pageNum=1;pageNum<=numPages;pageNum++){
-        var page=await pdf.getPage(pageNum);
-        var viewport=page.getViewport({scale:1.5});
-        var canvas=document.createElement('canvas');
-        canvas.width=viewport.width;canvas.height=viewport.height;
-        await page.render({canvasContext:canvas.getContext('2d'),viewport:viewport}).promise;
-        messageContent.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:canvas.toDataURL('image/jpeg',0.85).split(',')[1]}});
-      }
-    }else{
-      messageContent.push({type:'image',source:{type:'base64',media_type:file.type,data:await fileToBase64(file)}});
-    }
-    messageContent.push({type:'text',text:'You are a credit report analyst. Extract ALL negative accounts from this credit report. For each, output one line: Creditor Name, #AccountNumber, $Balance, Status. Only output these lines, nothing else. If no negatives found, output: NO_NEGATIVES_FOUND'});
-    statusEl.innerHTML='<div class="upload-loading"><div class="dot-flashing"></div>AI analyzing your report...</div>';
-    var res=await fetch('https://muddy-frost-3757.trustcircleenterprise.workers.dev/',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2000,messages:[{role:'user',content:messageContent}]})});
-    var data=await res.json();
-    if(data.content&&data.content[0]){
-      var text=data.content[0].text.trim();
-      if(text==='NO_NEGATIVES_FOUND'){statusEl.innerHTML='<div class="upload-success">No negative accounts found!</div>';}
-      else{document.getElementById('report-input').value=text;var count=text.split('\n').filter(function(l){return l.trim();}).length;statusEl.innerHTML='<div class="upload-success">Found <strong>'+count+' negative account'+(count!==1?'s':'')+'</strong> - review below then click Analyze.</div>';}
-    }else{statusEl.innerHTML='<div class="upload-error">Could not read file. Try a clearer image or paste manually.</div>';}
-  }catch(err){statusEl.innerHTML='<div class="upload-error">Error: '+err.message+'</div>';}
-  document.getElementById('analyze-btn').disabled=false;
-}
-
-function loadScript(src){return new Promise(function(resolve,reject){if(document.querySelector('script[src="'+src+'"]')){resolve();return;}var s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.head.appendChild(s);});}
-function fileToBase64(file){return new Promise(function(resolve,reject){var reader=new FileReader();reader.onload=function(){resolve(reader.result.split(',')[1]);};reader.onerror=reject;reader.readAsDataURL(file);});}
-
-function addClient(){
-  var name=document.getElementById('c-name').value.trim();
-  if(!name)return;
-  var client={id:Date.now(),name:name,score:parseInt(document.getElementById('c-score').value)||0,target:parseInt(document.getElementById('c-target').value)||700,notes:document.getElementById('c-notes').value,added:new Date().toLocaleDateString(),status:'Active'};
-  clients.unshift(client);
-  localStorage.setItem('ds_clients',JSON.stringify(clients));
-  renderClients();
-  ['c-name','c-score','c-target','c-notes'].forEach(function(id){document.getElementById(id).value='';});
-}
-function removeClient(id){clients=clients.filter(function(c){return c.id!==id;});localStorage.setItem('ds_clients',JSON.stringify(clients));renderClients();}
-function loadClient(id){
-  var c=clients.find(function(cl){return cl.id===id;});if(!c)return;
-  document.getElementById('your-name').value=c.name;
-  document.getElementById('l-name').value=c.name;
-  document.getElementById('score-input').value=c.score;
-  updateScoreDisplay();showSection('analyze');
-}
-function renderClients(){
-  var el=document.getElementById('client-list');
-  if(!clients.length){el.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:2rem">No clients added yet.</div>';return;}
-  el.innerHTML=clients.map(function(c){
-    var pct=c.score&&c.target?Math.min(100,Math.round(((c.score-300)/(c.target-300))*100)):0;
-    return '<div class="account-row"><div class="account-info"><div class="account-name">'+c.name+'</div><div class="account-sub">Score: '+(c.score||'--')+' to '+c.target+' - Added '+c.added+(c.notes?' - '+c.notes:'')+'</div><div class="score-track" style="width:180px;margin-top:6px"><div class="score-fill" style="width:'+pct+'%"></div></div></div><span class="badge badge-green">'+c.status+'</span><button class="btn btn-sm" onclick="loadClient('+c.id+')">Load</button><button class="btn btn-sm" onclick="removeClient('+c.id+')" style="color:var(--red)">X</button></div>';
-  }).join('');
-}
-
-function renderReminders(){
-  var el=document.getElementById('reminders-list');
-  if(!el||!logEntries.length){if(el)el.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:1rem">No upcoming reminders.</div>';return;}
-  var today=new Date();
-  var upcoming=logEntries.filter(function(e){
-    if(e.status.includes('Removed')||!e.date)return false;
-    var due=new Date(e.date);due.setDate(due.getDate()+30);
-    e.daysLeft=Math.ceil((due-today)/(1000*60*60*24));
-    return e.daysLeft<=35;
-  }).sort(function(a,b){return a.daysLeft-b.daysLeft;});
-  if(!upcoming.length){el.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:1rem">No urgent follow-ups right now.</div>';return;}
-  el.innerHTML=upcoming.map(function(e){
-    var color=e.daysLeft<0?'red':e.daysLeft<=3?'amber':'blue';
-    var label=e.daysLeft<0?'OVERDUE by '+Math.abs(e.daysLeft)+' days':e.daysLeft===0?'DUE TODAY':'Due in '+e.daysLeft+' days';
-    return '<div class="log-row"><div class="log-info"><div class="log-name">'+e.creditor+' - '+e.bureau+'</div><div class="log-sub">Sent '+e.date+'</div></div><span class="badge badge-'+color+'">'+label+'</span></div>';
-  }).join('');
-}
-
-function initSimulator(){
-  document.getElementById('sim-accounts-list').innerHTML=simAccountData.map(function(a,i){
-    return '<div class="check-item"><input type="checkbox" id="sim-'+i+'" onchange="runSimulator()"><div style="flex:1"><div class="check-text">'+a.name+' <span style="color:var(--text3);font-size:12px">$'+a.balance.toLocaleString()+'</span></div><div class="check-sub">'+a.type+' - estimated +'+a.impact+' pts if removed</div></div><span class="badge badge-'+(a.type==='collection'?'amber':a.type==='late'?'blue':'red')+'">+'+a.impact+' pts</span></div>';
-  }).join('');
-}
-
-function runSimulator(){
-  var baseScore=parseInt(document.getElementById('sim-score').value)||561;
-  var util=parseInt(document.getElementById('sim-util').value)||78;
-  var totalImpact=0;var removed=[];
-  simAccountData.forEach(function(a,i){var cb=document.getElementById('sim-'+i);if(cb&&cb.checked){totalImpact+=a.impact;removed.push(a.name);}});
-  if(!removed.length){document.getElementById('sim-results').style.display='none';return;}
-  var utilBonus=util>30?Math.round((util-30)*0.4):0;
-  var projected=Math.min(850,baseScore+totalImpact);
-  var withUtil=Math.min(850,projected+utilBonus);
-  document.getElementById('sim-results').style.display='block';
-  document.getElementById('sim-output').innerHTML='<div class="metrics-grid" style="margin-bottom:1rem"><div class="metric-card red"><div class="metric-num">'+baseScore+'</div><div class="metric-lbl">Current score</div></div><div class="metric-card green"><div class="metric-num">+'+totalImpact+'</div><div class="metric-lbl">From removals</div></div><div class="metric-card blue"><div class="metric-num">'+projected+'</div><div class="metric-lbl">Projected score</div></div><div class="metric-card amber"><div class="metric-num">'+withUtil+'</div><div class="metric-lbl">+ Fix utilization</div></div></div><div class="score-track" style="margin-bottom:8px"><div class="score-fill" style="width:'+Math.round(((projected-300)/550)*100)+'%"></div></div><div style="font-size:13px;color:var(--text2);line-height:1.8">Removing '+removed.length+' account'+(removed.length>1?'s':'')+' could bring your score to approximately <strong style="color:var(--green)">'+projected+'</strong>.'+(util>30?' Reducing utilization from '+util+'% to below 10% could add another ~'+utilBonus+' points, bringing your total to <strong style="color:var(--accent2)">'+withUtil+'</strong>.':'')+(withUtil>=670?'<br><strong style="color:var(--green)">At 670+ you qualify for Good credit rates!</strong>':'')+'</div><div style="font-size:11px;color:var(--text3);margin-top:10px">Estimates based on FICO 8 methodology.</div>';
-}
-
-function loadEmailJS(){
-  if(window.emailjs)return Promise.resolve();
-  return new Promise(function(resolve,reject){
-    var s=document.createElement('script');
-    s.src='https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-    s.onload=function(){emailjs.init('yV6lDTrhdSfEmL4qD');resolve();};
-    s.onerror=reject;
-    document.head.appendChild(s);
+function checkQuiz(btn,chosen,ans){
+  if(qzAnswered)return;
+  qzAnswered=true;state.qzTotal=(state.qzTotal||0)+1;
+  const correct=chosen===ans;
+  btn.classList.add(correct?'correct':'wrong');
+  document.querySelectorAll('.qopt').forEach(el=>{
+    el.classList.add('locked');
+    if(el.textContent===ans)el.classList.add('correct');
   });
+  if(correct){state.qzCorrect=(state.qzCorrect||0)+1;state.qzStreak=(state.qzStreak||0)+1;speak(qzCurrent.es);}
+  else state.qzStreak=0;
+  const tip=qzCurrent.tip?qzCurrent.tip.split('.')[0]:'';
+  const res=document.getElementById('qz-result');
+  res.textContent=correct?`✓ Correct! ${tip}`:`✗ Answer: ${ans}`;
+  res.style.color=correct?'var(--green)':'var(--coral)';
+  save();updateQzStats();renderSpProgress();
+}
+function updateQzStats(){
+  document.getElementById('qz-c').textContent=state.qzCorrect||0;
+  document.getElementById('qz-t').textContent=state.qzTotal||0;
+  document.getElementById('qz-s').textContent=state.qzStreak||0;
+  document.getElementById('qz-a').textContent=(state.qzTotal||0)>0?Math.round((state.qzCorrect||0)/(state.qzTotal||1)*100)+'%':'—';
+}
+function speakQuizWord(){if(qzCurrent)speak(qzCurrent.es);}
+
+// ── LISTEN ────────────────────────────────────────────────────
+function renderListen(){
+  updateListenCard();
+  document.getElementById('all-listen').innerHTML=allPhrases.map((p,i)=>
+    `<div class="phrase-row">
+      <div><div class="p-es">${p.es}</div><div class="p-en">${p.en}</div></div>
+      <button class="play-btn" onclick="speak('${p.es.replace(/'/g,"\\'")}')">🔊</button>
+    </div>`
+  ).join('');
+}
+function updateListenCard(){
+  const p=allPhrases[listenIdx%allPhrases.length];
+  document.getElementById('lp-cat').textContent=p.cat;
+  document.getElementById('lp-es').textContent=p.es;
+  document.getElementById('lp-en').textContent=p.en;
+}
+function listenPlay(rate){speak(allPhrases[listenIdx%allPhrases.length].es,rate);}
+function nextListen(){listenIdx++;updateListenCard();}
+
+// ── AI TUTOR ──────────────────────────────────────────────────
+let tutorMsgs=[];
+let msgId=0;
+async function askTutor(){
+  const inp=document.getElementById('tutor-in');
+  const q=inp.value.trim();if(!q)return;
+  inp.value='';
+  addMsg(q,'user');
+  const loadId=addMsg('Pensando...','ai');
+  const sys=`You are an enthusiastic, expert bilingual Spanish tutor helping Makisha become fluent in 6 months. She is a Black entrepreneur in Atlanta, GA — real estate investor and wholesaler, funded forex trader, aspiring gym franchise owner. Make Spanish practical and immediately useful for her life. Always include pronunciation guides in parentheses when teaching new words. Give English translations for all Spanish examples. Use encouragement and energy. Keep responses under 180 words. Format clearly with line breaks for readability.`;
+  tutorMsgs.push({role:"user",content:q});
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:tutorMsgs})});
+    const d=await r.json();
+    const txt=d.content?.find(c=>c.type==='text')?.text||"Try again.";
+    tutorMsgs.push({role:"assistant",content:txt});
+    updateMsg(loadId,txt);
+  }catch(e){updateMsg(loadId,"Connection issue — try again.");}
+}
+function spQuick(q){document.getElementById('tutor-in').value=q;askTutor();}
+function addMsg(text,role){
+  const id='m'+(++msgId);
+  const el=document.createElement('div');
+  el.className='msg '+role;el.id=id;el.textContent=text;
+  const h=document.getElementById('tutor-hist');h.appendChild(el);h.scrollTop=h.scrollHeight;
+  return id;
+}
+function updateMsg(id,text){
+  const el=document.getElementById(id);
+  if(el){el.textContent=text;const h=document.getElementById('tutor-hist');h.scrollTop=h.scrollHeight;}
 }
 
-async function sendReminderEmail(email,creditor,bureau,dateSent,dueDate){
-  await loadEmailJS();
-  try{
-    await emailjs.send('service_l3mkf0e','template_ty0po4s',{
-      name:document.getElementById('your-name').value||'ScoreBoss User',
-      email:email,creditor:creditor,bureau:bureau,date_sent:dateSent,due_date:dueDate
-    });
-    alert('Reminder email sent to '+email+'!');
-  }catch(err){alert('Email error: '+(err.text||JSON.stringify(err)));}
+// ── SPEECH ────────────────────────────────────────────────────
+function speak(text,rate=0.85){
+  if(!('speechSynthesis' in window))return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='es-ES';u.rate=rate;
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.lang.startsWith('es'));
+  if(v)u.voice=v;
+  window.speechSynthesis.speak(u);
 }
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  load();render();renderCard();renderPhrases();nextQuiz();
+  document.getElementById('coach-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askCoach();}});
+  document.getElementById('tutor-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askTutor();}});
+  if('speechSynthesis' in window){
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+  }
+});
 </script>
 </body>
 </html>

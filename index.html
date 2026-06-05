@@ -211,6 +211,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <aside class="sidebar">
   <div class="logo">
     <h1>Makisha's Life HQ</h1>
+    <div style="font-size:11px;color:var(--green);font-style:italic;margin-top:4px;letter-spacing:0.02em">Consistency Over Perfection</div>
     <div class="sub" id="sidebar-date"></div>
   </div>
   <div class="nav-section">Main</div>
@@ -220,7 +221,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <button class="nav-item" onclick="showView('trading')"><span class="ni">📈</span>Trading</button>
   <button class="nav-item" onclick="showView('fitness')"><span class="ni">💪</span>Fitness & Gym</button>
   <button class="nav-item" onclick="showView('credit')"><span class="ni">💳</span>Credit & Finance</button>
-  <button class="nav-item" onclick="showView('spanish')"><span class="ni">🇲🇽</span>Spanish Studio</button>
+  <button class="nav-item" onclick="showView('spanish')"><span class="ni">🌎</span>Spanish Studio</button>
   <button class="nav-item" onclick="showView('art')"><span class="ni">🖼️</span>Art Sales</button>
   <button class="nav-item" onclick="showView('investing')"><span class="ni">💰</span>Investing</button>
   <div class="streak-pill">
@@ -239,6 +240,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="ph">
     <h2>Daily Command Center</h2>
     <p>Track every goal. Stack wins. Stay unstoppable.</p>
+    <div style="font-size:13px;color:var(--green);font-style:italic;margin-top:6px;letter-spacing:0.02em">✦ Consistency Over Perfection ✦</div>
     <div class="date-badge" id="dash-date"></div>
   </div>
   <div class="pillars" id="pillars"></div>
@@ -257,7 +259,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div style="display:flex;flex-wrap:wrap;gap:7px">
           <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="btn">📚 RE Exam Prep ↗</a>
           <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
-          <button class="btn" onclick="showView('spanish')">🇲🇽 Spanish Studio</button>
+          <button class="btn" onclick="showView('spanish')">🌎 Spanish Studio</button>
         </div>
       </div>
     </div>
@@ -270,7 +272,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="card">
         <div class="ct">AI Life Coach</div>
-        <div class="cout" id="coach-out">Hit "Daily Brief" for your personalized focus, or ask me anything.</div>
+        <div class="cout" id="coach-out">Click "Daily Brief" or type a question — opens Claude with your full goal context loaded. 🚀</div>
         <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
         <div class="brow2">
           <button class="btn" onclick="coachMe()">Daily brief ↗</button>
@@ -731,7 +733,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <!-- ==================== SPANISH ==================== -->
 <div class="view" id="view-spanish">
   <div class="ph">
-    <h2>🇲🇽 Spanish Studio</h2>
+    <h2>🌎 Spanish Studio</h2>
     <p>Goal: Fluent in 6 months. Daily practice = fluency. Let's go.</p>
   </div>
   <div class="card" style="margin-bottom:18px">
@@ -886,7 +888,7 @@ const GOALS=[
     {id:"cr2",l:"Confirm on-time payment is scheduled",pts:20},
     {id:"cr3",l:"Verify utilization under 30% on all cards",pts:15},
     {id:"cr4",l:"Research home equity loan lenders",pts:10}]},
-  {id:"sp",icon:"🇲🇽",name:"Spanish",color:"#a78bfa",desc:"Fluent in 6 months",tasks:[
+  {id:"sp",icon:"🌎",name:"Spanish",color:"#a78bfa",desc:"Fluent in 6 months",tasks:[
     {id:"sp1",l:"Complete Spanish session (15 min min)",pts:15},
     {id:"sp2",l:"Practice speaking 10 sentences aloud",pts:15},
     {id:"sp3",l:"Watch/listen to Spanish content",pts:10}]},
@@ -1145,25 +1147,27 @@ function renderWins(){
 }
 
 // ── AI COACH ──────────────────────────────────────────────────
-async function coachMe(){
-  document.getElementById('coach-in').value="Give me my daily priority focus right now. What should I attack first based on my progress, and give me one strong motivational push.";
-  await askCoach();
-}
-async function askCoach(){
-  const inp=document.getElementById('coach-in');
-  const q=inp.value.trim();if(!q)return;
-  inp.value='';
-  const out=document.getElementById('coach-out');
-  out.innerHTML='<span class="spin"></span>Thinking...';
+function buildCoachContext(){
   const pts=getTotalPts();
   const done=[],pending=[];
-  GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(`${g.name}: ${t.l}`);}));
-  const sys=`You are Makisha's elite life coach and accountability partner. She is a driven Black entrepreneur in Atlanta, GA with these active goals: (1) GA Real Estate License → Property Manager → CAM Certified, currently wholesaling land+houses 90% automated via GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals, trading GBP/JPY and XAU/USD with a signal dashboard, (3) Daily fitness, researching Burn Bootcamp franchise ownership, (4) Raise credit score to 620+ to pull equity from her free-and-clear home — to buy a Tesla, do home improvements, and clear $19k in credit debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy and social media, (7) Build dividend stock + crypto portfolio. Today: ${pts} points earned. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}. Be direct, warm, no-nonsense, and energizing. Speak like a trusted advisor who fully believes in her. Under 140 words.`;
-  try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:q}]})});
-    const d=await r.json();
-    out.textContent=d.content?.find(c=>c.type==='text')?.text||"Try again in a moment.";
-  }catch(e){out.textContent="Connection issue — try again.";}
+  GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(g.name+': '+t.l);}));
+  return `You are my life coach. I am Makisha, a Black entrepreneur in Atlanta GA. My goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated in GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals trading GBP/JPY and XAU/USD, (3) Daily fitness + researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from my free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio. Today I earned ${pts} points. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}.`;
+}
+
+function coachMe(){
+  const ctx=buildCoachContext();
+  const prompt=encodeURIComponent(ctx+'\n\nGive me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
+  window.open('https://claude.ai/new?q='+prompt,'_blank');
+}
+
+function askCoach(){
+  const inp=document.getElementById('coach-in');
+  const q=inp.value.trim();
+  const ctx=buildCoachContext();
+  const prompt=encodeURIComponent(ctx+'\n\nMy question: '+q);
+  window.open('https://claude.ai/new?q='+prompt,'_blank');
+  inp.value='';
+  document.getElementById('coach-out').textContent='Opening Claude with your context loaded... ✓';
 }
 
 // ── SPANISH PROGRESS ──────────────────────────────────────────
@@ -1315,21 +1319,15 @@ function nextListen(){listenIdx++;updateListenCard();}
 // ── AI TUTOR ──────────────────────────────────────────────────
 let tutorMsgs=[];
 let msgId=0;
-async function askTutor(){
+function askTutor(){
   const inp=document.getElementById('tutor-in');
   const q=inp.value.trim();if(!q)return;
   inp.value='';
   addMsg(q,'user');
-  const loadId=addMsg('Pensando...','ai');
-  const sys=`You are an enthusiastic, expert bilingual Spanish tutor helping Makisha become fluent in 6 months. She is a Black entrepreneur in Atlanta, GA — real estate investor and wholesaler, funded forex trader, aspiring gym franchise owner. Make Spanish practical and immediately useful for her life. Always include pronunciation guides in parentheses when teaching new words. Give English translations for all Spanish examples. Use encouragement and energy. Keep responses under 180 words. Format clearly with line breaks for readability.`;
-  tutorMsgs.push({role:"user",content:q});
-  try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:tutorMsgs})});
-    const d=await r.json();
-    const txt=d.content?.find(c=>c.type==='text')?.text||"Try again.";
-    tutorMsgs.push({role:"assistant",content:txt});
-    updateMsg(loadId,txt);
-  }catch(e){updateMsg(loadId,"Connection issue — try again.");}
+  const sys='You are my bilingual Spanish tutor. I am Makisha, a Black entrepreneur in Atlanta GA working toward Spanish fluency in 6 months. I work in real estate, trading, and fitness. Make lessons practical for my life. Always include pronunciation guides and English translations. Be encouraging and energetic.';
+  const prompt=encodeURIComponent(sys+'\n\nStudent question: '+q);
+  addMsg('Opening Claude as your Spanish tutor... ✓ Check the new tab!','ai');
+  window.open('https://claude.ai/new?q='+prompt,'_blank');
 }
 function spQuick(q){document.getElementById('tutor-in').value=q;askTutor();}
 function addMsg(text,role){

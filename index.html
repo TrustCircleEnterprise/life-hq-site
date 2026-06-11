@@ -896,10 +896,10 @@ const GOALS=[
     {id:"sp1",l:"Complete Spanish session (15 min min)",pts:15},
     {id:"sp2",l:"Practice speaking 10 sentences aloud",pts:15},
     {id:"sp3",l:"Watch/listen to Spanish content",pts:10}]},
-  {id:"ar",icon:"🖼️",name:"Art Sales",color:"#f472b6",desc:"List & sell diamond paintings",tasks:[
-    {id:"ar1",l:"Post painting on social media",pts:10},
-    {id:"ar2",l:"List or update Etsy/eBay listing",pts:20},
-    {id:"ar3",l:"Work on current painting",pts:15}]},
+  {id:"ar",icon:"🖼️",name:"Art Sales",color:"#f472b6",desc:"Zenith Drip Co. — 90-Day Launch Plan",tasks:[
+    {id:"ar1",l:"Open Art Sales plan + complete today's day",pts:20},
+    {id:"ar2",l:"Post today's content (film / edit / post)",pts:20},
+    {id:"ar3",l:"Engage on 5-10 creators today",pts:15}]},
   {id:"iv",icon:"💰",name:"Investing",color:"#2dd4bf",desc:"Dividends + crypto growth",tasks:[
     {id:"iv1",l:"Review portfolio positions",pts:10},
     {id:"iv2",l:"Research 1 dividend stock or ETF",pts:15},
@@ -1101,7 +1101,12 @@ function renderTasks(){
       <span class="tpts">+${t.pts}pts</span>
     </div>`).join('');
   const linkView={re:'realestate',tr:'trading',fi:'fitness',cr:'credit',sp:'spanish',ar:'art',iv:'investing'}[g.id];
-  document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;
+  const externalLinks={ar:'https://trustcircleenterprise.github.io/art-sales/',sp:'https://trustcircleenterprise.github.io/spanish-studio/'};
+  if(externalLinks[g.id]){
+    document.getElementById('goal-roadmap-link').innerHTML=`<a href="${externalLinks[g.id]}" target="_blank" class="btn">Open ${g.name} day-by-day plan ↗</a>`;
+  } else {
+    document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;
+  }
 }
 
 function renderGoalDailies(){

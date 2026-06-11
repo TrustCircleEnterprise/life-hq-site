@@ -261,6 +261,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
           <a href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" class="btn">🌎 Spanish Studio ↗</a>
           <a href="https://trustcircleenterprise.github.io/credit-repair/" target="_blank" class="btn">💯 ScoreBoss ↗</a>
+          <a href="https://trustcircleenterprise.github.io/art-sales/" target="_blank" class="btn">🖼️ Art Sales Plan ↗</a>
           <a href="https://ninja.xleads.com/?logout=true" target="_blank" class="btn">🏠 xLeads Ninja ↗</a>
           <a href="https://app.xleads.com/Account/Account/LogOn?ReturnUrl=%2fMarketing%2fLeads%2fIndex%2fProperty#/" target="_blank" class="btn">📋 xLeads App ↗</a>
         </div>
@@ -275,7 +276,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="card">
         <div class="ct">AI Life Coach</div>
-        <div class="cout" id="coach-out">Click "Daily Brief" or type a question — opens Claude with your full goal context loaded. 🚀</div>
+        <div class="cout" id="coach-out">Type a question or hit "Daily Brief" — copies your full context then opens Claude. Just paste with Ctrl+V! 🚀</div>
         <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
         <div class="brow2">
           <button class="btn" onclick="coachMe()">Daily brief ↗</button>
@@ -1151,27 +1152,36 @@ function renderWins(){
 }
 
 // ── AI COACH ──────────────────────────────────────────────────
-function buildCoachContext(){
+function buildCoachContext(question){
   const pts=getTotalPts();
   const done=[],pending=[];
   GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(g.name+': '+t.l);}));
-  return `You are my life coach. I am Makisha, a Black entrepreneur in Atlanta GA. My goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated in GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals trading GBP/JPY and XAU/USD, (3) Daily fitness + researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from my free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio. Today I earned ${pts} points. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}.`;
+  return `You are my life coach. I am Makisha, a Black entrepreneur in Atlanta GA. My goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated in GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals trading GBP/JPY and XAU/USD, (3) Daily fitness + researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from my free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio. Today I earned ${pts} points. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}.
+
+${question}`;
 }
 
 function coachMe(){
-  const ctx=buildCoachContext();
-  const prompt=encodeURIComponent(ctx+'\n\nGive me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
-  window.open('https://claude.ai/new?q='+prompt,'_blank');
+  const ctx=buildCoachContext('Give me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
+  navigator.clipboard.writeText(ctx).then(()=>{
+    document.getElementById('coach-out').textContent='✓ Copied to clipboard! Now click below to open Claude and paste (Ctrl+V).';
+    setTimeout(()=>window.open('https://claude.ai/new','_blank'),600);
+  }).catch(()=>{
+    document.getElementById('coach-out').textContent=ctx;
+  });
 }
 
 function askCoach(){
   const inp=document.getElementById('coach-in');
-  const q=inp.value.trim();
-  const ctx=buildCoachContext();
-  const prompt=encodeURIComponent(ctx+'\n\nMy question: '+q);
-  window.open('https://claude.ai/new?q='+prompt,'_blank');
-  inp.value='';
-  document.getElementById('coach-out').textContent='Opening Claude with your context loaded... ✓';
+  const q=inp.value.trim(); if(!q)return;
+  const ctx=buildCoachContext('My question: '+q);
+  navigator.clipboard.writeText(ctx).then(()=>{
+    inp.value='';
+    document.getElementById('coach-out').textContent='✓ Copied! Opening Claude now — just paste with Ctrl+V.';
+    setTimeout(()=>window.open('https://claude.ai/new','_blank'),600);
+  }).catch(()=>{
+    document.getElementById('coach-out').textContent=ctx;
+  });
 }
 
 // ── SPANISH PROGRESS ──────────────────────────────────────────

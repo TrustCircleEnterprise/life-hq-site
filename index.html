@@ -221,7 +221,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <button class="nav-item" onclick="showView('trading')"><span class="ni">📈</span>Trading</button>
   <button class="nav-item" onclick="showView('fitness')"><span class="ni">💪</span>Fitness & Gym</button>
   <button class="nav-item" onclick="showView('credit')"><span class="ni">💳</span>Credit & Finance</button>
-  <button class="nav-item" onclick="showView('spanish')"><span class="ni">🌎</span>Spanish Studio</button>
+  <a class="nav-item" href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" style="text-decoration:none"><span class="ni">🌎</span>Spanish Studio ↗</a>
   <button class="nav-item" onclick="showView('art')"><span class="ni">🖼️</span>Art Sales</button>
   <button class="nav-item" onclick="showView('investing')"><span class="ni">💰</span>Investing</button>
   <div class="streak-pill">
@@ -260,6 +260,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="btn">📚 RE Exam Prep ↗</a>
           <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
           <a href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" class="btn">🌎 Spanish Studio ↗</a>
+          <a href="https://trustcircleenterprise.github.io/credit-repair/" target="_blank" class="btn">💯 ScoreBoss ↗</a>
+          <a href="https://ninja.xleads.com/?logout=true" target="_blank" class="btn">🏠 xLeads Ninja ↗</a>
+          <a href="https://app.xleads.com/Account/Account/LogOn?ReturnUrl=%2fMarketing%2fLeads%2fIndex%2fProperty#/" target="_blank" class="btn">📋 xLeads App ↗</a>
         </div>
       </div>
     </div>
@@ -1037,7 +1040,7 @@ function load(){
 function today(){return new Date().toLocaleDateString('en-CA');}
 
 // ── NAVIGATION ────────────────────────────────────────────────
-const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,spanish:5,art:6,investing:7};
+const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,art:5,investing:6};
 function showView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));

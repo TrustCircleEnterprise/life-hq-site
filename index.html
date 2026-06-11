@@ -3,1367 +3,283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Makisha's Life HQ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<title>Makisha's Forex Dashboard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d0d0f;--bg2:#18181c;--bg3:#1e1e22;--bg4:#222226;
-  --border:#2a2a2f;--border2:#38383f;
-  --text:#ffffff;--text2:#d0d0e4;--text3:#9898b0;
-  --green:#00d17a;--green-dim:#00a85f;--green-bg:rgba(0,209,122,0.08);--green-border:rgba(0,209,122,0.25);
-  --blue:#4d9eff;--blue-bg:rgba(77,158,255,0.09);--blue-border:rgba(77,158,255,0.25);
-  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.09);--amber-border:rgba(245,166,35,0.25);
-  --coral:#ff6b6b;--coral-bg:rgba(255,107,107,0.09);--coral-border:rgba(255,107,107,0.25);
-  --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.09);--purple-border:rgba(167,139,250,0.25);
-  --pink:#f472b6;--pink-bg:rgba(244,114,182,0.09);--pink-border:rgba(244,114,182,0.25);
-  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.09);--teal-border:rgba(45,212,191,0.25);
-  --font:'DM Sans',sans-serif;
-  --r:10px;--rl:14px;--rxl:20px;
-}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* LAYOUT */
-.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
-.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
-.main{padding:30px 36px;overflow-y:auto;max-width:1100px}
-
-/* SIDEBAR */
-.logo{padding:4px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:10px}
-.logo h1{font-size:14px;font-weight:600;letter-spacing:-0.02em}
-.logo .sub{font-size:11px;color:var(--text3);margin-top:3px}
-.nav-section{font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;padding:14px 8px 5px;font-weight:500}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:13px;color:#c0c0d0;transition:all 0.15s;border:none;background:transparent;width:100%;text-align:left}
-.nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.nav-item .ni{font-size:15px;width:18px;text-align:center;flex-shrink:0}
-.streak-pill{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
-.streak-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--r);padding:12px;text-align:center}
-.streak-num{font-size:28px;font-weight:600;color:var(--amber);display:block}
-.streak-lbl{font-size:11px;color:var(--text3);margin-top:2px}
-
-/* PAGE */
-.view{display:none}.view.active{display:block}
-.ph{margin-bottom:24px}
-.ph h2{font-size:22px;font-weight:600;letter-spacing:-0.03em}
-.ph p{font-size:13px;color:#b8b8cc;margin-top:5px;line-height:1.6}
-.date-badge{font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:3px 10px;display:inline-block;margin-top:8px}
-
-/* CARDS */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px}
-.ct{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-
-/* PILLARS */
-.pillars{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-bottom:20px}
-.pcard{background:#1c1c20;border:1px solid var(--border);border-radius:var(--rl);padding:12px;cursor:pointer;transition:all 0.15s;text-align:left;width:100%}
-.pcard:hover{border-color:var(--border2);background:var(--bg3)}
-.pcard.active{border-color:var(--green);background:var(--green-bg)}
-.pcard .icon{font-size:18px;display:block;margin-bottom:6px}
-.pcard .pname{font-size:12px;font-weight:500;display:block;color:#ffffff}
-.pcard .pdone{font-size:10px;color:#aaaacc;display:block;margin-top:2px}
-.mbar{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden}
-.mfill{height:3px;border-radius:2px;transition:width 0.4s}
-
-/* TASKS */
-.task-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
-.task-row:first-child{border-top:none;padding-top:0}
-.chk{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--border2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;margin-top:1px}
-.chk.on{background:var(--green);border-color:var(--green)}
-.chk.on::after{content:'✓';font-size:10px;color:#000;font-weight:700}
-.tl{font-size:13px;flex:1;line-height:1.5;cursor:pointer}
-.tl.done{text-decoration:line-through;color:var(--text3)}
-.tpts{font-size:11px;color:var(--text3);white-space:nowrap}
-
-/* SCORE */
-.score-big{font-size:44px;font-weight:600;color:var(--green);text-align:center;line-height:1}
-.score-sub{font-size:11px;color:#9999b0;text-align:center;margin-bottom:14px}
-.brow{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--border)}
-.blbl{font-size:11px;color:var(--text2);width:64px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.btrack{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
-.bfill{height:4px;border-radius:2px;transition:width 0.4s}
-.bpct{font-size:10px;color:var(--text3);min-width:26px;text-align:right}
-
-/* COACH */
-.cout{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:13px;font-size:13px;line-height:1.7;min-height:80px;margin-bottom:10px;white-space:pre-wrap}
-.cin{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;font-size:13px;color:var(--text);font-family:var(--font);resize:none;height:56px;margin-bottom:7px;transition:border-color 0.15s}
-.cin:focus{outline:none;border-color:var(--green)}
-.brow2{display:flex;gap:7px}
-.btn{font-size:12px;padding:7px 14px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
-.btn:hover{background:var(--bg4);color:var(--text)}
-.btn.go{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
-.btn.go:hover{background:var(--green-dim)}
-
-/* WINS */
-.wrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border);font-size:13px}
-.wrow:first-child{border-top:none}
-
-/* GOAL ROADMAP */
-.roadmap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-.phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.phase-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px}
-.phase-num{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px}
-.phase-title{font-size:14px;font-weight:500;margin-bottom:10px}
-.step-list{list-style:none}
-.step-list li{font-size:12px;color:var(--text2);padding:5px 0;border-top:1px solid var(--border);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-.step-list li:first-child{border-top:none;padding-top:0}
-.step-num{width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.resource-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;text-decoration:none;transition:border-color 0.15s}
-.resource-card:hover{border-color:var(--border2)}
-.resource-icon{font-size:22px;flex-shrink:0}
-.resource-title{font-size:13px;font-weight:500;color:var(--text)}
-.resource-sub{font-size:11px;color:var(--text2);margin-top:2px}
-.resource-arrow{font-size:16px;color:var(--text3);margin-left:auto}
-.launch-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;font-family:var(--font);transition:all 0.15s;border:none}
-.launch-btn.primary{background:var(--green);color:#000}
-.launch-btn.primary:hover{background:var(--green-dim)}
-.launch-btn.outline{background:transparent;border:1px solid var(--border2);color:var(--text)}
-.launch-btn.outline:hover{background:var(--bg3)}
-.milestone-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-top:1px solid var(--border)}
-.milestone-row:first-child{border-top:none;padding-top:0}
-.ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
-.ms-done{background:var(--green)}
-.ms-cur{background:var(--amber);box-shadow:0 0 6px var(--amber)}
-.ms-fut{background:var(--border2)}
-.ms-label{font-size:13px;flex:1;line-height:1.5}
-.ms-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.tab-bar{display:flex;gap:5px;margin-bottom:18px;flex-wrap:wrap}
-.tab{font-size:12px;padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
-.tab:hover{color:var(--text);border-color:var(--border2)}
-.tab.on{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
-.goal-tab-content{display:none}.goal-tab-content.vis{display:block}
-
-/* SPANISH */
-.sp-prog-bar{height:8px;background:var(--border);border-radius:4px;margin-bottom:6px;overflow:hidden}
-.sp-prog-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 0.6s}
-.sp-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
-.sp-tab{font-size:12px;padding:7px 16px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
-.sp-tab:hover{border-color:var(--border2);color:var(--text)}
-.sp-tab.active{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
-.sp-sec{display:none}.sp-sec.vis{display:block}
-.flashcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rxl);padding:40px 24px;text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:14px}
-.flashcard:hover{border-color:var(--green-border)}
-.flashcard.flipped{border-color:var(--green-border);background:var(--green-bg)}
-.fc-cat{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:10px}
-.fc-es{font-size:32px;font-weight:500;letter-spacing:-0.02em;margin-bottom:8px}
-.fc-en{font-size:15px;color:var(--text2);display:none;margin-top:4px}
-.fc-tap{font-size:12px;color:var(--text3);margin-top:14px}
-.aud-btn{background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--teal);cursor:pointer;font-family:var(--font);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;margin:10px auto 0}
-.aud-btn:hover{background:var(--teal-bg);border-color:var(--teal)}
-.fc-btns{display:flex;gap:10px;justify-content:center;margin-top:12px}
-.fc-btn{font-size:13px;padding:9px 22px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
-.fc-btn.good{border-color:var(--green);color:var(--green)}.fc-btn.good:hover{background:var(--green-bg)}
-.fc-btn.again{border-color:var(--coral);color:var(--coral)}.fc-btn.again:hover{background:var(--coral-bg)}
-.phrase-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--bg3);border-radius:var(--r);margin-bottom:6px;border:1px solid var(--border)}
-.p-es{font-size:14px;font-weight:500}.p-en{font-size:11px;color:var(--text2);margin-top:2px}
-.play-btn{background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--teal);cursor:pointer;white-space:nowrap;font-family:var(--font);transition:all 0.15s}
-.play-btn:hover{background:var(--teal);color:#000}
-.pcat-btn{font-size:11px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s;margin-bottom:10px}
-.pcat-btn.on{background:var(--purple-bg);border-color:var(--purple);color:var(--purple)}
-.quiz-q{font-size:24px;font-weight:500;text-align:center;margin:16px 0 22px;letter-spacing:-0.02em;line-height:1.3}
-.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qopt{font-size:13px;padding:13px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-family:var(--font);text-align:center;transition:all 0.15s}
-.qopt:hover:not(.locked){border-color:var(--border2);background:var(--bg4)}
-.qopt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
-.qopt.wrong{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
-.qz-stats{display:flex;gap:20px;justify-content:center;margin-bottom:16px}
-.qs{text-align:center}.qs-n{font-size:26px;font-weight:600;color:var(--green)}.qs-l{font-size:10px;color:var(--text3)}
-.tutor-hist{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:16px;min-height:200px;max-height:360px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:86%;padding:10px 13px;border-radius:var(--r);font-size:13px;line-height:1.6}
-.msg.user{background:var(--green-bg);border:1px solid var(--green-border);color:var(--text);align-self:flex-end}
-.msg.ai{background:var(--bg4);border:1px solid var(--border);color:var(--text);align-self:flex-start;white-space:pre-wrap}
-.qbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.qbtn{font-size:11px;padding:5px 11px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all 0.15s}
-.qbtn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-bg)}
-.listen-main{text-align:center;padding:32px 20px;background:var(--bg3);border-radius:var(--rl);border:1px solid var(--border);margin-bottom:14px}
-.listen-cat{font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:10px}
-.listen-es{font-size:30px;font-weight:500;letter-spacing:-0.02em;margin-bottom:6px}
-.listen-en{font-size:14px;color:var(--text2);margin-bottom:20px}
-.listen-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.sp-stat-row{display:flex;gap:20px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border);margin-top:14px}
-.sp-stat{text-align:center}.sp-stat-n{font-size:24px;font-weight:600;color:var(--green)}.sp-stat-l{font-size:10px;color:var(--text3)}
-.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:5px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.info-box{padding:12px 16px;border-radius:var(--r);font-size:13px;line-height:1.6;margin-bottom:12px}
-.info-box.green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--text)}
-.info-box.amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--text)}
-.info-box.blue{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--text)}
-
-@media(max-width:768px){
-  .app{grid-template-columns:1fr}
-  .sidebar{position:fixed;bottom:0;top:auto;height:auto;width:100%;flex-direction:row;overflow-x:auto;padding:8px;border-right:none;border-top:1px solid var(--border);z-index:100;gap:3px}
-  .logo,.nav-section,.streak-pill{display:none}
-  .nav-item{flex-direction:column;gap:2px;padding:6px 8px;font-size:9px;min-width:52px}
-  .nav-item .ni{font-size:16px}
-  .main{padding:14px;padding-bottom:85px}
-  .pillars{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
-  .phase-grid,.g2{grid-template-columns:1fr}
-  .quiz-opts{grid-template-columns:1fr}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+.dash { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 8px; }
+.header h1 { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+.header p { font-size: 13px; color: #888; margin-top: 2px; }
+.refresh-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; padding: 8px 16px; cursor: pointer; border-radius: 8px; background: #fff; border: 1px solid #ddd; color: #1a1a1a; font-weight: 500; }
+.refresh-btn:hover { background: #f0f0f0; }
+.refresh-btn.spinning svg { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.alert-banner { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; background: #eaf3de; border: 1.5px solid #3b6d11; margin-bottom: 1.25rem; }
+.alert-banner-title { font-size: 14px; font-weight: 600; color: #27500a; }
+.alert-banner-sub { font-size: 12px; color: #3b6d11; margin-top: 2px; }
+.alert-banner-sent { font-size: 12px; font-weight: 600; color: #27500a; background: #c0dd97; padding: 4px 12px; border-radius: 8px; white-space: nowrap; }
+.pairs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.pair-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; padding: 1.25rem; }
+.pair-card.ready-long { border: 2px solid #1d9e75; background: #f4fcf8; }
+.pair-card.ready-short { border: 2px solid #d85a30; background: #fdf4f0; }
+.pair-card.forming { border: 2px solid #ef9f27; background: #fffbf2; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.pair-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+.pair-sub { font-size: 12px; color: #888; margin-top: 2px; }
+.price-val { font-size: 22px; font-weight: 600; color: #1a1a1a; text-align: right; }
+.dir-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 8px; margin-top: 5px; }
+.badge-long { background: #e1f5ee; color: #085041; }
+.badge-short { background: #faece7; color: #712b13; }
+.badge-flat { background: #f0f0f0; color: #888; }
+.status-strip { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; margin-bottom: 1rem; font-size: 13px; font-weight: 600; }
+.s-ready { background: #e1f5ee; color: #0f6e56; }
+.s-forming { background: #faeeda; color: #854f0b; }
+.s-watch { background: #f5f5f5; color: #888; }
+.section-label { font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+.ema-rows { margin-bottom: 1rem; }
+.ema-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 8px; background: #f9f9f9; margin-bottom: 3px; }
+.ema-left { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #666; }
+.ema-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-20 { background: #378add; }
+.dot-50 { background: #d85a30; }
+.ema-val { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.crossover-box { padding: 10px 12px; border-radius: 8px; border: 1px solid #e5e5e5; margin-bottom: 1rem; background: #fafafa; }
+.crossover-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ema-pill { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.p20 { background: #e6f1fb; color: #185fa5; }
+.p50 { background: #faece7; color: #993c1d; }
+.cross-signal { font-size: 13px; font-weight: 600; margin-left: 4px; }
+.bullish { color: #0f6e56; }
+.bearish { color: #993c1d; }
+.flat-sig { color: #888; }
+.cross-desc { font-size: 12px; color: #888; margin-top: 6px; }
+.sr-rows { margin-bottom: 1rem; }
+.sr-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+.sr-row:last-child { border-bottom: none; }
+.sr-left { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+.sr-dot-sup { width: 7px; height: 7px; border-radius: 50%; background: #1d9e75; }
+.sr-dot-res { width: 7px; height: 7px; border-radius: 50%; background: #d85a30; }
+.sr-val { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.sr-dist { font-size: 11px; color: #aaa; margin-left: 5px; font-weight: 400; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+.score-dots { display: flex; gap: 4px; margin-top: 4px; }
+.sdot { width: 10px; height: 10px; border-radius: 50%; background: #e0e0e0; }
+.sdot.f3 { background: #ef9f27; }
+.sdot.f4 { background: #1d9e75; }
+.rr-block { text-align: right; }
+.rr-label { font-size: 11px; color: #888; }
+.rr-val { font-size: 15px; font-weight: 600; margin-top: 2px; }
+.rr-good { color: #0f6e56; }
+.rr-warn { color: #854f0b; }
+.rr-bad { color: #993c1d; }
+.footer-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; flex-wrap: wrap; gap: 8px; }
+.last-upd { font-size: 12px; color: #aaa; }
+.poll-status { font-size: 12px; color: #888; display: flex; align-items: center; gap: 5px; }
+.poll-dot { width: 7px; height: 7px; border-radius: 50%; background: #1d9e75; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.loading-state { text-align: center; padding: 2.5rem; color: #888; font-size: 14px; }
+.error-state { text-align: center; padding: 2rem; color: #993c1d; font-size: 13px; }
+@media (max-width: 600px) {
+  .pairs-grid { grid-template-columns: 1fr; }
+  .price-val { font-size: 18px; }
 }
 </style>
 </head>
 <body>
-<div class="app">
-
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="logo">
-    <h1>Makisha's Life HQ</h1>
-    <div style="font-size:11px;color:var(--green);font-style:italic;margin-top:4px;letter-spacing:0.02em">Consistency Over Perfection</div>
-    <div class="sub" id="sidebar-date"></div>
-  </div>
-  <div class="nav-section">Main</div>
-  <button class="nav-item active" onclick="showView('dashboard')"><span class="ni">📊</span>Dashboard</button>
-  <div class="nav-section">Goal Roadmaps</div>
-  <button class="nav-item" onclick="showView('realestate')"><span class="ni">🏠</span>Real Estate</button>
-  <button class="nav-item" onclick="showView('trading')"><span class="ni">📈</span>Trading</button>
-  <button class="nav-item" onclick="showView('fitness')"><span class="ni">💪</span>Fitness & Gym</button>
-  <button class="nav-item" onclick="showView('credit')"><span class="ni">💳</span>Credit & Finance</button>
-  <button class="nav-item" onclick="showView('spanish')"><span class="ni">🌎</span>Spanish Studio</button>
-  <button class="nav-item" onclick="showView('art')"><span class="ni">🖼️</span>Art Sales</button>
-  <button class="nav-item" onclick="showView('investing')"><span class="ni">💰</span>Investing</button>
-  <div class="streak-pill">
-    <div class="streak-box">
-      <span class="streak-num" id="streak-num">0</span>
-      <div class="streak-lbl">🔥 day streak</div>
-    </div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main">
-
-<!-- ==================== DASHBOARD ==================== -->
-<div class="view active" id="view-dashboard">
-  <div class="ph">
-    <h2>Daily Command Center</h2>
-    <p>Track every goal. Stack wins. Stay unstoppable.</p>
-    <div style="font-size:13px;color:var(--green);font-style:italic;margin-top:6px;letter-spacing:0.02em">✦ Consistency Over Perfection ✦</div>
-    <div class="date-badge" id="dash-date"></div>
-  </div>
-  <div class="pillars" id="pillars"></div>
-  <div class="g2" style="margin-bottom:14px">
+<div class="dash">
+  <div class="header">
     <div>
-      <div class="card" style="margin-bottom:14px">
-        <div class="ct" id="goal-panel-label">Select a goal above</div>
-        <div id="goal-header" style="padding:11px;background:var(--bg3);border-radius:var(--r);margin-bottom:11px;border:1px solid var(--border)">
-          <div style="font-size:13px;color:var(--text2)">Click a goal pillar to see today's tasks</div>
-        </div>
-        <div id="task-list"></div>
-        <div id="goal-roadmap-link" style="margin-top:12px"></div>
-      </div>
-      <div class="card">
-        <div class="ct">Quick Launch</div>
-        <div style="display:flex;flex-wrap:wrap;gap:7px">
-          <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="btn">📚 RE Exam Prep ↗</a>
-          <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
-          <button class="btn" onclick="showView('spanish')">🌎 Spanish Studio</button>
-        </div>
-      </div>
+      <h1>Makisha's Forex Dashboard</h1>
+      <p>EMA crossover &middot; S/R levels &middot; Auto alerts &middot; 1H candles</p>
     </div>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div class="card">
-        <div class="ct">Today's Score</div>
-        <div class="score-big" id="score-num">0</div>
-        <div class="score-sub">points earned</div>
-        <div id="score-bars"></div>
-      </div>
-      <div class="card">
-        <div class="ct">AI Life Coach</div>
-        <div class="cout" id="coach-out">Click "Daily Brief" or type a question — opens Claude with your full goal context loaded. 🚀</div>
-        <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
-        <div class="brow2">
-          <button class="btn" onclick="coachMe()">Daily brief ↗</button>
-          <button class="btn go" onclick="askCoach()">Ask ↗</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ct">Today's Wins</div>
-        <div id="wins-list"><div style="font-size:13px;color:var(--text3)">Complete tasks to log your wins.</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== REAL ESTATE ==================== -->
-<div class="view" id="view-realestate">
-  <div class="ph">
-    <h2>🏠 Real Estate Roadmap</h2>
-    <p>GA Salesperson License → Property Manager → CAM Certified. Full step-by-step plan.</p>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+      Refresh
+    </button>
   </div>
 
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('re','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('re','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('re','tools')">Tools & Links</button>
+  <div id="alertBanner"></div>
+
+  <div class="pairs-grid" id="pairsGrid">
+    <div class="loading-state">Fetching live data...</div>
   </div>
 
-  <div class="goal-tab-content vis" id="re-daily">
-    <div class="info-box green">Your exam prep tracker lives at <strong>your custom site</strong>. Use that daily alongside these tasks. The 14-day Kaplan plan is your primary study engine.</div>
-    <div class="card">
-      <div class="ct">Daily Checklist — Real Estate</div>
-      <div id="re-daily-tasks"></div>
-    </div>
+  <div class="footer-bar">
+    <div class="last-upd" id="lastUpd"></div>
+    <div class="poll-status"><div class="poll-dot"></div> Auto-refreshing every 5 min</div>
   </div>
-
-  <div class="goal-tab-content" id="re-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Phase 1 — Now</div>
-        <div class="phase-title">Pass the GA Salesperson Exam</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Complete your 75-hr pre-license course (Kaplan)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Follow the 14-day PSI exam plan daily</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Score 75%+ on practice tests consistently</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Book your PSI exam (Georgia Real Estate Commission)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Pass both portions: National (80 q) + State (72 q)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">6</span>Apply for license via GREC online portal</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--blue)">Phase 2 — After License</div>
-        <div class="phase-title">Become a Licensed Agent & Build Track Record</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Join a brokerage (consider eXp, Keller Williams, or boutique)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Complete 25 post-license hours within 1 year</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Close 3–5 residential or commercial transactions</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Build relationships with landlords and investors (your wholesale network)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Start managing 1–3 properties for investors you know</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--amber)">Phase 3 — 6-18 Months</div>
-        <div class="phase-title">Property Manager Role</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Manage 10+ units for investors in your network</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Set up property management systems in GHL</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Build tenant screening and lease automation</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Collect management fees (8–12% of monthly rent)</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Document processes for scale</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--purple)">Phase 4 — 18-36 Months</div>
-        <div class="phase-title">CAM Certification</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Meet CAM eligibility: 12 months in property mgmt</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Complete 40-hr CAM coursework (NAAEI approved)</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Pass the CAM exam through NAAEI</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Maintain certification with 8 CEU hours/year</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Scale to 50+ units under management</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">Milestones</div>
-      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Pass GA Real Estate Salesperson Exam</div><div class="ms-sub">Currently in progress — 14-day plan active</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Get licensed & join a brokerage</div><div class="ms-sub">Target: within 30 days of passing</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">First property under management</div><div class="ms-sub">Target: 3 months post-license</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">10+ units under management</div><div class="ms-sub">Target: 6–12 months</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">CAM Certification earned</div><div class="ms-sub">Target: 18–36 months</div></div></div>
-    </div>
-  </div>
-
-  <div class="goal-tab-content" id="re-tools">
-    <a href="https://trustcircleenterprise.github.io/ga-real-estate/?v=5" target="_blank" class="resource-card">
-      <span class="resource-icon">📚</span>
-      <div><div class="resource-title">GA Real Estate Exam — 14-Day Plan</div><div class="resource-sub">Your custom PSI exam tracker. Study daily here.</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://grec.state.ga.us/" target="_blank" class="resource-card">
-      <span class="resource-icon">🏛️</span>
-      <div><div class="resource-title">GREC — Georgia Real Estate Commission</div><div class="resource-sub">Official licensing portal. Apply here after passing.</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://home.kaplan.com/real-estate" target="_blank" class="resource-card">
-      <span class="resource-icon">📖</span>
-      <div><div class="resource-title">Kaplan Real Estate Education</div><div class="resource-sub">Your pre-license course provider.</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.naahq.org/education/cam" target="_blank" class="resource-card">
-      <span class="resource-icon">🎓</span>
-      <div><div class="resource-title">NAAEI — CAM Certification</div><div class="resource-sub">Official CAM certification body. Plan ahead for Phase 4.</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== TRADING ==================== -->
-<div class="view" id="view-trading">
-  <div class="ph">
-    <h2>📈 Trading Roadmap</h2>
-    <p>7 consecutive profitable days → consistent weekly withdrawals. GBP/JPY & XAU/USD.</p>
-  </div>
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('tr','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('tr','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('tr','tools')">Dashboard & Tools</button>
-  </div>
-  <div class="goal-tab-content vis" id="tr-daily">
-    <div class="info-box blue">Your Forex Dashboard has live signals, auto S/R, and your trade journal. Open it before every session. 4/4 confluence = trade. Anything less = wait.</div>
-    <div class="card"><div class="ct">Daily Checklist — Trading</div><div id="tr-daily-tasks"></div></div>
-  </div>
-  <div class="goal-tab-content" id="tr-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Pre-Session (6–8 AM)</div>
-        <div class="phase-title">Morning Setup</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Check economic calendar — news events today</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Open Forex Dashboard — check S/R levels</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Note current GBP/JPY and XAU/USD bias</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Set your max loss for the day (rule: stop at 2 losses)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Confirm you are in the right mindset to trade</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--blue)">During Session</div>
-        <div class="phase-title">Trade Execution Rules</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Wait for 4/4 confluence — never force a trade</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Confirm on TradingView before entering</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Risk only 4% per trade ($16 on $400 account)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Set SL beyond S/R + 5 pip buffer immediately</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Max 2 trades/day. Stop after 2 losses — no exceptions</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--amber)">Post-Session</div>
-        <div class="phase-title">Review & Journal</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Log every trade in your journal (dashboard auto-syncs)</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Note: did you follow all 4 rules?</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Screenshot any setups (winning or losing)</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Rate your discipline 1–10</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Identify 1 thing to improve tomorrow</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--purple)">7-Day Goal → Withdrawals</div>
-        <div class="phase-title">The Path to Weekly Income</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Track profitable days in a row — reset resets count</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Focus on CONSISTENCY not big wins — 1.5R every day</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Hit 7 profitable days → request first withdrawal</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Reinvest portion to grow account size</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Build to weekly withdrawal rhythm</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="goal-tab-content" id="tr-tools">
-    <div class="info-box blue">Your Forex Dashboard uses live Twelve Data API signals. It cannot be embedded here due to browser security rules (X-Frame-Options) — but it works perfectly in its own tab.</div>
-    <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="resource-card">
-      <span class="resource-icon">📈</span>
-      <div><div class="resource-title">Makisha's Forex Dashboard</div><div class="resource-sub">Live GBP/JPY & XAU/USD signals, confluence tracker, trade journal</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.tradingview.com" target="_blank" class="resource-card">
-      <span class="resource-icon">📊</span>
-      <div><div class="resource-title">TradingView</div><div class="resource-sub">Confirm setups visually before entering any trade</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.forexfactory.com/calendar" target="_blank" class="resource-card">
-      <span class="resource-icon">📅</span>
-      <div><div class="resource-title">Forex Factory Calendar</div><div class="resource-sub">Check high-impact news events before every session</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== FITNESS ==================== -->
-<div class="view" id="view-fitness">
-  <div class="ph"><h2>💪 Fitness & Gym Franchise Roadmap</h2><p>Daily discipline → Burn Bootcamp franchise ownership.</p></div>
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('fi','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('fi','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('fi','tools')">Resources</button>
-  </div>
-  <div class="goal-tab-content vis" id="fi-daily">
-    <div class="card"><div class="ct">Daily Checklist — Fitness</div><div id="fi-daily-tasks"></div></div>
-  </div>
-  <div class="goal-tab-content" id="fi-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Right Now — Daily</div>
-        <div class="phase-title">Build the Non-Negotiable Habit</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Train every single day — non-negotiable</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Log your workouts (time, exercises, reps)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Track macros — protein drives results</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Prioritize 7–8 hours sleep for recovery</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Visit a Burn Bootcamp location to experience it</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--blue)">Research Phase — 3-6 Months</div>
-        <div class="phase-title">Franchise Due Diligence</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Request the Burn Bootcamp FDD (Franchise Disclosure Document)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Study Item 19 of FDD — average unit revenue</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Understand startup costs ($150k–$350k range typically)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Talk to 3+ existing Burn Bootcamp franchisees</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Identify ideal Atlanta location / territory</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--amber)">Financing Phase</div>
-        <div class="phase-title">Secure the Capital</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Get credit to 680+ (lenders want 680 min for SBA)</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Apply for SBA 7(a) loan — most common franchise path</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Explore ROBS (Rollover Business Startups) if you have 401k</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Save or raise 20–30% cash injection required</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Get a franchise attorney to review agreements</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--coral)">Launch Phase</div>
-        <div class="phase-title">Open Your Gym</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">1</span>Sign franchise agreement & territory contract</li>
-          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">2</span>Complete Burn Bootcamp training program</li>
-          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">3</span>Lease and build out your location</li>
-          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">4</span>Hire and train staff</li>
-          <li><span class="step-num" style="background:var(--coral-bg);color:var(--coral)">5</span>Pre-launch marketing — sell founding memberships</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="goal-tab-content" id="fi-tools">
-    <a href="https://burnbootcamp.com/franchise" target="_blank" class="resource-card">
-      <span class="resource-icon">🔥</span>
-      <div><div class="resource-title">Burn Bootcamp Franchise Info</div><div class="resource-sub">Request FDD and territory info here</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.sba.gov/funding-programs/loans" target="_blank" class="resource-card">
-      <span class="resource-icon">🏦</span>
-      <div><div class="resource-title">SBA Loan Programs</div><div class="resource-sub">Primary funding path for franchise financing</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.franchisetimes.com" target="_blank" class="resource-card">
-      <span class="resource-icon">📰</span>
-      <div><div class="resource-title">Franchise Times</div><div class="resource-sub">Industry news, rankings, and franchise performance data</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== CREDIT ==================== -->
-<div class="view" id="view-credit">
-  <div class="ph"><h2>💳 Credit & Finance Roadmap</h2><p>620+ score → pull home equity → Tesla + home improvements + clear $19k.</p></div>
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('cr','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('cr','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('cr','tools')">Resources</button>
-  </div>
-  <div class="goal-tab-content vis" id="cr-daily">
-    <div class="card"><div class="ct">Daily Checklist — Credit</div><div id="cr-daily-tasks"></div></div>
-  </div>
-  <div class="goal-tab-content" id="cr-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Step 1 — Immediately</div>
-        <div class="phase-title">Know Your Exact Position</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Pull free report: AnnualCreditReport.com (all 3 bureaus)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>List every negative item with date and amount</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Calculate your current utilization ratio (balance ÷ limit)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Note your current score on each bureau</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Target: get all 3 bureaus to 620+</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--blue)">Step 2 — Fastest Wins</div>
-        <div class="phase-title">Boost Score Quickly</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">1</span>Pay down credit cards to under 30% utilization (fastest boost)</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">2</span>Under 10% utilization = maximum scoring benefit</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">3</span>Dispute any errors or inaccurate items in writing</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">4</span>Never miss a payment — set all minimums to autopay</li>
-          <li><span class="step-num" style="background:var(--blue-bg);color:var(--blue)">5</span>Ask for goodwill removal of any late payments</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--amber)">Step 3 — Hit 620</div>
-        <div class="phase-title">Home Equity Loan Approval</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">1</span>Get home appraised (your free & clear home is your asset)</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">2</span>Calculate 80% LTV — that's your max pull amount</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">3</span>Shop at least 3 lenders: banks, credit unions, online lenders</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">4</span>Compare rates — fixed HELOC vs lump-sum home equity loan</li>
-          <li><span class="step-num" style="background:var(--amber-bg);color:var(--amber)">5</span>Apply and close — funds arrive within 30–45 days</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--purple)">Step 4 — The Payout Plan</div>
-        <div class="phase-title">Use Equity Wisely</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">1</span>Clear $19k credit card debt first (eliminate high-interest)</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">2</span>Fund key home improvements (adds value to the property)</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">3</span>Purchase Tesla (factor monthly payment into budget)</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">4</span>Keep emergency fund untouched — 3 months expenses</li>
-          <li><span class="step-num" style="background:var(--purple-bg);color:var(--purple)">5</span>Make every HELOC payment on time to protect the home</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">Credit Score Milestones</div>
-      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Get to 580 — subprime threshold</div><div class="ms-sub">Focus: utilization under 30%, no new missed payments</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Hit 620 — equity loan eligible</div><div class="ms-sub">Most home equity lenders accept 620+</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">Reach 650 — better rates unlocked</div><div class="ms-sub">Significantly lower interest rates on any loan</div></div></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut"></div><div><div class="ms-label">700+ — prime borrower</div><div class="ms-sub">Best rates on everything, SBA loan eligibility</div></div></div>
-    </div>
-  </div>
-  <div class="goal-tab-content" id="cr-tools">
-    <a href="https://www.annualcreditreport.com" target="_blank" class="resource-card">
-      <span class="resource-icon">📋</span>
-      <div><div class="resource-title">AnnualCreditReport.com</div><div class="resource-sub">Free official reports from all 3 bureaus — pull monthly</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.creditkarma.com" target="_blank" class="resource-card">
-      <span class="resource-icon">💚</span>
-      <div><div class="resource-title">Credit Karma</div><div class="resource-sub">Free score monitoring and improvement recommendations</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.consumerfinance.gov/consumer-tools/debt-collection/" target="_blank" class="resource-card">
-      <span class="resource-icon">🛡️</span>
-      <div><div class="resource-title">CFPB Dispute Guide</div><div class="resource-sub">Official guide to disputing credit report errors</div></div>
-      <span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== ART ==================== -->
-<div class="view" id="view-art">
-  <div class="ph"><h2>🖼️ Diamond Art Sales Roadmap</h2><p>List, market, and sell your paintings consistently.</p></div>
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('ar','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('ar','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('ar','tools')">Platforms</button>
-  </div>
-  <div class="goal-tab-content vis" id="ar-daily">
-    <div class="card"><div class="ct">Daily Checklist — Art Sales</div><div id="ar-daily-tasks"></div></div>
-  </div>
-  <div class="goal-tab-content" id="ar-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Phase 1 — Set Up Shop</div>
-        <div class="phase-title">Get Your Listings Live</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Open Etsy shop — use keyword-rich name and bio</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Photograph every painting with good natural light</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Research comparable prices on Etsy for diamond art</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Write SEO descriptions: "handmade diamond art painting"</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>List all existing paintings — done inventory first</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--pink)">Phase 2 — Market It</div>
-        <div class="phase-title">Get Eyes on Your Work</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">1</span>Post process videos on TikTok — "satisfying" content performs</li>
-          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">2</span>Post finished pieces on Instagram and Facebook</li>
-          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">3</span>Join Facebook diamond art groups and post there</li>
-          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">4</span>Offer custom commissions — big price premium</li>
-          <li><span class="step-num" style="background:var(--pink-bg);color:var(--pink)">5</span>Use Pinterest — it drives long-term Etsy traffic</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="goal-tab-content" id="ar-tools">
-    <a href="https://www.etsy.com/sell" target="_blank" class="resource-card">
-      <span class="resource-icon">🛍️</span><div><div class="resource-title">Etsy Seller Hub</div><div class="resource-sub">Primary platform for handmade art sales</div></div><span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.ebay.com/sl/sell" target="_blank" class="resource-card">
-      <span class="resource-icon">📦</span><div><div class="resource-title">eBay Selling</div><div class="resource-sub">Secondary market — great for auction format on unique pieces</div></div><span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== INVESTING ==================== -->
-<div class="view" id="view-investing">
-  <div class="ph"><h2>💰 Investing Roadmap</h2><p>Build a dividend portfolio + crypto positions that grow consistently.</p></div>
-  <div class="tab-bar">
-    <button class="tab on" onclick="gTab('iv','daily')">Daily Tasks</button>
-    <button class="tab" onclick="gTab('iv','roadmap')">Step-by-Step Plan</button>
-    <button class="tab" onclick="gTab('iv','tools')">Platforms</button>
-  </div>
-  <div class="goal-tab-content vis" id="iv-daily">
-    <div class="card"><div class="ct">Daily Checklist — Investing</div><div id="iv-daily-tasks"></div></div>
-  </div>
-  <div class="goal-tab-content" id="iv-roadmap">
-    <div class="phase-grid">
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--green)">Foundation</div>
-        <div class="phase-title">Dividend Stock Strategy</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">1</span>Open brokerage: Fidelity or Schwab (no fees, dividend reinvestment)</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">2</span>Start with 3 core dividend ETFs: SCHD, VYM, JEPI</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">3</span>Set up automatic monthly investment — even $50/month compounds</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">4</span>Turn on DRIP — Dividend Reinvestment Plan</li>
-          <li><span class="step-num" style="background:var(--green-bg);color:var(--green)">5</span>Target $500/month in dividends as first milestone</li>
-        </ul>
-      </div>
-      <div class="phase-card">
-        <div class="phase-num" style="color:var(--teal)">Crypto Strategy</div>
-        <div class="phase-title">Build Positions Over Time</div>
-        <ul class="step-list">
-          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">1</span>Use Coinbase or Kraken — reputable, insured</li>
-          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">2</span>Core positions: 60% BTC, 30% ETH, 10% altcoins</li>
-          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">3</span>Dollar-cost average weekly — removes emotion</li>
-          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">4</span>Never invest more than you can hold for 3+ years</li>
-          <li><span class="step-num" style="background:var(--teal-bg);color:var(--teal)">5</span>Move long-term holdings to hardware wallet (Ledger)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="goal-tab-content" id="iv-tools">
-    <a href="https://www.fidelity.com" target="_blank" class="resource-card">
-      <span class="resource-icon">📈</span><div><div class="resource-title">Fidelity</div><div class="resource-sub">Best for dividend investing and automatic reinvestment</div></div><span class="resource-arrow">↗</span>
-    </a>
-    <a href="https://www.coinbase.com" target="_blank" class="resource-card">
-      <span class="resource-icon">🪙</span><div><div class="resource-title">Coinbase</div><div class="resource-sub">Reputable crypto exchange with recurring buy feature</div></div><span class="resource-arrow">↗</span>
-    </a>
-  </div>
-</div>
-
-<!-- ==================== SPANISH ==================== -->
-<div class="view" id="view-spanish">
-  <div class="ph">
-    <h2>🌎 Spanish Studio</h2>
-    <p>Goal: Fluent in 6 months. Daily practice = fluency. Let's go.</p>
-  </div>
-  <div class="card" style="margin-bottom:18px">
-    <div class="ct">6-Month Fluency Roadmap</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <span style="font-size:12px;color:var(--text2)" id="sp-week-label">Week 1 of 26</span>
-      <span style="font-size:12px;color:var(--green)" id="sp-pct">0%</span>
-    </div>
-    <div class="sp-prog-bar"><div class="sp-prog-fill" id="sp-prog-fill" style="width:0%"></div></div>
-    <div style="margin-top:14px">
-      <div class="milestone-row"><div class="ms-dot ms-cur"></div><div><div class="ms-label">Phase 1 — Survival Spanish (Weeks 1–4)</div><div class="ms-sub">Greetings, numbers, directions, basic questions. Aim: 200 words</div></div><span id="ms1d" style="font-size:11px;color:var(--text3)"></span></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms2d"></div><div><div class="ms-label">Phase 2 — Conversational (Weeks 5–12)</div><div class="ms-sub">Real estate, business, daily life vocab. Aim: 1,000 words</div></div><span id="ms2dt" style="font-size:11px;color:var(--text3)"></span></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms3d"></div><div><div class="ms-label">Phase 3 — Intermediate (Weeks 13–20)</div><div class="ms-sub">Past & future tense, complex sentences. Aim: 2,500 words</div></div><span id="ms3dt" style="font-size:11px;color:var(--text3)"></span></div>
-      <div class="milestone-row"><div class="ms-dot ms-fut" id="ms4d"></div><div><div class="ms-label">Phase 4 — Fluency Push (Weeks 21–26)</div><div class="ms-sub">Native content, business conversations, think in Spanish</div></div><span id="ms4dt" style="font-size:11px;color:var(--text3)"></span></div>
-    </div>
-    <div class="sp-stat-row">
-      <div class="sp-stat"><div class="sp-stat-n" id="sp-learned">0</div><div class="sp-stat-l">words learned</div></div>
-      <div class="sp-stat"><div class="sp-stat-n" id="sp-sessions">0</div><div class="sp-stat-l">sessions</div></div>
-      <div class="sp-stat"><div class="sp-stat-n" id="sp-acc">—</div><div class="sp-stat-l">quiz accuracy</div></div>
-      <div class="sp-stat"><div class="sp-stat-n" id="sp-str">0</div><div class="sp-stat-l">day streak</div></div>
-    </div>
-  </div>
-  <div class="sp-tabs">
-    <button class="sp-tab active" onclick="spTab('flashcards')">🃏 Flashcards</button>
-    <button class="sp-tab" onclick="spTab('phrases')">💬 Phrases</button>
-    <button class="sp-tab" onclick="spTab('quiz')">⚡ Quiz</button>
-    <button class="sp-tab" onclick="spTab('listen')">🎧 Listen & Repeat</button>
-    <button class="sp-tab" onclick="spTab('tutor')">🤖 AI Tutor</button>
-  </div>
-
-  <!-- FLASHCARDS -->
-  <div class="sp-sec vis" id="sp-flashcards">
-    <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-      <span style="font-size:12px;color:var(--text2)" id="fc-counter">Card 1 of 60</span>
-      <span style="font-size:12px;color:var(--green)" id="fc-learned-count">0 learned</span>
-    </div>
-    <div class="flashcard" id="fc-card" onclick="flipCard()">
-      <div class="fc-cat" id="fc-cat">Greetings</div>
-      <div class="fc-es" id="fc-es">Hola</div>
-      <div class="fc-en" id="fc-en">Hello</div>
-      <div class="fc-tap" id="fc-tap">tap to reveal · audio plays automatically</div>
-    </div>
-    <div style="text-align:center;margin-bottom:12px">
-      <button class="aud-btn" onclick="speakCurrent()">🔊 Hear pronunciation again</button>
-    </div>
-    <div class="fc-btns" id="fc-btns" style="display:none">
-      <button class="fc-btn again" onclick="nextCard(false)">🔄 Again</button>
-      <button class="fc-btn good" onclick="nextCard(true)">✓ Got it!</button>
-    </div>
-    <div class="card" style="margin-top:14px">
-      <div class="ct">Pronunciation Guide</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.7" id="fc-tip">Spanish vowels are always the same: A=ah, E=eh, I=ee, O=oh, U=oo. Audio plays when you reveal the card.</div>
-    </div>
-  </div>
-
-  <!-- PHRASES -->
-  <div class="sp-sec" id="sp-phrases">
-    <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Press 🔊 to hear any phrase spoken aloud in Spanish. Repeat it 3 times.</div>
-    <div id="phrase-cats" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
-    <div id="phrase-list"></div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="sp-sec" id="sp-quiz">
-    <div class="qz-stats">
-      <div class="qs"><div class="qs-n" id="qz-c">0</div><div class="qs-l">correct</div></div>
-      <div class="qs"><div class="qs-n" id="qz-t">0</div><div class="qs-l">attempted</div></div>
-      <div class="qs"><div class="qs-n" id="qz-s">0</div><div class="qs-l">streak</div></div>
-      <div class="qs"><div class="qs-n" id="qz-a">—</div><div class="qs-l">accuracy</div></div>
-    </div>
-    <div class="card">
-      <div style="text-align:center;margin-bottom:10px">
-        <button class="aud-btn" id="quiz-speak-btn" onclick="speakQuizWord()" style="display:none">🔊 Hear the word</button>
-      </div>
-      <div class="quiz-q" id="qz-q">Loading...</div>
-      <div class="quiz-opts" id="qz-opts"></div>
-      <div id="qz-result" style="text-align:center;font-size:13px;font-weight:500;min-height:26px;margin-top:12px"></div>
-    </div>
-    <div style="text-align:center;margin-top:12px">
-      <button class="btn go" onclick="nextQuiz()">Next question →</button>
-    </div>
-  </div>
-
-  <!-- LISTEN -->
-  <div class="sp-sec" id="sp-listen">
-    <div class="listen-main">
-      <div class="listen-cat" id="lp-cat">Daily Life</div>
-      <div class="listen-es" id="lp-es">Buenos días</div>
-      <div class="listen-en" id="lp-en">Good morning</div>
-      <div class="listen-btns">
-        <button class="btn go" onclick="listenPlay(0.65)">🔊 Play Slow</button>
-        <button class="btn" onclick="listenPlay(0.95)">⚡ Normal Speed</button>
-        <button class="btn" onclick="nextListen()">Next →</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">How to Practice</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.8">
-        1. Press <strong>Play Slow</strong> and listen carefully<br>
-        2. Pause — repeat the phrase exactly 3 times aloud<br>
-        3. Focus on matching the rhythm and vowel sounds<br>
-        4. Press <strong>Normal Speed</strong> and repeat again<br>
-        5. Move to the next phrase when it feels natural
-      </div>
-    </div>
-    <div class="card" style="margin-top:14px">
-      <div class="ct">All Phrases — Click to Play</div>
-      <div id="all-listen"></div>
-    </div>
-  </div>
-
-  <!-- AI TUTOR -->
-  <div class="sp-sec" id="sp-tutor">
-    <div class="qbtns" id="quick-btns">
-      <button class="qbtn" onclick="spQuick('Give me a sentence to translate from English to Spanish at beginner level')">Translate challenge ↗</button>
-      <button class="qbtn" onclick="spQuick('Explain ser vs estar with simple real-life examples')">Ser vs Estar ↗</button>
-      <button class="qbtn" onclick="spQuick('Quiz me conversationally in Spanish — keep it simple')">Conversation quiz ↗</button>
-      <button class="qbtn" onclick="spQuick('What are 10 must-know phrases for my real estate business in Spanish?')">RE phrases ↗</button>
-      <button class="qbtn" onclick="spQuick('Give me today\'s Spanish homework for a 6-month fluency goal — Week 1')">Today\'s homework ↗</button>
-      <button class="qbtn" onclick="spQuick('How do I conjugate AR verbs? Give examples I would actually use')">AR verbs ↗</button>
-    </div>
-    <div class="tutor-hist" id="tutor-hist">
-      <div class="msg ai">¡Hola! I'm your Spanish tutor — and I know your goal is fluency in 6 months. That's achievable with 20–30 minutes of daily practice.<br><br>Try one of the quick buttons above, or ask me anything. I'll keep it practical and relevant to your life — real estate, business, fitness. ¡Vamos!</div>
-    </div>
-    <textarea class="cin" id="tutor-in" placeholder="Ask in English or try in Spanish... e.g. ¿Cómo se dice 'contract' en español?"></textarea>
-    <button class="btn go" onclick="askTutor()">Send ↗</button>
-  </div>
-</div>
-
-</main>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
-const GOALS=[
-  {id:"re",icon:"🏠",name:"Real Estate",color:"#00d17a",desc:"Agent → Property Manager → CAM",tasks:[
-    {id:"re1",l:"Study 1 hr for RE exam (use exam tracker)",pts:20},
-    {id:"re2",l:"Log wholesale deal activity in GHL",pts:10},
-    {id:"re3",l:"Review 1 listing or property deal",pts:10},
-    {id:"re4",l:"Network with 1 investor or agent today",pts:15}]},
-  {id:"tr",icon:"📈",name:"Trading",color:"#4d9eff",desc:"7 profitable days → withdrawals",tasks:[
-    {id:"tr1",l:"Pre-market: news + open Forex Dashboard",pts:15},
-    {id:"tr2",l:"Execute plan — wait for 4/4 confluence",pts:25},
-    {id:"tr3",l:"Log trade journal entry",pts:15},
-    {id:"tr4",l:"Review P&L vs rules, rate discipline 1-10",pts:10}]},
-  {id:"fi",icon:"💪",name:"Fitness",color:"#ff6b6b",desc:"Daily training → Burn Bootcamp franchise",tasks:[
-    {id:"fi1",l:"Complete daily workout",pts:20},
-    {id:"fi2",l:"Log nutrition / macros",pts:10},
-    {id:"fi3",l:"Research Burn Bootcamp (FDD, costs, locations)",pts:15}]},
-  {id:"cr",icon:"💳",name:"Credit",color:"#f5a623",desc:"620+ score → home equity → Tesla + clear $19k",tasks:[
-    {id:"cr1",l:"Check credit score / monitor report",pts:10},
-    {id:"cr2",l:"Confirm on-time payment is scheduled",pts:20},
-    {id:"cr3",l:"Verify utilization under 30% on all cards",pts:15},
-    {id:"cr4",l:"Research home equity loan lenders",pts:10}]},
-  {id:"sp",icon:"🌎",name:"Spanish",color:"#a78bfa",desc:"Fluent in 6 months",tasks:[
-    {id:"sp1",l:"Complete Spanish session (15 min min)",pts:15},
-    {id:"sp2",l:"Practice speaking 10 sentences aloud",pts:15},
-    {id:"sp3",l:"Watch/listen to Spanish content",pts:10}]},
-  {id:"ar",icon:"🖼️",name:"Art Sales",color:"#f472b6",desc:"List & sell diamond paintings",tasks:[
-    {id:"ar1",l:"Post painting on social media",pts:10},
-    {id:"ar2",l:"List or update Etsy/eBay listing",pts:20},
-    {id:"ar3",l:"Work on current painting",pts:15}]},
-  {id:"iv",icon:"💰",name:"Investing",color:"#2dd4bf",desc:"Dividends + crypto growth",tasks:[
-    {id:"iv1",l:"Review portfolio positions",pts:10},
-    {id:"iv2",l:"Research 1 dividend stock or ETF",pts:15},
-    {id:"iv3",l:"Read 1 market / crypto update",pts:10}]}
+const WEBHOOK = 'https://script.google.com/macros/s/AKfycbwGScbfS1VY3koSVBaMugpWiiIAlY4aa_WRp9wYrsoQykd2yMZYF1UEs2z8q1YI5lU/exec';
+const API_KEY = '6609b2a381b14d95b39955a7fbb439cf';
+const PAIRS = [
+  { symbol: 'GBP/JPY', name: 'GBPJPY', decimals: 3, pipSize: 0.01 },
+  { symbol: 'XAU/USD', name: 'XAUUSD', decimals: 2, pipSize: 0.1 }
 ];
+const sentCache = {};
 
-const CARDS=[
-  {es:"Hola",en:"Hello",cat:"Greetings",tip:"The H is always silent. Say: Oh-lah. Used any time of day."},
-  {es:"Buenos días",en:"Good morning",cat:"Greetings",tip:"Boo-EH-nos DEE-ahs. Use until noon."},
-  {es:"Buenas tardes",en:"Good afternoon",cat:"Greetings",tip:"Boo-EH-nas TAR-des. Use noon to sunset."},
-  {es:"Buenas noches",en:"Good night",cat:"Greetings",tip:"Boo-EH-nas NOH-ches. Also used as goodbye at night."},
-  {es:"¿Cómo estás?",en:"How are you?",cat:"Greetings",tip:"KOH-moh ehs-TAHS. The ó accent changes the meaning — Cómo = how."},
-  {es:"Muy bien, gracias",en:"Very well, thank you",cat:"Greetings",tip:"Mwee BYEHN, GRAH-syahs. Memorize this automatic reply."},
-  {es:"Encantada",en:"Nice to meet you (female speaker)",cat:"Greetings",tip:"En-can-TAH-dah. Women say encantada, men say encantado."},
-  {es:"Por favor",en:"Please",cat:"Basics",tip:"Por fah-BOR. You'll say this constantly — own it."},
-  {es:"Gracias",en:"Thank you",cat:"Basics",tip:"GRAH-syahs. Two syllables. G is always hard in Spanish."},
-  {es:"De nada",en:"You're welcome",cat:"Basics",tip:"Deh NAH-dah. Literally 'of nothing'."},
-  {es:"Lo siento",en:"I'm sorry",cat:"Basics",tip:"Loh SYEHN-toh. Literally 'I feel it'."},
-  {es:"No entiendo",en:"I don't understand",cat:"Basics",tip:"Noh en-TYEHN-doh. Say this freely — native speakers will slow down."},
-  {es:"¿Puede repetir?",en:"Can you repeat?",cat:"Basics",tip:"PWEH-deh reh-peh-TEER. Essential for real conversations."},
-  {es:"Más despacio",en:"More slowly",cat:"Basics",tip:"Mahs des-PAH-syoh. Ask anyone to slow down."},
-  {es:"Quiero comprar",en:"I want to buy",cat:"Real Estate",tip:"KYEH-roh kom-PRAHR. Quiero = I want. Memorize this verb."},
-  {es:"¿Cuánto cuesta?",en:"How much does it cost?",cat:"Real Estate",tip:"KWAHN-toh KWEHS-tah. Use this for any negotiation."},
-  {es:"La propiedad",en:"The property",cat:"Real Estate",tip:"Lah proh-pyeh-DAHD. Your most-used real estate word."},
-  {es:"El contrato",en:"The contract",cat:"Real Estate",tip:"El kon-TRAH-toh. Same root as English 'contract'."},
-  {es:"El propietario",en:"The owner",cat:"Real Estate",tip:"El proh-pyeh-TAH-ryoh. Key word for property management."},
-  {es:"El alquiler",en:"The rent",cat:"Real Estate",tip:"El ahl-kee-LEHR. From verb alquilar = to rent."},
-  {es:"Firme aquí",en:"Sign here",cat:"Real Estate",tip:"FEER-meh ah-KEE. Essential for closings."},
-  {es:"La renta mensual",en:"The monthly rent",cat:"Real Estate",tip:"Lah REN-tah men-SWAHL. Mensual = monthly."},
-  {es:"Necesito dinero",en:"I need money",cat:"Finance",tip:"Neh-seh-SEE-toh dee-NEH-roh. Necesito = I need."},
-  {es:"El banco",en:"The bank",cat:"Finance",tip:"El BAHN-koh. Nearly identical to English."},
-  {es:"El préstamo",en:"The loan",cat:"Finance",tip:"El PREHS-tah-moh. Accent on the first syllable."},
-  {es:"El crédito",en:"Credit",cat:"Finance",tip:"El KREH-dee-toh. You'll hear this in every finance conversation."},
-  {es:"Invertir",en:"To invest",cat:"Finance",tip:"Een-behr-TEER. V and B sound identical in Spanish."},
-  {es:"Voy al gimnasio",en:"I'm going to the gym",cat:"Fitness",tip:"Boy ahl heem-NAH-syoh. G before i sounds like English H."},
-  {es:"Hago ejercicio",en:"I exercise",cat:"Fitness",tip:"AH-goh eh-hehr-SEE-syoh. Hago = I do."},
-  {es:"Estoy cansada",en:"I'm tired",cat:"Fitness",tip:"Ehs-TOY kan-SAH-dah. -a ending for female speaker."},
-  {es:"¡Vamos!",en:"Let's go!",cat:"Fitness",tip:"BAH-mohs! Explosive energy. Use this daily."},
-  {es:"El entrenamiento",en:"The workout/training",cat:"Fitness",tip:"El en-treh-nah-MYEHN-toh. Long but worth knowing."},
-  {es:"¿Dónde está?",en:"Where is it?",cat:"Navigation",tip:"DOHN-deh ehs-TAH. Está = is (for location)."},
-  {es:"A la derecha",en:"To the right",cat:"Navigation",tip:"Ah lah deh-REH-chah. Right hand = right direction."},
-  {es:"A la izquierda",en:"To the left",cat:"Navigation",tip:"Ah lah ees-KYEHR-dah. Trickiest direction word — practice it."},
-  {es:"Todo recto",en:"Straight ahead",cat:"Navigation",tip:"TOH-doh REHK-toh. Recto = straight/correct."},
-  {es:"Me llamo Makisha",en:"My name is Makisha",cat:"Identity",tip:"Meh YAH-moh. Double-L in Spanish sounds like English Y."},
-  {es:"Soy de Atlanta",en:"I'm from Atlanta",cat:"Identity",tip:"Soy deh Atlanta. Soy = I am (for permanent facts)."},
-  {es:"Soy empresaria",en:"I'm a businesswoman",cat:"Identity",tip:"Soy em-preh-SAH-ryah. Own this word — it's you."},
-  {es:"Trabajo mucho",en:"I work a lot",cat:"Work",tip:"Trah-BAH-hoh MOO-choh. Trabajo = I work."},
-  {es:"Tengo una reunión",en:"I have a meeting",cat:"Work",tip:"TEHN-goh oo-nah reh-oo-NYOHN. Tengo = I have."},
-  {es:"El negocio",en:"The business",cat:"Work",tip:"El neh-GOH-syoh. Related to English 'negotiate'."},
-  {es:"¿Qué hora es?",en:"What time is it?",cat:"Time",tip:"Keh OH-rah ehs. Hora = hour/time."},
-  {es:"Hoy",en:"Today",cat:"Time",tip:"OY. One syllable. H is always silent."},
-  {es:"Mañana",en:"Tomorrow / Morning",cat:"Time",tip:"Mah-NYAH-nah. The ñ sounds like 'ny' in canyon."},
-  {es:"La semana que viene",en:"Next week",cat:"Time",tip:"Lah seh-MAH-nah keh BYEH-neh. Viene = comes."},
-  {es:"Me gusta",en:"I like it",cat:"Opinions",tip:"Meh GOOS-tah. Literally 'it pleases me'. Use everywhere."},
-  {es:"No me gusta",en:"I don't like it",cat:"Opinions",tip:"Noh meh GOOS-tah. Just add No."},
-  {es:"¿Cómo se dice?",en:"How do you say?",cat:"Learning",tip:"KOH-moh seh DEE-seh. Your most powerful learning phrase."},
-  {es:"Quiero aprender español",en:"I want to learn Spanish",cat:"Learning",tip:"KYEH-roh ah-pren-DEHR. Say this every day — it's true."},
-  {es:"Practico cada día",en:"I practice every day",cat:"Learning",tip:"Prak-TEE-koh KAH-dah DEE-ah. Make this sentence true!"},
-  {es:"Hablo un poco",en:"I speak a little",cat:"Learning",tip:"AH-bloh oon POH-koh. Start every Spanish conversation with this."},
-  {es:"Estoy aprendiendo",en:"I am learning",cat:"Learning",tip:"Ehs-TOY ah-pren-DYEHN-doh. Present progressive — right now."},
-  {es:"Ser",en:"To be (permanent)",cat:"Grammar",tip:"Sehr. Soy (I am), eres (you are), es (he/she is). For identity and origin."},
-  {es:"Estar",en:"To be (temporary)",cat:"Grammar",tip:"Ehs-TAHR. Estoy (I am), estás (you are). For feelings and location."},
-  {es:"Tener",en:"To have",cat:"Grammar",tip:"Teh-NEHR. Tengo (I have), tienes (you have). Extremely common."},
-  {es:"Querer",en:"To want",cat:"Grammar",tip:"Keh-REHR. Quiero (I want). Followed by infinitive: Quiero comprar."},
-  {es:"Ir",en:"To go",cat:"Grammar",tip:"Eer. Irregular: Voy (I go), vas (you go), va (he/she goes)."},
-  {es:"Hacer",en:"To do / make",cat:"Grammar",tip:"Ah-SEHR. Hago (I do/make). H always silent. Very common."},
-  {es:"Poder",en:"Can / To be able to",cat:"Grammar",tip:"Poh-DEHR. Puedo (I can), puedes (you can). Key for requests."},
-  {es:"Necesitar",en:"To need",cat:"Grammar",tip:"Neh-seh-see-TAHR. Necesito (I need). Essential in business."}
-];
-
-const PHRASES=[
-  {cat:"Daily Life",items:[
-    {es:"Buenos días, ¿cómo amaneció?",en:"Good morning, how did you wake up?"},
-    {es:"Voy a trabajar ahora mismo",en:"I'm going to work right now"},
-    {es:"Tengo mucho que hacer hoy",en:"I have a lot to do today"},
-    {es:"Estoy muy ocupada",en:"I'm very busy"},
-    {es:"¿Qué vas a hacer hoy?",en:"What are you going to do today?"},
-    {es:"Hasta luego, cuídate",en:"See you later, take care"},
-  ]},
-  {cat:"Real Estate",items:[
-    {es:"¿Está disponible esta propiedad?",en:"Is this property available?"},
-    {es:"¿Cuál es el precio de venta?",en:"What is the selling price?"},
-    {es:"Necesito ver el contrato primero",en:"I need to see the contract first"},
-    {es:"¿Cuándo puedo entrar?",en:"When can I move in?"},
-    {es:"¿Incluye todos los servicios?",en:"Does it include all utilities?"},
-    {es:"Firme aquí, por favor",en:"Sign here, please"},
-  ]},
-  {cat:"Business",items:[
-    {es:"Hablemos de negocios",en:"Let's talk business"},
-    {es:"¿Podemos reunirnos mañana?",en:"Can we meet tomorrow?"},
-    {es:"Le enviaré un correo electrónico",en:"I will send you an email"},
-    {es:"¿Cuál es su presupuesto?",en:"What is your budget?"},
-    {es:"Necesito su firma aquí",en:"I need your signature here"},
-    {es:"Le llamaré mañana por la mañana",en:"I will call you tomorrow morning"},
-  ]},
-  {cat:"Fitness",items:[
-    {es:"¡Vamos al gimnasio ahora!",en:"Let's go to the gym now!"},
-    {es:"¿Cuántas repeticiones hago?",en:"How many reps do I do?"},
-    {es:"Estoy entrenando muy duro",en:"I'm training very hard"},
-    {es:"Me duelen los músculos hoy",en:"My muscles are sore today"},
-    {es:"Quiero mejorar mi condición física",en:"I want to improve my fitness"},
-    {es:"¡Tú puedes lograrlo!",en:"You can achieve it!"},
-  ]},
-  {cat:"Conversation",items:[
-    {es:"¿De dónde eres tú?",en:"Where are you from?"},
-    {es:"Soy empresaria en Atlanta, Georgia",en:"I'm a businesswoman in Atlanta, Georgia"},
-    {es:"Me encanta aprender español",en:"I love learning Spanish"},
-    {es:"¿Cuánto tiempo llevas aquí?",en:"How long have you been here?"},
-    {es:"Tu acento es muy bonito",en:"Your accent is very nice"},
-    {es:"Estoy aprendiendo poco a poco",en:"I'm learning little by little"},
-  ]}
-];
-
-const allPhrases = PHRASES.flatMap(p=>p.items.map(i=>({...i,cat:p.cat})));
-
-// ── STATE ─────────────────────────────────────────────────────
-const LS='makisha_hq_v2';
-let state={tasks:{},activeGoal:'re',streak:0,lastDate:null,streakCounted:false,
-  spStartDate:null,spSessions:0,qzCorrect:0,qzTotal:0,qzStreak:0};
-let fcIdx=0,fcFlipped=false,fcLearned=new Set();
-let qzCurrent=null,qzAnswered=false,qzToSpanish=true;
-let listenIdx=0,activePcat='Daily Life';
-
-function save(){
-  try{localStorage.setItem(LS,JSON.stringify({...state,fcLearned:[...fcLearned]}));}catch(e){}
-}
-function load(){
-  try{
-    const r=localStorage.getItem(LS);
-    if(!r){state.lastDate=today();state.spStartDate=today();return;}
-    const s=JSON.parse(r);
-    if(s.lastDate!==today()){s.tasks={};s.lastDate=today();s.streakCounted=false;}
-    if(s.fcLearned)fcLearned=new Set(s.fcLearned);
-    state={...state,...s};delete state.fcLearned;
-    if(!state.spStartDate)state.spStartDate=today();
-  }catch(e){state.lastDate=today();state.spStartDate=today();}
-}
-function today(){return new Date().toLocaleDateString('en-CA');}
-
-// ── NAVIGATION ────────────────────────────────────────────────
-const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,spanish:5,art:6,investing:7};
-function showView(v){
-  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  document.querySelectorAll('.nav-item')[VIEW_MAP[v]].classList.add('active');
+function calcEMA(prices, period) {
+  const k = 2 / (period + 1);
+  let e = prices.slice(0, period).reduce((a, b) => a + b, 0) / period;
+  for (let i = period; i < prices.length; i++) e = prices[i] * k + e * (1 - k);
+  return e;
 }
 
-// ── GOAL TABS ─────────────────────────────────────────────────
-function gTab(goal,section){
-  const prefix=goal+'-';
-  document.querySelectorAll(`[id^="${prefix}"]`).forEach(el=>{
-    if(el.classList.contains('goal-tab-content'))el.classList.remove('vis');
-  });
-  document.getElementById(prefix+section).classList.add('vis');
-  // update tab buttons in current view
-  const view=document.getElementById('view-'+
-    {re:'realestate',tr:'trading',fi:'fitness',cr:'credit',ar:'art',iv:'investing'}[goal]);
-  if(view){
-    view.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-    const tabs=view.querySelectorAll('.tab');
-    const idx={'daily':0,'roadmap':1,'tools':2}[section];
-    if(tabs[idx])tabs[idx].classList.add('on');
+function autoSR(candles) {
+  let sup = Infinity, res = -Infinity;
+  candles.forEach(c => { if (c.low < sup) sup = c.low; if (c.high > res) res = c.high; });
+  return { sup, res };
+}
+
+function getDir(ema20, ema50) {
+  const diff = ((ema20 - ema50) / ema50) * 100;
+  if (diff > 0.01) return 'LONG';
+  if (diff < -0.01) return 'SHORT';
+  return 'FLAT';
+}
+
+function getScore(price, ema20, ema50, sup, res, dir) {
+  let s = 0;
+  if (dir !== 'FLAT') s++;
+  if (dir === 'LONG' && price > ema20) s++;
+  if (dir === 'SHORT' && price < ema20) s++;
+  const prox = (res - sup) * 0.015;
+  if (s >= 2) {
+    if (dir === 'LONG' && Math.abs(price - sup) < prox) s++;
+    if (dir === 'SHORT' && Math.abs(price - res) < prox) s++;
   }
+  return s;
 }
 
-// ── RENDER DASHBOARD ──────────────────────────────────────────
-function render(){
-  const ds=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  ['sidebar-date','dash-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ds;});
-  document.getElementById('streak-num').textContent=state.streak||0;
-  renderPillars();renderTasks();renderScore();renderWins();renderSpProgress();
-  renderGoalDailies();
+async function fetchCandles(symbol) {
+  try {
+    const url = 'https://api.twelvedata.com/time_series?symbol=' + encodeURIComponent(symbol) + '&interval=1h&outputsize=60&apikey=' + API_KEY;
+    const r = await fetch(url);
+    const d = await r.json();
+    if (!d.values) return null;
+    return d.values.reverse().map(v => ({ high: parseFloat(v.high), low: parseFloat(v.low), close: parseFloat(v.close) }));
+  } catch(e) { return null; }
 }
 
-function renderPillars(){
-  document.getElementById('pillars').innerHTML=GOALS.map(g=>{
-    const done=g.tasks.filter(t=>state.tasks[t.id]).length;
-    const pct=Math.round(done/g.tasks.length*100);
-    return `<button class="pcard${state.activeGoal===g.id?' active':''}" onclick="setGoal('${g.id}')">
-      <span class="icon">${g.icon}</span><span class="pname">${g.name}</span>
-      <span class="pdone">${done}/${g.tasks.length}</span>
-      <div class="mbar"><div class="mfill" style="width:${pct}%;background:${g.color}"></div></div>
-    </button>`;
-  }).join('');
+async function fireWebhook(pair, signal) {
+  const key = pair + '_' + signal.direction + '_' + signal.score;
+  if (sentCache[key]) return false;
+  sentCache[key] = true;
+  setTimeout(() => delete sentCache[key], 4 * 60 * 60 * 1000);
+  try {
+    await fetch(WEBHOOK, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pair, direction: signal.direction, price: signal.price, sl: signal.sl, tp: signal.tp, rr: signal.rr, score: signal.score })
+    });
+    return true;
+  } catch(e) { return false; }
 }
 
-function setGoal(id){state.activeGoal=id;renderPillars();renderTasks();}
-
-function renderTasks(){
-  const g=GOALS.find(x=>x.id===state.activeGoal);if(!g)return;
-  document.getElementById('goal-panel-label').textContent=`${g.icon} ${g.name} — Today's Tasks`;
-  document.getElementById('goal-header').innerHTML=`<div style="font-size:14px;font-weight:500">${g.icon} ${g.name}</div><div style="font-size:12px;color:var(--text2);margin-top:3px">${g.desc}</div>`;
-  document.getElementById('task-list').innerHTML=g.tasks.map(t=>`
-    <div class="task-row">
-      <div class="chk${state.tasks[t.id]?' on':''}" onclick="toggleTask('${t.id}',${t.pts})"></div>
-      <span class="tl${state.tasks[t.id]?' done':''}" onclick="toggleTask('${t.id}',${t.pts})">${t.l}</span>
-      <span class="tpts">+${t.pts}pts</span>
-    </div>`).join('');
-  const linkView={re:'realestate',tr:'trading',fi:'fitness',cr:'credit',sp:'spanish',ar:'art',iv:'investing'}[g.id];
-  document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;
+function renderBanner(alerts) {
+  const el = document.getElementById('alertBanner');
+  if (!alerts.length) { el.innerHTML = ''; return; }
+  const names = alerts.map(a => a.pair + ' ' + a.direction).join(' &middot; ');
+  el.innerHTML = '<div class="alert-banner"><div style="font-size:22px">&#x1F514;</div><div class="alert-banner-text"><div class="alert-banner-title">Trade setup detected &mdash; SMS &amp; email sent</div><div class="alert-banner-sub">' + names + '</div></div><span class="alert-banner-sent">&#x2713; Sent</span></div>';
 }
 
-function renderGoalDailies(){
-  const goalMap={re:'re',tr:'tr',fi:'fi',cr:'cr',sp:'sp',ar:'ar',iv:'iv'};
-  GOALS.forEach(g=>{
-    const el=document.getElementById(g.id+'-daily-tasks');
-    if(!el)return;
-    el.innerHTML=g.tasks.map(t=>`
-      <div class="task-row">
-        <div class="chk${state.tasks[t.id]?' on':''}" onclick="toggleTask('${t.id}',${t.pts})"></div>
-        <span class="tl${state.tasks[t.id]?' done':''}" onclick="toggleTask('${t.id}',${t.pts})">${t.l}</span>
-        <span class="tpts">+${t.pts}pts</span>
-      </div>`).join('');
-  });
+function renderCard(pair, d) {
+  const { price, ema20, ema50, sup, res, dir, score, sl, tp, rr } = d;
+  const dc = pair.decimals;
+  const isReady = score >= 3 && rr >= 1.5;
+  const isForming = score >= 2 && !isReady;
+  const cardClass = isReady ? (dir === 'LONG' ? 'ready-long' : 'ready-short') : isForming ? 'forming' : '';
+  const stripClass = isReady ? 's-ready' : isForming ? 's-forming' : 's-watch';
+  const stripIcon = isReady ? '&#x2713;' : isForming ? '&#x26A0;' : '&#x25CF;';
+  const stripText = isReady ? (score === 4 ? '4/4 &mdash; Strong signal &middot; Alert sent' : '3/4 &mdash; Good setup &middot; Alert sent') : isForming ? score + '/4 &mdash; Setup forming, keep watching' : score + '/4 &mdash; Watching';
+  const dirClass = dir === 'LONG' ? 'badge-long' : dir === 'SHORT' ? 'badge-short' : 'badge-flat';
+  const crossClass = dir === 'LONG' ? 'bullish' : dir === 'SHORT' ? 'bearish' : 'flat-sig';
+  const crossLabel = dir === 'LONG' ? '&#x2191; above' : dir === 'SHORT' ? '&#x2193; below' : '&mdash; flat';
+  const crossDesc = dir === 'LONG' ? '20 EMA above 50 EMA &mdash; bullish momentum' : dir === 'SHORT' ? '20 EMA below 50 EMA &mdash; bearish momentum' : 'EMAs are flat &mdash; no directional bias';
+  const rrClass = rr >= 1.5 ? 'rr-good' : rr >= 1.0 ? 'rr-warn' : 'rr-bad';
+  const dots = [1,2,3,4].map(i => '<div class="sdot ' + (score >= i ? (score === 4 ? 'f4' : 'f3') : '') + '"></div>').join('');
+  const distSup = (((price - sup) / price) * 100).toFixed(2);
+  const distRes = (((res - price) / price) * 100).toFixed(2);
+  const dirArrow = dir === 'LONG' ? '&#x2191;' : dir === 'SHORT' ? '&#x2193;' : '&mdash;';
+
+  return '<div class="pair-card ' + cardClass + '">' +
+    '<div class="card-top">' +
+      '<div><div class="pair-name">' + pair.symbol + '</div><div class="pair-sub">1H &middot; Live</div></div>' +
+      '<div><div class="price-val">' + price.toFixed(dc) + '</div><div><span class="dir-badge ' + dirClass + '">' + dirArrow + ' ' + dir + '</span></div></div>' +
+    '</div>' +
+    '<div class="status-strip ' + stripClass + '">' + stripIcon + ' ' + stripText + '</div>' +
+    '<div class="section-label">EMA levels</div>' +
+    '<div class="ema-rows">' +
+      '<div class="ema-row"><span class="ema-left"><span class="ema-dot dot-20"></span>20 EMA</span><span class="ema-val">' + ema20.toFixed(dc) + '</span></div>' +
+      '<div class="ema-row"><span class="ema-left"><span class="ema-dot dot-50"></span>50 EMA</span><span class="ema-val">' + ema50.toFixed(dc) + '</span></div>' +
+    '</div>' +
+    '<div class="crossover-box">' +
+      '<div class="crossover-row"><span class="ema-pill p20">20 EMA</span><span style="color:#aaa;margin:0 2px">&rarr;</span><span class="ema-pill p50">50 EMA</span><span class="cross-signal ' + crossClass + '" style="margin-left:6px">' + crossLabel + '</span></div>' +
+      '<div class="cross-desc">' + crossDesc + '</div>' +
+    '</div>' +
+    '<div class="section-label">Support &amp; resistance</div>' +
+    '<div class="sr-rows">' +
+      '<div class="sr-row"><span class="sr-left"><span class="sr-dot-sup"></span>Support</span><span class="sr-val">' + sup.toFixed(dc) + '<span class="sr-dist">' + distSup + '% away</span></span></div>' +
+      '<div class="sr-row"><span class="sr-left"><span class="sr-dot-res"></span>Resistance</span><span class="sr-val">' + res.toFixed(dc) + '<span class="sr-dist">' + distRes + '% away</span></span></div>' +
+      '<div class="sr-row"><span class="sr-left">&#x2193; Stop loss</span><span class="sr-val">' + sl.toFixed(dc) + '</span></div>' +
+      '<div class="sr-row"><span class="sr-left">&#x2191; Take profit</span><span class="sr-val">' + tp.toFixed(dc) + '</span></div>' +
+    '</div>' +
+    '<div class="card-footer">' +
+      '<div><div class="section-label" style="margin:0">Confluence ' + score + '/4</div><div class="score-dots">' + dots + '</div></div>' +
+      '<div class="rr-block"><div class="rr-label">R:R ratio</div><div class="rr-val ' + rrClass + '">' + rr.toFixed(2) + ' : 1</div></div>' +
+    '</div>' +
+  '</div>';
 }
 
-function toggleTask(id,pts){
-  state.tasks[id]=!state.tasks[id];
-  checkStreak();save();render();
-}
+async function loadData() {
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spinning');
 
-function checkStreak(){
-  let pts=0;GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])pts+=t.pts;}));
-  if(pts>=60&&!state.streakCounted){state.streak=(state.streak||0)+1;state.streakCounted=true;}
-}
+  const results = await Promise.all(PAIRS.map(async function(pair) {
+    const candles = await fetchCandles(pair.symbol);
+    if (!candles || candles.length < 60) return { pair: pair, error: true };
+    const closes = candles.map(c => c.close);
+    const price = closes[closes.length - 1];
+    const ema20 = calcEMA(closes, 20);
+    const ema50 = calcEMA(closes, 50);
+    const sr = autoSR(candles);
+    const sup = sr.sup, res = sr.res;
+    const dir = getDir(ema20, ema50);
+    const score = getScore(price, ema20, ema50, sup, res, dir);
+    const sl = dir === 'LONG' ? sup * 0.999 : res * 1.001;
+    const tp = dir === 'LONG' ? res * 0.999 : sup * 1.001;
+    const risk = Math.abs(price - sl);
+    const reward = Math.abs(tp - price);
+    const rr = risk > 0 ? reward / risk : 0;
+    return { pair: pair, data: { price, ema20, ema50, sup, res, dir, score, sl, tp, rr } };
+  }));
 
-function getTotalPts(){
-  let p=0;GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])p+=t.pts;}));return p;
-}
-
-function renderScore(){
-  document.getElementById('score-num').textContent=getTotalPts();
-  document.getElementById('score-bars').innerHTML=GOALS.map(g=>{
-    const d=g.tasks.filter(t=>state.tasks[t.id]).length;
-    const p=Math.round(d/g.tasks.length*100);
-    return `<div class="brow"><span class="blbl">${g.icon} ${g.name}</span>
-      <div class="btrack"><div class="bfill" style="width:${p}%;background:${g.color}"></div></div>
-      <span class="bpct">${p}%</span></div>`;
-  }).join('');
-}
-
-function renderWins(){
-  const wins=[];
-  GOALS.forEach(g=>g.tasks.forEach(t=>{if(state.tasks[t.id])wins.push({l:t.l,pts:t.pts,c:g.color});}));
-  document.getElementById('wins-list').innerHTML=wins.length
-    ?wins.map(w=>`<div class="wrow"><span style="color:${w.c}">✓</span><span style="flex:1">${w.l}</span><span style="font-size:11px;color:var(--text3)">+${w.pts}</span></div>`).join('')
-    :'<div style="font-size:13px;color:var(--text3)">Complete tasks to log your wins.</div>';
-}
-
-// ── AI COACH ──────────────────────────────────────────────────
-function buildCoachContext(){
-  const pts=getTotalPts();
-  const done=[],pending=[];
-  GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(g.name+': '+t.l);}));
-  return `You are my life coach. I am Makisha, a Black entrepreneur in Atlanta GA. My goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated in GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals trading GBP/JPY and XAU/USD, (3) Daily fitness + researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from my free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio. Today I earned ${pts} points. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}.`;
-}
-
-function coachMe(){
-  const ctx=buildCoachContext();
-  const prompt=encodeURIComponent(ctx+'\n\nGive me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
-  window.open('https://claude.ai/new?q='+prompt,'_blank');
-}
-
-function askCoach(){
-  const inp=document.getElementById('coach-in');
-  const q=inp.value.trim();
-  const ctx=buildCoachContext();
-  const prompt=encodeURIComponent(ctx+'\n\nMy question: '+q);
-  window.open('https://claude.ai/new?q='+prompt,'_blank');
-  inp.value='';
-  document.getElementById('coach-out').textContent='Opening Claude with your context loaded... ✓';
-}
-
-// ── SPANISH PROGRESS ──────────────────────────────────────────
-function renderSpProgress(){
-  if(!state.spStartDate)state.spStartDate=today();
-  const start=new Date(state.spStartDate),now=new Date();
-  const days=Math.floor((now-start)/864e5),weeks=Math.floor(days/7),totalW=26;
-  const pct=Math.min(Math.round(weeks/totalW*100),100);
-  const pf=document.getElementById('sp-prog-fill');if(pf)pf.style.width=pct+'%';
-  const wl=document.getElementById('sp-week-label');if(wl)wl.textContent=`Week ${Math.min(weeks+1,totalW)} of ${totalW}`;
-  const pc=document.getElementById('sp-pct');if(pc)pc.textContent=pct+'%';
-  function addW(d,w){const r=new Date(d);r.setDate(r.getDate()+w*7);return r.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-  [['ms1d',4],['ms2dt',12],['ms3dt',20],['ms4dt',26]].forEach(([id,w])=>{const el=document.getElementById(id);if(el)el.textContent=addW(state.spStartDate,w);});
-  [['ms2d',5],['ms3d',13],['ms4d',21]].forEach(([id,thr],i)=>{
-    const el=document.getElementById(id);if(!el)return;
-    el.className='ms-dot '+(weeks>=thr?'ms-done':weeks>=thr-4?'ms-cur':'ms-fut');
-  });
-  const sl=document.getElementById('sp-learned');if(sl)sl.textContent=fcLearned.size;
-  const ss=document.getElementById('sp-sessions');if(ss)ss.textContent=state.spSessions||0;
-  const sa=document.getElementById('sp-acc');if(sa)sa.textContent=(state.qzTotal||0)>0?Math.round((state.qzCorrect||0)/(state.qzTotal||1)*100)+'%':'—';
-  const str=document.getElementById('sp-str');if(str)str.textContent=state.streak||0;
-}
-
-// ── SPANISH TABS ──────────────────────────────────────────────
-function spTab(t){
-  document.querySelectorAll('.sp-tab').forEach((el,i)=>el.classList.toggle('active',['flashcards','phrases','quiz','listen','tutor'][i]===t));
-  document.querySelectorAll('.sp-sec').forEach(el=>el.classList.remove('vis'));
-  document.getElementById('sp-'+t).classList.add('vis');
-  if(t==='phrases')renderPhrases();
-  if(t==='quiz')nextQuiz();
-  if(t==='listen')renderListen();
-  state.spSessions=(state.spSessions||0)+1;
-  save();renderSpProgress();
-}
-
-// ── FLASHCARDS ────────────────────────────────────────────────
-function renderCard(){
-  const c=CARDS[fcIdx];
-  document.getElementById('fc-cat').textContent=c.cat;
-  document.getElementById('fc-es').textContent=c.es;
-  document.getElementById('fc-en').textContent=c.en;
-  document.getElementById('fc-en').style.display='none';
-  document.getElementById('fc-tap').style.display='block';
-  document.getElementById('fc-btns').style.display='none';
-  document.getElementById('fc-card').classList.remove('flipped');
-  document.getElementById('fc-tip').textContent=c.tip||'Click 🔊 to hear the pronunciation.';
-  document.getElementById('fc-counter').textContent=`Card ${fcIdx+1} of ${CARDS.length}`;
-  document.getElementById('fc-learned-count').textContent=`${fcLearned.size} learned`;
-  fcFlipped=false;
-}
-function flipCard(){
-  if(!fcFlipped){
-    document.getElementById('fc-en').style.display='block';
-    document.getElementById('fc-tap').style.display='none';
-    document.getElementById('fc-btns').style.display='flex';
-    document.getElementById('fc-card').classList.add('flipped');
-    speak(CARDS[fcIdx].es);
-    fcFlipped=true;
+  const alerts = [];
+  for (const r of results) {
+    if (!r.error && r.data.score >= 3 && r.data.rr >= 1.5) {
+      const sent = await fireWebhook(r.pair.name, Object.assign({}, r.data, { direction: r.data.dir }));
+      if (sent) alerts.push({ pair: r.pair.symbol, direction: r.data.dir });
+    }
   }
-}
-function speakCurrent(){speak(CARDS[fcIdx].es);}
-function nextCard(learned){
-  if(learned){fcLearned.add(fcIdx);state.spWordsLearned=fcLearned.size;}
-  fcIdx=(fcIdx+1)%CARDS.length;
-  save();renderCard();renderSpProgress();
-}
 
-// ── PHRASES ───────────────────────────────────────────────────
-function renderPhrases(){
-  const cats=PHRASES.map(p=>p.cat);
-  document.getElementById('phrase-cats').innerHTML=cats.map(c=>
-    `<button class="pcat-btn${c===activePcat?' on':''}" onclick="setPcat('${c}')">${c}</button>`
+  renderBanner(alerts);
+
+  const html = results.map(r =>
+    r.error
+      ? '<div class="pair-card"><div class="error-state">Could not load ' + r.pair.symbol + '</div></div>'
+      : renderCard(r.pair, r.data)
   ).join('');
-  const ph=PHRASES.find(p=>p.cat===activePcat);if(!ph)return;
-  document.getElementById('phrase-list').innerHTML=ph.items.map(it=>
-    `<div class="phrase-row">
-      <div><div class="p-es">${it.es}</div><div class="p-en">${it.en}</div></div>
-      <button class="play-btn" onclick="speak('${it.es.replace(/'/g,"\\'")}')">🔊 Play</button>
-    </div>`
-  ).join('');
-}
-function setPcat(c){activePcat=c;renderPhrases();}
 
-// ── QUIZ ──────────────────────────────────────────────────────
-function nextQuiz(){
-  qzAnswered=false;
-  document.getElementById('qz-result').textContent='';
-  document.querySelectorAll('.qopt').forEach(el=>el.classList.remove('correct','wrong','locked'));
-  const idx=Math.floor(Math.random()*CARDS.length);
-  qzCurrent=CARDS[idx];
-  qzToSpanish=Math.random()>0.5;
-  const q=qzToSpanish?qzCurrent.en:qzCurrent.es;
-  const ans=qzToSpanish?qzCurrent.es:qzCurrent.en;
-  document.getElementById('qz-q').textContent=qzToSpanish?`How do you say: "${q}"`:`What does this mean?`;
-  if(!qzToSpanish){document.getElementById('qz-q').textContent=q;}
-  const spkBtn=document.getElementById('quiz-speak-btn');
-  spkBtn.style.display=!qzToSpanish?'inline-flex':'none';
-  const distractors=CARDS.filter((_,i)=>i!==idx).sort(()=>Math.random()-0.5).slice(0,3).map(c=>qzToSpanish?c.es:c.en);
-  const opts=[ans,...distractors].sort(()=>Math.random()-0.5);
-  document.getElementById('qz-opts').innerHTML=opts.map(o=>
-    `<button class="qopt" onclick="checkQuiz(this,'${o.replace(/'/g,"\\'")}','${ans.replace(/'/g,"\\'")}')">${o}</button>`
-  ).join('');
-  updateQzStats();
-}
-function checkQuiz(btn,chosen,ans){
-  if(qzAnswered)return;
-  qzAnswered=true;state.qzTotal=(state.qzTotal||0)+1;
-  const correct=chosen===ans;
-  btn.classList.add(correct?'correct':'wrong');
-  document.querySelectorAll('.qopt').forEach(el=>{
-    el.classList.add('locked');
-    if(el.textContent===ans)el.classList.add('correct');
-  });
-  if(correct){state.qzCorrect=(state.qzCorrect||0)+1;state.qzStreak=(state.qzStreak||0)+1;speak(qzCurrent.es);}
-  else state.qzStreak=0;
-  const tip=qzCurrent.tip?qzCurrent.tip.split('.')[0]:'';
-  const res=document.getElementById('qz-result');
-  res.textContent=correct?`✓ Correct! ${tip}`:`✗ Answer: ${ans}`;
-  res.style.color=correct?'var(--green)':'var(--coral)';
-  save();updateQzStats();renderSpProgress();
-}
-function updateQzStats(){
-  document.getElementById('qz-c').textContent=state.qzCorrect||0;
-  document.getElementById('qz-t').textContent=state.qzTotal||0;
-  document.getElementById('qz-s').textContent=state.qzStreak||0;
-  document.getElementById('qz-a').textContent=(state.qzTotal||0)>0?Math.round((state.qzCorrect||0)/(state.qzTotal||1)*100)+'%':'—';
-}
-function speakQuizWord(){if(qzCurrent)speak(qzCurrent.es);}
-
-// ── LISTEN ────────────────────────────────────────────────────
-function renderListen(){
-  updateListenCard();
-  document.getElementById('all-listen').innerHTML=allPhrases.map((p,i)=>
-    `<div class="phrase-row">
-      <div><div class="p-es">${p.es}</div><div class="p-en">${p.en}</div></div>
-      <button class="play-btn" onclick="speak('${p.es.replace(/'/g,"\\'")}')">🔊</button>
-    </div>`
-  ).join('');
-}
-function updateListenCard(){
-  const p=allPhrases[listenIdx%allPhrases.length];
-  document.getElementById('lp-cat').textContent=p.cat;
-  document.getElementById('lp-es').textContent=p.es;
-  document.getElementById('lp-en').textContent=p.en;
-}
-function listenPlay(rate){speak(allPhrases[listenIdx%allPhrases.length].es,rate);}
-function nextListen(){listenIdx++;updateListenCard();}
-
-// ── AI TUTOR ──────────────────────────────────────────────────
-let tutorMsgs=[];
-let msgId=0;
-function askTutor(){
-  const inp=document.getElementById('tutor-in');
-  const q=inp.value.trim();if(!q)return;
-  inp.value='';
-  addMsg(q,'user');
-  const sys='You are my bilingual Spanish tutor. I am Makisha, a Black entrepreneur in Atlanta GA working toward Spanish fluency in 6 months. I work in real estate, trading, and fitness. Make lessons practical for my life. Always include pronunciation guides and English translations. Be encouraging and energetic.';
-  const prompt=encodeURIComponent(sys+'\n\nStudent question: '+q);
-  addMsg('Opening Claude as your Spanish tutor... ✓ Check the new tab!','ai');
-  window.open('https://claude.ai/new?q='+prompt,'_blank');
-}
-function spQuick(q){document.getElementById('tutor-in').value=q;askTutor();}
-function addMsg(text,role){
-  const id='m'+(++msgId);
-  const el=document.createElement('div');
-  el.className='msg '+role;el.id=id;el.textContent=text;
-  const h=document.getElementById('tutor-hist');h.appendChild(el);h.scrollTop=h.scrollHeight;
-  return id;
-}
-function updateMsg(id,text){
-  const el=document.getElementById(id);
-  if(el){el.textContent=text;const h=document.getElementById('tutor-hist');h.scrollTop=h.scrollHeight;}
+  document.getElementById('pairsGrid').innerHTML = html;
+  document.getElementById('lastUpd').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+  btn.classList.remove('spinning');
 }
 
-// ── SPEECH ────────────────────────────────────────────────────
-function speak(text,rate=0.85){
-  if(!('speechSynthesis' in window))return;
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='es-ES';u.rate=rate;
-  const voices=window.speechSynthesis.getVoices();
-  const v=voices.find(v=>v.lang.startsWith('es'));
-  if(v)u.voice=v;
-  window.speechSynthesis.speak(u);
-}
-
-// ── INIT ──────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded',()=>{
-  load();render();renderCard();renderPhrases();nextQuiz();
-  document.getElementById('coach-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askCoach();}});
-  document.getElementById('tutor-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askTutor();}});
-  if('speechSynthesis' in window){
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
-  }
-});
+loadData();
+setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>

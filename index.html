@@ -261,6 +261,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <a href="https://trustcircleenterprise.github.io/forex-dashboard/" target="_blank" class="btn">📈 Forex Dashboard ↗</a>
           <a href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" class="btn">🌎 Spanish Studio ↗</a>
           <a href="https://www.duolingo.com" target="_blank" class="btn">🦉 Duolingo ↗</a>
+          <a href="https://www.duolingo.com/chess-matches" target="_blank" class="btn">♟️ Chess ↗</a>
           <a href="https://trustcircleenterprise.github.io/credit-repair/" target="_blank" class="btn">💯 ScoreBoss ↗</a>
           <a href="https://trustcircleenterprise.github.io/art-sales/" target="_blank" class="btn">🖼️ Art Sales Plan ↗</a>
           <a href="https://ninja.xleads.com/?logout=true" target="_blank" class="btn">🏠 xLeads Ninja ↗</a>
@@ -905,7 +906,10 @@ const GOALS=[
   {id:"iv",icon:"💰",name:"Investing",color:"#2dd4bf",desc:"Dividends + crypto growth",tasks:[
     {id:"iv1",l:"Review portfolio positions",pts:10},
     {id:"iv2",l:"Research 1 dividend stock or ETF",pts:15},
-    {id:"iv3",l:"Read 1 market / crypto update",pts:10}]}
+    {id:"iv3",l:"Read 1 market / crypto update",pts:10}]},
+  { id:"ch",icon:"♟️",name:"Chess",color:"#c0c0c0",desc:"Daily practice — sharpen the mind",tasks:[
+    {id:"ch1",l:"Complete daily chess match",pts:15},
+    {id:"ch2",l:"Analyze 1 game or puzzle",pts:10}]}
 ];
 
 const CARDS=[
@@ -1043,7 +1047,7 @@ function load(){
 function today(){return new Date().toLocaleDateString('en-CA');}
 
 // ── NAVIGATION ────────────────────────────────────────────────
-const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,art:5,investing:6};
+const VIEW_MAP={dashboard:0,realestate:1,trading:2,fitness:3,credit:4,art:5,investing:6,ch:7};
 function showView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
@@ -1103,9 +1107,10 @@ function renderTasks(){
       <span class="tpts">+${t.pts}pts</span>
     </div>`).join('');
   const linkView={re:'realestate',tr:'trading',fi:'fitness',cr:'credit',sp:'spanish',ar:'art',iv:'investing'}[g.id];
-  const externalLinks={ar:'https://trustcircleenterprise.github.io/art-sales/',sp:'https://trustcircleenterprise.github.io/spanish-studio/'};
+  const externalLinks={ar:'https://trustcircleenterprise.github.io/art-sales/',sp:'https://trustcircleenterprise.github.io/spanish-studio/',ch:'https://www.duolingo.com/chess-matches'};
   if(externalLinks[g.id]){
-    const duoBtn=g.id==='sp'?` <a href="https://www.duolingo.com" target="_blank" class="btn">🦉 Duolingo ↗</a>`:'';
+    const duoBtn=g.id==='sp'?` <a href="https://www.duolingo.com" target="_blank" class="btn">🦉 Duolingo ↗</a>
+          <a href="https://www.duolingo.com/chess-matches" target="_blank" class="btn">♟️ Chess ↗</a>`:'';
     document.getElementById('goal-roadmap-link').innerHTML=`<a href="${externalLinks[g.id]}" target="_blank" class="btn">Open ${g.name} day-by-day plan ↗</a>${duoBtn}`;
   } else {
     document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;

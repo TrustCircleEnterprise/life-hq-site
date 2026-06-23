@@ -224,6 +224,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <a class="nav-item" href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" style="text-decoration:none"><span class="ni">🌎</span>Spanish Studio ↗</a>
   <button class="nav-item" onclick="showView('art')"><span class="ni">🖼️</span>Art Sales</button>
   <button class="nav-item" onclick="showView('investing')"><span class="ni">💰</span>Investing</button>
+  <a class="nav-item" href="https://zcvts-zgph.maillist-manage.in/click/11feeefb14a40923/11feeefb149da878" target="_blank" style="text-decoration:none"><span class="ni">🤖</span>IBM SkillsBuild ↗</a>
   <div class="streak-pill">
     <div class="streak-box">
       <span class="streak-num" id="streak-num">0</span>
@@ -262,6 +263,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <a href="https://trustcircleenterprise.github.io/spanish-studio/" target="_blank" class="btn">🌎 Spanish Studio ↗</a>
           <a href="https://www.duolingo.com" target="_blank" class="btn">🦉 Duolingo ↗</a>
           <a href="https://www.duolingo.com/chess-matches" target="_blank" class="btn">♟️ Chess ↗</a>
+          <a href="https://zcvts-zgph.maillist-manage.in/click/11feeefb14a40923/11feeefb149da878" target="_blank" class="btn">🤖 IBM SkillsBuild ↗</a>
           <a href="https://trustcircleenterprise.github.io/credit-repair/" target="_blank" class="btn">💯 ScoreBoss ↗</a>
           <a href="https://trustcircleenterprise.github.io/art-sales/" target="_blank" class="btn">🖼️ Art Sales Plan ↗</a>
           <a href="https://ninja.xleads.com/?logout=true" target="_blank" class="btn">🏠 xLeads Ninja ↗</a>
@@ -909,7 +911,11 @@ const GOALS=[
     {id:"iv3",l:"Read 1 market / crypto update",pts:10}]},
   { id:"ch",icon:"♟️",name:"Chess",color:"#c0c0c0",desc:"Daily practice — sharpen the mind",tasks:[
     {id:"ch1",l:"Complete daily chess match",pts:15},
-    {id:"ch2",l:"Analyze 1 game or puzzle",pts:10}]}
+    {id:"ch2",l:"Analyze 1 game or puzzle",pts:10}]},
+  { id:"ai",icon:"🤖",name:"AI Skills",color:"#06b6d4",desc:"IBM SkillsBuild — Applied AI, Agents, Chatbots & RAG",tasks:[
+    {id:"ai1",l:"Complete IBM SkillsBuild lesson today",pts:20},
+    {id:"ai2",l:"Take notes on key AI concepts learned",pts:10},
+    {id:"ai3",l:"Apply 1 concept to your business systems",pts:15}]}
 ];
 
 const CARDS=[
@@ -1107,10 +1113,11 @@ function renderTasks(){
       <span class="tpts">+${t.pts}pts</span>
     </div>`).join('');
   const linkView={re:'realestate',tr:'trading',fi:'fitness',cr:'credit',sp:'spanish',ar:'art',iv:'investing'}[g.id];
-  const externalLinks={ar:'https://trustcircleenterprise.github.io/art-sales/',sp:'https://trustcircleenterprise.github.io/spanish-studio/',ch:'https://www.duolingo.com/chess-matches'};
+  const externalLinks={ar:'https://trustcircleenterprise.github.io/art-sales/',sp:'https://trustcircleenterprise.github.io/spanish-studio/',ch:'https://www.duolingo.com/chess-matches',ai:'https://zcvts-zgph.maillist-manage.in/click/11feeefb14a40923/11feeefb149da878'};
   if(externalLinks[g.id]){
     const duoBtn=g.id==='sp'?` <a href="https://www.duolingo.com" target="_blank" class="btn">🦉 Duolingo ↗</a>
-          <a href="https://www.duolingo.com/chess-matches" target="_blank" class="btn">♟️ Chess ↗</a>`:'';
+          <a href="https://www.duolingo.com/chess-matches" target="_blank" class="btn">♟️ Chess ↗</a>
+          <a href="https://zcvts-zgph.maillist-manage.in/click/11feeefb14a40923/11feeefb149da878" target="_blank" class="btn">🤖 IBM SkillsBuild ↗</a>`:'';
     document.getElementById('goal-roadmap-link').innerHTML=`<a href="${externalLinks[g.id]}" target="_blank" class="btn">Open ${g.name} day-by-day plan ↗</a>${duoBtn}`;
   } else {
     document.getElementById('goal-roadmap-link').innerHTML=`<button class="btn" onclick="showView('${linkView}')">View ${g.name} step-by-step roadmap →</button>`;

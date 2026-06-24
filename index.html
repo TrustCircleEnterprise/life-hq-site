@@ -280,7 +280,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="card">
         <div class="ct">AI Life Coach</div>
-        <div class="cout" id="coach-out">Type a question or hit "Daily Brief" — copies your full context then opens Claude. Just paste with Ctrl+V! 🚀</div>
+        <div class="cout" id="coach-out">Ask me anything about your goals, or hit "Daily Brief" for your personalized daily focus. 🚀</div>
         <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
         <div class="brow2">
           <button class="btn" onclick="coachMe()">Daily brief ↗</button>
@@ -1172,36 +1172,41 @@ function renderWins(){
 }
 
 // ── AI COACH ──────────────────────────────────────────────────
-function buildCoachContext(question){
+async function buildCoachContext(){
   const pts=getTotalPts();
   const done=[],pending=[];
   GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(g.name+': '+t.l);}));
-  return `You are my life coach. I am Makisha, a Black entrepreneur in Atlanta GA. My goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated in GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals trading GBP/JPY and XAU/USD, (3) Daily fitness + researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from my free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio. Today I earned ${pts} points. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}.
-
-${question}`;
+  return {pts,done,pending};
 }
 
-function coachMe(){
-  const ctx=buildCoachContext('Give me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
-  navigator.clipboard.writeText(ctx).then(()=>{
-    document.getElementById('coach-out').textContent='✓ Copied to clipboard! Now click below to open Claude and paste (Ctrl+V).';
-    setTimeout(()=>window.open('https://claude.ai/new','_blank'),600);
-  }).catch(()=>{
-    document.getElementById('coach-out').textContent=ctx;
-  });
+async function coachMe(){
+  document.getElementById('coach-in').value='Give me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.';
+  await askCoach();
 }
 
-function askCoach(){
+async function askCoach(){
   const inp=document.getElementById('coach-in');
   const q=inp.value.trim(); if(!q)return;
-  const ctx=buildCoachContext('My question: '+q);
-  navigator.clipboard.writeText(ctx).then(()=>{
-    inp.value='';
-    document.getElementById('coach-out').textContent='✓ Copied! Opening Claude now — just paste with Ctrl+V.';
-    setTimeout(()=>window.open('https://claude.ai/new','_blank'),600);
-  }).catch(()=>{
-    document.getElementById('coach-out').textContent=ctx;
-  });
+  inp.value='';
+  const out=document.getElementById('coach-out');
+  out.innerHTML='<span class="spin"></span>Thinking...';
+  const {pts,done,pending}=await buildCoachContext();
+  const sys=`You are an elite life coach and accountability partner for Makisha, a driven Black entrepreneur in Atlanta, GA. Her goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated via GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals, trading GBP/JPY and XAU/USD, (3) Daily fitness, researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio, (8) IBM SkillsBuild — Applied AI, Agents, Chatbots & RAG. Today: ${pts} points earned. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}. Be direct, warm, energizing. Speak like a trusted advisor who fully believes in her. Under 150 words.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-calls':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:q}]})
+    });
+    const d=await r.json();
+    if(d.content&&d.content[0]){
+      out.textContent=d.content[0].text;
+    } else {
+      out.textContent='Try again in a moment.';
+    }
+  }catch(e){
+    out.textContent='Connection issue — try again.';
+  }
 }
 
 // ── SPANISH PROGRESS ──────────────────────────────────────────

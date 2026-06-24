@@ -280,7 +280,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="card">
         <div class="ct">AI Life Coach</div>
-        <div class="cout" id="coach-out">Ask me anything about your goals, or hit "Daily Brief" for your personalized daily focus. 🚀</div>
+        <div class="cout" id="coach-out">Type your question and hit Ask — opens Claude with your full goal context pre-loaded. Just Ctrl+V and go! 🚀</div>
         <textarea class="cin" id="coach-in" placeholder="Ask your coach..."></textarea>
         <div class="brow2">
           <button class="btn" onclick="coachMe()">Daily brief ↗</button>
@@ -1172,41 +1172,56 @@ function renderWins(){
 }
 
 // ── AI COACH ──────────────────────────────────────────────────
-async function buildCoachContext(){
+function buildCoachPrompt(question){
   const pts=getTotalPts();
   const done=[],pending=[];
   GOALS.forEach(g=>g.tasks.forEach(t=>{(state.tasks[t.id]?done:pending).push(g.name+': '+t.l);}));
-  return {pts,done,pending};
+  const ctx=`You are my personal life coach. I am Makisha, a Black entrepreneur in Atlanta GA.
+
+MY GOALS:
+1. GA Real Estate License → Property Manager → CAM Certified (wholesaling land+houses 90% automated in GHL)
+2. 7 consecutive profitable funded trading days → weekly withdrawals (GBP/JPY & XAU/USD)
+3. Daily fitness + researching Burn Bootcamp franchise ownership
+4. Credit score to 620+ → pull equity from free-and-clear home → Tesla, home improvements, clear $19k debt
+5. Fluent Spanish in 6 months
+6. Sell diamond art paintings (Zenith Drip Co.) on Etsy/social — 90-day launch plan active
+7. Build dividend stock + crypto portfolio
+8. IBM SkillsBuild — Applied AI, Agents, Chatbots & RAG
+
+TODAY: ${pts} points earned.
+COMPLETED: ${done.join(', ')||'none yet'}.
+STILL PENDING: ${pending.slice(0,6).join('; ')||'nothing — great day!'}.
+
+MY QUESTION: ${question}
+
+Be direct, warm, and energizing. Speak like a trusted advisor who fully believes in me. Under 150 words.`;
+  return ctx;
 }
 
-async function coachMe(){
-  document.getElementById('coach-in').value='Give me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.';
-  await askCoach();
+function coachMe(){
+  openCoach('Give me my daily priority focus right now. What should I attack first and why? Give me one strong motivational push.');
 }
 
-async function askCoach(){
+function askCoach(){
   const inp=document.getElementById('coach-in');
   const q=inp.value.trim(); if(!q)return;
   inp.value='';
+  openCoach(q);
+}
+
+function openCoach(question){
+  const prompt=buildCoachPrompt(question);
   const out=document.getElementById('coach-out');
-  out.innerHTML='<span class="spin"></span>Thinking...';
-  const {pts,done,pending}=await buildCoachContext();
-  const sys=`You are an elite life coach and accountability partner for Makisha, a driven Black entrepreneur in Atlanta, GA. Her goals: (1) GA Real Estate License → Property Manager → CAM Certified, wholesaling land+houses 90% automated via GHL, (2) 7 consecutive profitable funded trading days → weekly withdrawals, trading GBP/JPY and XAU/USD, (3) Daily fitness, researching Burn Bootcamp franchise, (4) Credit score to 620+ to pull equity from free-and-clear home for Tesla, home improvements, clear $19k debt, (5) Fluent Spanish in 6 months, (6) Sell diamond art paintings on Etsy/social, (7) Build dividend stock + crypto portfolio, (8) IBM SkillsBuild — Applied AI, Agents, Chatbots & RAG. Today: ${pts} points earned. Completed: ${done.join(', ')||'none yet'}. Still pending: ${pending.slice(0,5).join('; ')}. Be direct, warm, energizing. Speak like a trusted advisor who fully believes in her. Under 150 words.`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-calls':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:q}]})
-    });
-    const d=await r.json();
-    if(d.content&&d.content[0]){
-      out.textContent=d.content[0].text;
-    } else {
-      out.textContent='Try again in a moment.';
-    }
-  }catch(e){
-    out.textContent='Connection issue — try again.';
-  }
+  out.innerHTML='Opening your AI coach with full context... <a href="https://claude.ai/new" target="_blank" style="color:var(--green)">Click here if it didn\'t open ↗</a>';
+  // Copy to clipboard and open Claude
+  navigator.clipboard.writeText(prompt).then(()=>{
+    window.open('https://claude.ai/new','_blank');
+    out.innerHTML='✓ Context copied! Claude opened in a new tab — just press <strong>Ctrl+V</strong> then Enter. Your full goal context is pre-loaded.';
+  }).catch(()=>{
+    // Fallback: just open Claude with instructions
+    window.open('https://claude.ai/new','_blank');
+    out.innerHTML='Claude opened! Copy and paste this into it:<br><br><textarea style="width:100%;height:120px;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:var(--r);padding:8px;font-size:11px;font-family:var(--font)">'+prompt+'</textarea>';
+  });
 }
 
 // ── SPANISH PROGRESS ──────────────────────────────────────────
